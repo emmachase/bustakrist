@@ -1,0 +1,23 @@
+$blobSize: 30vw;
+
+.blobs {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+  filter: blur(120px);
+}
+
+.blob {
+  position: absolute;
+  
+  width: $blobSize;
+  height: $blobSize;
+  border-radius: $blobSize / 2;
+
+  left: -$blobSize / 2;
+  top: -$blobSize / 2;
+
+  transform-origin: center;
+}

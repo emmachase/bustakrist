@@ -1,0 +1,24 @@
+@import "../colors.scss";
+
+$gutter: 50px;
+
+.kbit-layout {
+  position: absolute;
+  width: calc(100% - #{$gutter*2});
+  height: calc(100% - #{$gutter*2});
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: $gutter;
+  padding: $gutter;
+}
+
+.card {
+  position: relative;
+  background-color: rgba($ambient-contrast, 0.45);
+  border-radius: 45px;
+
+  box-shadow: 0 4px 20px 0 rgba($ambient, 0.6);
+
+  padding: 40px;
+}

@@ -1,0 +1,37 @@
+@import "../colors.scss";
+
+.input-container {
+  display: flex;
+  background: rgba($ambient, 0.4);
+  border: 2px solid rgba($text, 0.1);
+  border-radius: 24px;
+  overflow: hidden;
+  align-items: center;
+  padding: 0 24px 0 0;
+  margin-bottom: 24px;
+
+  input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    text-align: right;
+
+    font-size: 30px;
+    color: $text;
+  }
+
+  .suffix {
+    font-size: 30px;
+    font-weight: 900;
+  }
+}
+
+.label {
+  color: $text;
+  background: rgba($text, 0.1);
+  padding: 18px;
+
+  text-transform: uppercase;
+  font-size: 30px;
+}
