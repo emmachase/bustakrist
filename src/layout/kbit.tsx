@@ -33,8 +33,8 @@ export function KBitLayout() {
   return (
     <div className="kbit-layout">
       <Card row={1} col={1} style={{
-        paddingLeft: 0,
-        paddingBottom: 25,
+        // paddingLeft: 0,
+        // paddingBottom: 25,
       }}>
         <BustChart />
       </Card>

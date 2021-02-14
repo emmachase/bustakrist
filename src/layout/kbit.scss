@@ -5,10 +5,10 @@ $gutter: 50px;
 .kbit-layout {
   position: absolute;
   width: calc(100% - #{$gutter*4});
-  height: calc(100% - #{$gutter*2});
+  height: calc(100% - #{$gutter*3});
   display: grid;
   grid-template-columns: repeat(3, 33.3333%);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: 45% 55%;
   gap: $gutter;
   padding: $gutter;
 }

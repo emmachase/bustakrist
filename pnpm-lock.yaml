@@ -1,4 +1,5 @@
 dependencies:
+  '@craco/craco': 6.1.1_react-scripts@4.0.2
   '@testing-library/jest-dom': 5.11.9
   '@testing-library/react': 11.2.5_react-dom@17.0.1+react@17.0.1
   '@testing-library/user-event': 12.6.3
@@ -1284,6 +1285,21 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-v9kIhKwjeZThiWrLmj0y17CWoyddASLj9O2yvbZkbvw/N3rWOYy9zkV66ursAoVr0mV15bL8g0c4QZUE6cdDoQ==
+  /@craco/craco/6.1.1_react-scripts@4.0.2:
+    dependencies:
+      cross-spawn: 7.0.3
+      lodash: 4.17.20
+      react-scripts: 4.0.2_870b0c3e03a685d4ff5280ff44a61880
+      semver: 7.3.4
+      webpack-merge: 4.2.2
+    dev: false
+    engines:
+      node: '>=6'
+    hasBin: true
+    peerDependencies:
+      react-scripts: ^4.0.0
+    resolution:
+      integrity: sha512-4irfOM8RgYNhFJzAXyIuM8CZLju2Jh9GdOem8uqM2/cI2xPulQSxZKU/9q3uiSbFUJfQLi3pomVKii6KzWLu3Q==
   /@csstools/convert-colors/1.4.0:
     dev: false
     engines:
@@ -11922,6 +11938,12 @@ packages:
       webpack: 2 || 3 || 4
     resolution:
       integrity: sha512-9S6YyKKKh/Oz/eryM1RyLVDVmy3NSPV0JXMRhZ18fJsq+AwGxUY34X54VNwkzYcEmEkDwNxuEOboCZEebJXBAQ==
+  /webpack-merge/4.2.2:
+    dependencies:
+      lodash: 4.17.20
+    dev: false
+    resolution:
+      integrity: sha512-TUE1UGoTX2Cd42j3krGYqObZbOD+xF7u28WB7tfUordytSjbWTIjK/8V0amkBfTYN4/pB/GIDlJZZ657BGG19g==
   /webpack-sources/1.4.3:
     dependencies:
       source-list-map: 2.0.1
@@ -12335,6 +12357,7 @@ packages:
     resolution:
       integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 specifiers:
+  '@craco/craco': ^6.1.1
   '@testing-library/jest-dom': ^5.11.4
   '@testing-library/react': ^11.1.0
   '@testing-library/user-event': ^12.1.10
