@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.scss";
-import Blobs from "./fun/blobs";
+import Blobs from "./components/fun/blobs";
 import { KBitLayout } from "./layout/kbit";
 
 function App() {

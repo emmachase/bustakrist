@@ -4,11 +4,11 @@ $gutter: 50px;
 
 .kbit-layout {
   position: absolute;
-  width: calc(100% - #{$gutter*2});
+  width: calc(100% - #{$gutter*4});
   height: calc(100% - #{$gutter*2});
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: repeat(3, 33.3333%);
+  grid-template-rows: repeat(2, 1fr);
   gap: $gutter;
   padding: $gutter;
 }

@@ -21,7 +21,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "typeRoots" : ["./src/@types", "./node_modules/@types"],
+    "types": [
+      "resize-observer-browser",
+      "use-animation-frame"
+    ]
   },
   "include": [
     "src"

@@ -1,0 +1,71 @@
+@import "../colors.scss";
+
+$innerPadding: 18px;
+$primaryFontSize: 24px;
+
+@mixin theme {
+  background: rgba($ambient, 0.4);
+  border: 2px solid rgba($text, 0.1);
+  border-radius: 24px;
+  margin-bottom: 24px;
+  color: $text;
+}
+
+.input-container {
+  @include theme;
+
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  padding: 0 24px 0 0;
+
+  input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    text-align: right;
+    min-width: 0;
+
+    font-size: $primaryFontSize;
+    color: $text;
+  }
+
+  .suffix {
+    font-size: $primaryFontSize;
+    font-weight: 900;
+  }
+}
+
+.label {
+  background: rgba($text, 0.1);
+  padding: $innerPadding;
+
+  text-transform: uppercase;
+  font-size: $primaryFontSize;
+}
+
+.th-button {
+  @include theme;
+
+  display: block;
+  padding: $innerPadding;
+  font-size: $primaryFontSize;
+
+  cursor: pointer;
+  outline: none;
+
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+
+  &:hover {
+    background: rgba($ambient, 0.7);
+    border-color:rgba($text, 0.0)
+  }
+
+  &.full-card {
+    margin: auto;
+
+    width: 100%;
+    max-width: 20vw;
+  }
+}

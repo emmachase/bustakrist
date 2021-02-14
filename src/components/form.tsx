@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { clazz } from "../util/class";
 import "./form.scss";
 
 function numberInputOnly(e: React.KeyboardEvent<HTMLInputElement>): boolean {
@@ -22,5 +23,15 @@ export const NumericalInput: FC<{
       <input type="text" onKeyDown={numberInputOnly}/>
       <div className="suffix">{props.suffix}</div>
     </div>
+  );
+};
+
+export const KButton: FC<{
+  card?: boolean
+}> = (props) => {
+  return (
+    <button className={clazz("th-button", props.card && "full-card")}>
+      {props.children}
+    </button>
   );
 };

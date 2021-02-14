@@ -28,6 +28,9 @@ module.exports = {
     "object-curly-spacing": ["error", "always"],
     "no-unused-vars": "warn",
     "curly": "off",
+    "arrow-parens": "off",
+    "spaced-comment": "off",
+    "max-len": ["error", 100],
 
     "react/prop-types": "off",
 
@@ -64,7 +67,6 @@ module.exports = {
     "jsdoc/require-param": 1,
     "jsdoc/require-param-description": 1,
     "jsdoc/require-param-name": 1,
-    "jsdoc/require-param-type": 1,
     "jsdoc/require-property": 1,
     "jsdoc/require-property-description": 1,
     "jsdoc/require-property-name": 1,

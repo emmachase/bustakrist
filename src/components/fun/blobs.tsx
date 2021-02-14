@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Color, lerpColors, sanitizeStops } from "../util/color";
+import { Color, lerpColors, sanitizeStops } from "../../util/color";
 import "./blobs.scss";
 
 const colorRange = sanitizeStops([
