@@ -2,6 +2,13 @@ import { FC, MutableRefObject, useEffect, useMemo, useRef, useState } from "reac
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
 import useAnimationFrame from "use-animation-frame";
 import { useElementSize } from "../hooks/resize";
+import { Color, HSVColor } from "../util/color";
+
+const nyanCutoff = 1.5;
+
+export function scoreFunction(time: number): number {
+  return 2**(time / 10);
+}
 
 function linearScale() {
   const domain = [0, 0];
@@ -69,11 +76,33 @@ export const BustChart: FC<{
     ctx.strokeStyle = "#ffffff";
     ctx.lineWidth = 5;
 
+    const currentScore = scoreFunction(e.time);
+
+    if (e.time > x.inMax()) {
+      x.domain([0, e.time]);
+      y.domain([1, currentScore]);
+    }
+
     ctx.moveTo(x(0), y(1));
     for (let i = 0; i < e.time && i < x.inMax(); i += x.inverse(1)) {
-      ctx.lineTo(x(i), y(2**(i/10)));
+      ctx.lineTo(x(i), y(scoreFunction(i)));
     }
     ctx.stroke();
+
+    // ctx.font = "24pt serif";
+    // ctx.fillText((2**(e.time/10)).toFixed(2), 0, 0);
+    ctx.font = "bold 48px Roboto";
+    if (currentScore > nyanCutoff) {
+      const c = new HSVColor(0, 1, 1);
+      c.h = e.time % 1;
+      ctx.fillStyle = c.asRGB().toString();
+    } else {
+      ctx.fillStyle = "#ffffff99";
+    }
+    ctx.textAlign = "right";
+    const shake = currentScore > nyanCutoff ? (Math.random() - 1)*e.time : 0;
+    ctx.fillText(currentScore.toFixed(2) + "X", x.max() + shake, y.min());
+
 
     ctx.closePath();
   });
