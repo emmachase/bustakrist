@@ -40,8 +40,8 @@ export function KBitLayout() {
       </Card>
       <Card row={1} col={2}>
         <Flexor fill direction="column">
-          <NumericalInput label="Bet" suffix="KST"/>
-          <NumericalInput label="Payout" suffix="x"/>
+          <NumericalInput label="Bet" suffix="&nbsp;KST"/>
+          <NumericalInput label="Payout" suffix="&times;"/>
 
           <Spacer/>
 
