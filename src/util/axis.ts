@@ -8,6 +8,6 @@ export function getMajorInterval(axisMin: number, axisMax: number): number {
   const range = axisMax - axisMin;
   let interval = 0.2;
   for (let idx = 0; interval < range / 6; idx ++)
-    interval *= 2.5 - (idx % 3 > 0) * 0.5;
+    interval *= idx % 3 > 0 ? 2 : 2.5;
   return interval;
 }
