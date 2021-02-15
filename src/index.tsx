@@ -2,8 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.scss";
 import "./utilities.scss";
+import "./i18n";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+
+console.log("hi");
 
 ReactDOM.render(
     <React.StrictMode>

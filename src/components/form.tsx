@@ -3,7 +3,7 @@ import { clazz } from "../util/class";
 import "./form.scss";
 
 function numberInputOnly(e: React.KeyboardEvent<HTMLInputElement>): boolean {
-  if (e.key.length === 1 && !e.key.match(/[0-9]/)) {
+  if (e.key.length === 1 && !e.key.match(/[0-9.]/)) {
     e.preventDefault();
     return false;
   }

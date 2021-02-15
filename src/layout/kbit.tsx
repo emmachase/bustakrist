@@ -4,6 +4,7 @@ import { BustChart } from "../components/chart";
 import "./kbit.scss";
 import { Flexor, Spacer } from "./flex";
 import { clazz } from "../util/class";
+import { useTranslation } from "react-i18next";
 
 const Card: FC<{
   row: number,
@@ -30,6 +31,8 @@ const Card: FC<{
 };
 
 export function KBitLayout() {
+  const [t] = useTranslation();
+
   return (
     <div className="kbit-layout">
       <Card row={1} col={1} style={{
@@ -40,16 +43,16 @@ export function KBitLayout() {
       </Card>
       <Card row={1} col={2}>
         <Flexor fill direction="column">
-          <NumericalInput label="Bet" suffix="&nbsp;KST"/>
-          <NumericalInput label="Payout" suffix="&times;"/>
+          <NumericalInput label={t("bet.betAmt")} suffix="KST"/>
+          <NumericalInput label={t("bet.betPayout")} suffix="&times;"/>
 
           <Spacer/>
 
-          <KButton card>BET</KButton>
+          <KButton card>{t("bet.betAction")}</KButton>
         </Flexor>
       </Card>
       <Card row={1} col={3} rowSpread={2}>
-        Hello
+        {t("bet.test")}
       </Card>
       <Card row={2} col={1} colSpread={2}></Card>
     </div>

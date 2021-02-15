@@ -1,0 +1,50 @@
+@import "../../colors.scss";
+
+$scale: 48px;
+$border: 12px;
+$distance: 12px;
+
+@keyframes spin {
+  0% { transform: rotate(0) }
+  100% { transform: rotate(180deg) }
+}
+
+@keyframes flipper {
+  0% { transform: scaleX(-1) }
+  50% { transform: scaleX(1) }
+}
+
+.center {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.loader {
+  display: flex;
+  width: $distance*6 + $scale*3;
+  margin: $scale auto;
+  animation: flipper 1s infinite step-end;
+}
+
+.spinner {
+  display: inline-block;
+  width: $scale;
+  height: $scale;
+  border: $border solid $text;
+  border-radius: 50%;
+  box-sizing: border-box;
+  margin: 0 $distance;
+}
+
+.spinner.a {
+  transform-origin: $scale+$distance $scale/2;
+  animation: spin 0.5s ease infinite;
+}
+
+.spinner.b {
+  transform-origin: -$distance $scale/2;
+  animation: spin 0.5s ease infinite;
+}

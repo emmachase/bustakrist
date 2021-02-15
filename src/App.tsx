@@ -1,27 +1,27 @@
-import React from "react";
+import React, { Suspense } from "react";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
 import "./App.scss";
-import Blobs from "./components/fun/blobs";
+import Blobs from "./components/aesthetic/blobs";
+import { Spinner } from "./components/aesthetic/spinner";
 import { KBitLayout } from "./layout/kbit";
+import RootReducer from "./store/reducers/RootReducer";
+import { devToolsEnhancer } from "redux-devtools-extension";
+
+export const store = createStore(
+    RootReducer,
+    devToolsEnhancer({}),
+);
 
 function App() {
   return (
     <div className="App">
-      <Blobs/>
-      <KBitLayout/>
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
+      <Provider store={store}>
+        <Blobs/>
+        <Suspense fallback={<Spinner/>}>
+          <KBitLayout/>
+        </Suspense>
+      </Provider>
     </div>
   );
 }

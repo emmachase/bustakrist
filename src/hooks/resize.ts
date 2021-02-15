@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
  *
  * @param target - The element to watch
  */
-export function useElementSize(target: HTMLElement | undefined)
+export function useElementSize(target: HTMLElement | undefined, def?: {w: number, h: number})
 : { w: number, h: number } {
-  const [size, setSize] = useState({ w: 0, h: 0 });
+  const [size, setSize] = useState(def ?? { w: 100, h: 100 });
 
   useEffect(() => {
     if (!target) return;

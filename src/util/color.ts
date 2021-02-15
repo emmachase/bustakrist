@@ -262,3 +262,24 @@ export function lerpColors(stops: HardColorStop[], alpha: number): string {
   const result = smartHSVLerp(ac, bc, (alpha - a[0]) / alphaDiff);
   return result.asRGB().toString();
 }
+
+export function lerpColorsRGB(stops: HardColorStop[], alpha: number): string {
+  alpha = Math.min(1, Math.max(0, alpha));
+
+  let idx = 0;
+  while (alpha > stops[idx][0]) idx++;
+
+  if (idx === 0) return stops[idx][1];
+
+  const a = stops[idx - 1]; const ac = new Color(a[1]);
+  const b = stops[idx];     const bc = new Color(b[1]);
+
+  const alphaDiff = (alpha - a[0]) / (b[0] - a[0]);
+  const result = new Color(
+      ac.r + alphaDiff*(bc.r - ac.r),
+      ac.g + alphaDiff*(bc.g - ac.g),
+      ac.b + alphaDiff*(bc.b - ac.b),
+  );
+
+  return result.toString();
+}
