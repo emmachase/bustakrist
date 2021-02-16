@@ -1,27 +1,32 @@
 import { CSSProperties, FC } from "react";
-import { KButton, NumericalInput } from "../components/form";
 import { BustChart } from "../components/chart";
 import "./kbit.scss";
-import { Flexor, Spacer } from "./flex";
 import { clazz } from "../util/class";
 import { useTranslation } from "react-i18next";
+import { BetUI } from "./betui";
+import { AuthUI } from "./auth";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/reducers/RootReducer";
 
 const Card: FC<{
-  row: number,
-  col: number,
+  area?: string,
+  row?: number,
+  col?: number,
   rowSpread?: number,
   colSpread?: number,
   className?: string,
+  id?: string,
   style?: CSSProperties
 }> = (props) => {
   return (
-    <div
+    <div id={props.id}
       className={clazz("card", props.className)}
       style={{
-        gridRow: props.row,
-        gridRowEnd: props.row + (props.rowSpread ?? 1),
-        gridColumn: props.col,
-        gridColumnEnd: props.col + (props.colSpread ?? 1),
+        // gridRow: props.row,
+        // gridRowEnd: props.row ?? 0 + (props.rowSpread ?? 1),
+        // gridColumn: props.col,
+        // gridColumnEnd: props.col ?? 0 + (props.colSpread ?? 1),
+        gridArea: props.area,
         ...props.style,
       }}
     >
@@ -33,28 +38,28 @@ const Card: FC<{
 export function KBitLayout() {
   const [t] = useTranslation();
 
+  const username = useSelector<RootState>(s => s.user.name);
+  console.log("uname", username);
+
   return (
     <div className="kbit-layout">
-      <Card row={1} col={1} style={{
+      <Card area="graph" style={{
         // paddingLeft: 0,
         // paddingBottom: 25,
       }}>
         <BustChart />
       </Card>
-      <Card row={1} col={2}>
-        <Flexor fill direction="column">
-          <NumericalInput label={t("bet.betAmt")} suffix="KST"/>
-          <NumericalInput label={t("bet.betPayout")} suffix="&times;"/>
-
-          <Spacer/>
-
-          <KButton card>{t("bet.betAction")}</KButton>
-        </Flexor>
+      <Card area="act">
+        {
+          username === null
+            ? <AuthUI/>
+            : <BetUI />
+        }
       </Card>
-      <Card row={1} col={3} rowSpread={2}>
+      <Card id="players" area="play">
         {t("bet.test")}
       </Card>
-      <Card row={2} col={1} colSpread={2}></Card>
+      <Card area="multi"></Card>
     </div>
   );
 }

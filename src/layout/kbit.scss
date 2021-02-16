@@ -1,24 +1,86 @@
 @import "../colors.scss";
 
 $gutter: 50px;
+$radius: 45px;
 
 .kbit-layout {
   position: absolute;
   width: calc(100% - #{$gutter*4});
   height: calc(100% - #{$gutter*3});
   display: grid;
-  grid-template-columns: repeat(3, 33.3333%);
-  grid-template-rows: 45% 55%;
   gap: $gutter;
   padding: $gutter;
+
+  grid-template-areas: "graph act  play"
+                       "multi  multi play";
+  grid-template-columns: repeat(3, 33.3333%);
+  grid-template-rows: 45% 55%;
 }
 
 .card {
   position: relative;
   background-color: rgba($ambient-contrast, 0.45);
-  border-radius: 45px;
+  border-radius: $radius;
 
   box-shadow: 0 4px 20px 0 rgba($ambient, 0.6);
 
   padding: 40px;
+}
+
+@media (max-width: 1100px) {
+  .kbit-layout {
+    width: calc(100% - #{$gutter*3});
+    height: calc(100% - #{$gutter*3});
+
+    grid-template-areas: "graph act"
+                         "multi  multi";
+    grid-template-columns: repeat(2, 50%);
+    grid-template-rows: 45% 55%;
+  }
+
+  #players {
+    display: none;
+  }
+}
+
+@media (max-width: 850px) {
+  .kbit-layout {
+    width: calc(100% - #{$gutter*3/2});
+    height: calc(100% - #{$gutter*3/2});
+
+    gap: $gutter / 2;
+    padding: $gutter / 2;
+  }
+
+  .card {
+    border-radius: $radius / 2;
+  }
+}
+
+@media (max-width: 700px) {
+  .kbit-layout {
+    width: calc(100% - #{$gutter*2/2});
+    height: calc(100% - #{$gutter*4/2});
+
+    grid-template-areas: "graph"
+                         "act"
+                         "multi";
+    grid-template-columns: 100%;
+    grid-template-rows: 30% 30% 40%;
+  }
+
+  #players {
+    display: none;
+  }
+}
+
+@media (max-height: 700px) {
+  .kbit-layout {
+    height: auto;
+    grid-template-rows: unset;
+  }
+
+  .card {
+    min-height: 200px;
+  }
 }

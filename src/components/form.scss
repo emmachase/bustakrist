@@ -65,7 +65,7 @@ $primaryFontSize: 24px;
   &.full-card {
     margin: auto;
 
-    width: 100%;
-    max-width: 20vw;
+    width: min(100%, 300px);
+    // max-width: 20vw;
   }
 }

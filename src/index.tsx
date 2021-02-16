@@ -6,13 +6,19 @@ import "./i18n";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-console.log("hi");
-
 ReactDOM.render(
     <React.StrictMode>
       <App />
     </React.StrictMode>,
     document.getElementById("root"),
+);
+
+console.log(
+    "%cCareful. This is a browser feature intended for developers. "
+  + "If someone told you to copy and paste something here to enable a bustakrist feature "
+  + "or do a \"hack\", it is a scam and will give them access to your bustakrist account.",
+
+    "font-size: 2em; background: red; color: white",
 );
 
 // If you want to start measuring performance in your app, pass a function

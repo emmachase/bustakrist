@@ -1,0 +1,10 @@
+{
+  "bet": {
+    "betAction": "Inzet maken",
+    "betAmt": "Inzetbedrag",
+    "betPayout": "Uitbetaling"
+  },
+  "game": {
+    "nextGame": "Spel in {{time}} starten"
+  }
+}

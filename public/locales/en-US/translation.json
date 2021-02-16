@@ -3,5 +3,12 @@
     "betAction": "Bet",
     "betAmt": "Bet",
     "betPayout": "Payout"
+  },
+  "game": {
+    "nextGame": "Next Game Will Start in {{time}}"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register"
   }
 }
