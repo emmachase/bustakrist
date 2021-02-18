@@ -60,7 +60,7 @@ export function KHeader() {
   );
 }
 
-const BREAKPOINTS = { mobile: 0, desktop: 701 };
+const BREAKPOINTS = { mobile: 0, desktop: 1101 };
 
 export function KBitLayout() {
   const [t] = useTranslation();
