@@ -1,6 +1,7 @@
 import { store } from "../App";
 import { bustGame, startGame } from "../store/actions/GameActions";
-import { BalanceResponse } from "./networkInterfaces";
+import { authUser, logoutUser } from "../store/actions/UserActions";
+import { AuthResponse, BalanceResponse } from "./networkInterfaces";
 import { RequestCode, UpdateCode } from "./transportCodes";
 
 let activeConnection: Connection;
@@ -23,8 +24,20 @@ export class Connection {
   private tryConnection() {
     this.ws = new WebSocket(this.url);
     this.ws.onmessage = this.handleMessage.bind(this);
-    this.ws.onopen = () => this.connectDebounce = 5;
+    this.ws.onopen = async () => {
+      this.connectDebounce = 5;
+
+      const token = localStorage.getItem("reauth");
+      if (token) {
+        const res = await this.reauth(token);
+        if (res.user) {
+          store.dispatch(authUser(res.user, res.bal));
+        }
+      }
+    };
     this.ws.onclose = () => {
+      store.dispatch(logoutUser());
+
       console.warn(`Lost WS connection, retrying in ${this.connectDebounce}ms...`);
       setTimeout(() => {
         console.warn("Reconnecting...");
@@ -32,6 +45,10 @@ export class Connection {
         this.tryConnection();
       }, this.connectDebounce);
     };
+  }
+
+  public get active() {
+    return this.ws.readyState === 1;
   }
 
   public sendRaw(data: unknown) {
@@ -45,12 +62,11 @@ export class Connection {
 
   private activeRequests: {
     id: number
-    resolve: (data: PromiseLike<any>) => void
-    reject: (data: PromiseLike<any>) => void
+    resolve: (data: any) => void
+    reject: (data: any) => void
   }[] = [];
   private handleMessage(event: MessageEvent) {
     const msg = JSON.parse(event.data);
-    console.log("Data: ", msg);
     switch (msg.type) {
       case UpdateCode.HELLO:
         this.ws.send(JSON.stringify({
@@ -67,7 +83,21 @@ export class Connection {
         break;
 
       case UpdateCode.REPLY:
-        console.log(+new Date() - msg.data.now);
+        const handlerIdx = this.activeRequests.findIndex(r => r.id === msg.id);
+        if (handlerIdx !== -1) {
+          const handler = this.activeRequests[handlerIdx];
+          console.log(handler, msg);
+          if (msg.ok) {
+            handler.resolve(msg.data);
+          } else {
+            handler.reject({
+              errorType: msg.errorType,
+              error: msg.error,
+              data: msg.data,
+            });
+          }
+        }
+
         break;
 
       default:
@@ -91,15 +121,29 @@ export class Connection {
 
 
   public register(name: string, pass: string) {
-    return this.makeRequest<BalanceResponse>(RequestCode.REGISTER, {
+    return this.makeRequest<AuthResponse>(RequestCode.REGISTER, {
       name, pass,
+    });
+  }
+
+  public login(name: string, pass: string) {
+    return this.makeRequest<AuthResponse>(RequestCode.LOGIN, {
+      name, pass,
+    });
+  }
+
+  public reauth(token: string) {
+    return this.makeRequest<AuthResponse>(RequestCode.REAUTH, {
+      t: token,
     });
   }
 }
 
 export function createConnection(host?: string) {
   const url = host ?? window.location.host;
-  activeConnection = new Connection("ws://" + url + "/api/sock"); // TODO: WSS
+  const proto = window.location.protocol;
+  const wsProto = proto.startsWith("https") ? "wss://" : "ws://";
+  activeConnection = new Connection(wsProto + url + "/api/sock");
 }
 
 export function getConnection() {

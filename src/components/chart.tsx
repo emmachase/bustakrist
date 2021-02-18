@@ -4,6 +4,7 @@ import { useSelector, useStore } from "react-redux";
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
 import useAnimationFrame from "use-animation-frame";
 import { useElementSize } from "../hooks/resize";
+import { getConnection } from "../meta/connection";
 import { RootState } from "../store/reducers/RootReducer";
 import { getMajorInterval } from "../util/axis";
 import { Color, HSVColor, lerpColorsRGB } from "../util/color";
@@ -129,7 +130,8 @@ export const BustChart: FC<{
       y.domain([1, currentScore]);
     }
 
-    if (currentScore >= 1) {
+    const connected = getConnection().active;
+    if (connected && currentScore >= 1) {
       drawAxisTicks(ctx, width, y, getMajorInterval(y.inMin(), y.inMax()));
 
       ctx.beginPath();
@@ -195,10 +197,18 @@ export const BustChart: FC<{
       const angle = 2*Math.PI*Math.random();
       ctx.fillText(text, x.max() + Math.cos(angle)*shake, y.min() + Math.sin(angle)*shake);
 
+      if (bust) {
+        ctx.font = "bold 18px Roboto";
+        ctx.fillText(t("game.busted").toLocaleUpperCase(), x.max(), y.min() - 48);
+      }
+
       ctx.closePath();
     } else {
       // `Next game will start in ${(-aTime).toFixed(2)}`;
-      const text = t("game.nextGame", { time: (-aTime).toFixed(2) });
+      const text = connected
+        ? t("game.nextGame", { time: (-aTime).toFixed(2) })
+        : t("game.connecting");
+
       ctx.font = "bold 18px Roboto";
       ctx.textAlign = "center";
       ctx.fillStyle = "#ffffff99";

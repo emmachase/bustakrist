@@ -3,13 +3,32 @@
 $gutter: 50px;
 $radius: 45px;
 
+.kbit-header {
+  display: flex;
+  height: $gutter;
+  align-items: center;
+  padding: 0 $gutter;
+  margin: $gutter/4 0;
+
+  img {
+    height: 70%;
+    margin: 0 0.5rem;
+  }
+
+  .header-info {
+    font-weight: bold;
+    margin: 0 0 0 1.5rem;
+    text-transform: uppercase;
+  }
+}
+
 .kbit-layout {
   position: absolute;
   width: calc(100% - #{$gutter*4});
-  height: calc(100% - #{$gutter*3});
+  height: calc(100% - #{$gutter*3.5});
   display: grid;
   gap: $gutter;
-  padding: $gutter;
+  padding: 0 $gutter $gutter;
 
   grid-template-areas: "graph act  play"
                        "multi  multi play";
@@ -30,7 +49,7 @@ $radius: 45px;
 @media (max-width: 1100px) {
   .kbit-layout {
     width: calc(100% - #{$gutter*3});
-    height: calc(100% - #{$gutter*3});
+    height: calc(100% - #{$gutter*3.5});
 
     grid-template-areas: "graph act"
                          "multi  multi";
@@ -46,21 +65,23 @@ $radius: 45px;
 @media (max-width: 850px) {
   .kbit-layout {
     width: calc(100% - #{$gutter*3/2});
-    height: calc(100% - #{$gutter*3/2});
+    height: calc(100% - #{$gutter*5/2});
 
     gap: $gutter / 2;
-    padding: $gutter / 2;
+    padding: 0 $gutter / 2 $gutter / 2;
   }
 
   .card {
     border-radius: $radius / 2;
+
+    padding: 30px;
   }
 }
 
 @media (max-width: 700px) {
   .kbit-layout {
     width: calc(100% - #{$gutter*2/2});
-    height: calc(100% - #{$gutter*4/2});
+    height: calc(100% - #{$gutter*6/2});
 
     grid-template-areas: "graph"
                          "act"
@@ -71,6 +92,14 @@ $radius: 45px;
 
   #players {
     display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .card {
+    border-radius: $radius / 2;
+
+    padding: 20px;
   }
 }
 

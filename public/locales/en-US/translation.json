@@ -5,10 +5,23 @@
     "betPayout": "Payout"
   },
   "game": {
-    "nextGame": "Next Game Will Start in {{time}}"
+    "connecting": "Connecting to Game Server...",
+    "nextGame": "Next Game Will Start in {{time}}",
+    "busted": "Busted At"
   },
   "auth": {
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "username": "Name",
+    "password": "Pass"
+  },
+  "chat": {
+    "tab": "Chat"
+  },
+  "history": {
+    "tab": "History"
+  },
+  "players": {
+    "tab": "Players"
   }
 }

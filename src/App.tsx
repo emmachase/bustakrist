@@ -1,15 +1,15 @@
 import React, { Suspense } from "react";
-import { createStore } from "redux";
+import { createStore, Store } from "redux";
 import { Provider } from "react-redux";
 import "./App.scss";
 import Blobs from "./components/aesthetic/blobs";
 import { Spinner } from "./components/aesthetic/spinner";
-import { KBitLayout } from "./layout/kbit";
-import RootReducer from "./store/reducers/RootReducer";
+import { KBitLayout, KHeader } from "./layout/kbit";
+import RootReducer, { RootState } from "./store/reducers/RootReducer";
 import { devToolsEnhancer } from "redux-devtools-extension";
 import { createConnection } from "./meta/connection";
 
-export const store = createStore(
+export const store: Store<RootState> = createStore(
     RootReducer,
     devToolsEnhancer({}),
 );
@@ -26,6 +26,7 @@ function App() {
       <Provider store={store}>
         <Blobs/>
         <Suspense fallback={<Spinner/>}>
+          <KHeader/>
           <KBitLayout/>
         </Suspense>
       </Provider>

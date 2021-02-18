@@ -7,6 +7,12 @@ import { BetUI } from "./betui";
 import { AuthUI } from "./auth";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/reducers/RootReducer";
+import { ShortHistory } from "../components/history";
+import { Spacer } from "./flex";
+import { useKState } from "../util/types";
+import { ComboView } from "./combo";
+import { PlayerList } from "./players";
+import useBreakpoint from "use-breakpoint";
 
 const Card: FC<{
   area?: string,
@@ -35,10 +41,33 @@ const Card: FC<{
   );
 };
 
+export function KHeader() {
+  const user = useKState(s => s.user);
+
+  const profile = user ?
+    <>
+      <span className="header-info">{user.name}</span>
+      <span className="header-info">{((user.bal ?? 0)/100).toFixed(2)}KST</span>
+    </>: null;
+
+  return (
+    <div className="kbit-header">
+      <img src="/krist.webp"/>
+      <h1>BustAKrist</h1>
+      <Spacer/>
+      {profile}
+    </div>
+  );
+}
+
+const BREAKPOINTS = { mobile: 0, desktop: 701 };
+
 export function KBitLayout() {
   const [t] = useTranslation();
 
-  const username = useSelector<RootState>(s => s.user.name);
+  const breakpt = useBreakpoint(BREAKPOINTS, "desktop");
+
+  const username = useKState(s => s.user.name);
   console.log("uname", username);
 
   return (
@@ -47,7 +76,8 @@ export function KBitLayout() {
         // paddingLeft: 0,
         // paddingBottom: 25,
       }}>
-        <BustChart />
+        <BustChart/>
+        <ShortHistory/>
       </Card>
       <Card area="act">
         {
@@ -57,9 +87,19 @@ export function KBitLayout() {
         }
       </Card>
       <Card id="players" area="play">
-        {t("bet.test")}
+        <PlayerList />
       </Card>
-      <Card area="multi"></Card>
+      <Card area="multi">
+        <ComboView>
+          <ComboView.Tab label={t("chat.tab")}>A</ComboView.Tab>
+          <ComboView.Tab label={t("history.tab")}>B</ComboView.Tab>
+          { breakpt.breakpoint === "mobile" ?
+            <ComboView.Tab label={t("players.tab")}>
+              <PlayerList />
+            </ComboView.Tab> : <></>
+          }
+        </ComboView>
+      </Card>
     </div>
   );
 }

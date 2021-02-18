@@ -2,6 +2,7 @@ export enum RequestCode {
   PING,
   LOGIN,
   REGISTER,
+  REAUTH,
   GETBAL,
   SENDMSG
 }

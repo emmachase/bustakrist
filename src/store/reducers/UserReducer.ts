@@ -1,5 +1,5 @@
 import { createReducer, ActionType, Reducer } from "typesafe-actions";
-import { authUser, updateBalance } from "../actions/UserActions";
+import { authUser, logoutUser, updateBalance } from "../actions/UserActions";
 
 export interface State {
   readonly name: string | null
@@ -12,13 +12,19 @@ const initialState: State = {
 };
 
 export const UserReducer: Reducer<State, any> = createReducer(initialState)
-    // Start Game
+    // Auth User
     .handleAction(authUser, (state: State, { payload }: ActionType<typeof authUser>) => ({
       ...state,
       name: payload.name,
       bal: payload.bal,
     }))
-    // Bust Game
+    // Logout User
+    .handleAction(logoutUser, (state: State, { payload }: ActionType<typeof logoutUser>) => ({
+      ...state,
+      name: null,
+      bal: null,
+    }))
+    // Update Balance
     .handleAction(updateBalance, (state: State, { payload }: ActionType<typeof updateBalance>) => ({
       ...state,
       bal: payload.bal,

@@ -13,13 +13,20 @@ ReactDOM.render(
     document.getElementById("root"),
 );
 
-console.log(
-    "%cCareful. This is a browser feature intended for developers. "
-  + "If someone told you to copy and paste something here to enable a bustakrist feature "
-  + "or do a \"hack\", it is a scam and will give them access to your bustakrist account.",
+// Delay to display message after any initialization messages
+setTimeout(() => {
+  console.log("%c BustAKrist 💎 \n%c   by @emma",
+      "font-size: 3em; background: #9932CC88; color: white; line-height: 2.5em",
+      "font-size: 1.5em; color: #ffffff55");
 
-    "font-size: 2em; background: red; color: white",
-);
+  console.log(
+      "%cCareful. This is a browser feature intended for developers. "
+    + "If someone told you to copy and paste something here to enable a bustakrist feature "
+    + "or do a \"hack\", it is a scam and will give them access to your bustakrist account.",
+
+      "font-size: 2em; background: #ff0000; color: white",
+  );
+}, 1000);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

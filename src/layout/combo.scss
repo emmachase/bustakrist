@@ -1,0 +1,58 @@
+@import "../colors.scss";
+
+.combo-view {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+
+  .tabs {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    
+    position: relative;
+    left: -20px;
+    
+    > div {
+      color: $textBright;
+      cursor: pointer;
+      transform: scale(-1);
+      writing-mode: vertical-rl;
+
+      opacity: 0.6;
+
+      &.active {
+        cursor: default;
+        font-weight: 900;
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 850px) {
+      left: -15px;
+    }
+  }
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+    
+    .tabs {
+      flex-direction: row;
+      height: auto;
+      left: 0;
+      top: -10px;
+
+      > div {
+        transform: unset;
+        writing-mode: unset;
+      }
+    }
+  }
+
+  .combo-content {
+    flex: 1;
+
+    // border: 1px white solid;
+  }
+}
