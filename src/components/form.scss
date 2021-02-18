@@ -1,7 +1,8 @@
 @import "../colors.scss";
 
 $innerPadding: 12px;
-$primaryFontSize: 24px;
+$primaryFontSize: 18px;
+$secondaryFontSize: 16px;
 
 @mixin theme {
   background: rgba($ambient, 0.4);
@@ -9,6 +10,10 @@ $primaryFontSize: 24px;
   border-radius: 24px;
   margin-bottom: 24px;
   color: $text;
+
+  &.shorty {
+    margin-bottom: 12px;
+  }
 }
 
 .input-container {
@@ -24,11 +29,16 @@ $primaryFontSize: 24px;
     background: none;
     border: none;
     outline: none;
-    text-align: right;
     min-width: 0;
 
     font-size: $primaryFontSize;
     color: $text;
+
+    text-indent: 1em;
+
+    &.right {
+      text-align: right;
+    }
   }
 
   .suffix {
@@ -41,8 +51,35 @@ $primaryFontSize: 24px;
   background: rgba($text, 0.1);
   padding: $innerPadding;
 
-  text-transform: uppercase;
   font-size: $primaryFontSize;
+}
+
+.inline-action {
+  text-transform: uppercase;
+  font-weight: bold;
+  opacity: 0.5;
+
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+@media (max-width: 500px) {
+  .input-container {
+    input {
+      font-size: $secondaryFontSize;
+    }
+
+    .suffix {
+      font-size: $secondaryFontSize;
+    }
+  }
+
+  .label {
+    font-size: $secondaryFontSize;
+  }
 }
 
 .th-button {
@@ -55,17 +92,20 @@ $primaryFontSize: 24px;
   cursor: pointer;
   outline: none;
 
-  transition: background-color 0.25s ease, border-color 0.25s ease;
+  transition: background-color 100ms ease-out, border-color 100ms ease-out;
+
+  text-transform: uppercase;
+  font-weight: bold;
 
   &:hover {
-    background: rgba($ambient, 0.7);
-    border-color:rgba($text, 0.0)
+    background: rgba($text, 0.1);
+    border-color: rgba($text, 0.0)
   }
 
   &.full-card {
     margin: auto;
 
-    width: 100%;
-    max-width: 20vw;
+    width: min(100%, 300px);
+    // max-width: 20vw;
   }
 }

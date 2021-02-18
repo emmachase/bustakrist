@@ -1,4 +1,5 @@
-$blobSize: 30vw;
+$blobSize: max(30vw, 30vh);
+$blobISize: min(-30vw, -30vh);
 
 .blobs {
   position: fixed;
@@ -7,6 +8,7 @@ $blobSize: 30vw;
 
   overflow: hidden;
   filter: blur(120px);
+  pointer-events: none;
 }
 
 .blob {
@@ -14,10 +16,10 @@ $blobSize: 30vw;
   
   width: $blobSize;
   height: $blobSize;
-  border-radius: $blobSize / 2;
+  border-radius: $blobSize;
 
-  left: -$blobSize / 2;
-  top: -$blobSize / 2;
+  left: calc(#{$blobISize} / 2);
+  top: calc(#{$blobISize} / 2);
 
   transform-origin: center;
 }
