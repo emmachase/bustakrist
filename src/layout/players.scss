@@ -1,0 +1,52 @@
+@import "../colors.scss";
+
+#players {
+  table {
+    width: 100%;
+    text-align: right;
+    border-collapse: inherit;
+    border-spacing: 0px;
+  }
+  .players-user {
+    text-align: left;
+  }
+  .trans-container {
+    height: 18px;
+    overflow: hidden;
+    color: orange;
+    text-shadow: 0 0 1px orange;
+    animation: booking 1s;
+  }
+  .trans-container .c-win {
+    //TODO: make these transition and look really pretty
+    text-shadow: 0 0 1px green;
+  }
+  .trans-container .c-lose {
+    text-shadow: 0 0 1px red;
+  }
+}
+
+@media (max-width: 1280px) {
+  .players-profit {
+    display: none;
+  }
+}
+
+@keyframes booking {
+  0% {
+    height: 0;
+    text-shadow: 0 0 0 orange;
+    transform: scale(1, 1);
+  }
+  30% {
+    height: 18px;
+  }
+  50% {
+    text-shadow: 0 0 6px orange;
+    transform: scale(1.1, 1.1);
+  }
+  100% {
+    text-shadow: 0 0 1px orange;
+    transform: scale(1, 1);
+  }
+}
