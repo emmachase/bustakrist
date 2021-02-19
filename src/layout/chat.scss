@@ -7,13 +7,19 @@
   flex-direction: column;
   height: 100%;
 
+  .chat-upper {
+    position: relative;
+    width: 100%;
+    min-height: 0;
+    flex: 1;
+  }
+
   .chat-history {
     position: relative;
     display: flex;
     overflow: auto;
     flex-direction: column-reverse;
-
-    flex: 1;
+    height: 100%;
 
     @include card-scroller;
   }

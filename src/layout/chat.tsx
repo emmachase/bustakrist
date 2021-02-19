@@ -21,6 +21,20 @@ export const Message: FC<{
   );
 };
 
+export const FriendFeedIcon: FC<{
+  friend: string
+  active: boolean
+  onClick: (friend: string) => void
+}> = ({ friend, active, onClick }) => {
+  return (
+    <div
+      className={clazz("feed friend-feed", active && "active")}
+      style={{ backgroundColor: getColor(friend) }}
+      onClick={() => onClick(friend)}
+    >{friend[0]}</div>
+  );
+};
+
 function hashCode(str: string): number {
   let hash = 0;
   if (str.length == 0) {
@@ -93,17 +107,19 @@ export function ChatView() {
 
   return (
     <div className="chat-view">
-      <div className="chat-history" ref={containerRef}>
-        <div className="chat-hwrap">
-          { feed.map((msg, idx) =>
-            <Message key={+msg.timestamp + "-" + msg.from + idx} msg={msg} />,
-          )}
-          { selectedFeed !== GLOBAL_FEED_BRAND && feed.length === 0 &&
-            <div className="chat-hint">
-              You have no message history with <strong>{
-                selectedFeed.toString()}</strong>, say Hello!
-            </div>
-          }
+      <div className="chat-upper">
+        <div className="chat-history" ref={containerRef}>
+          <div className="chat-hwrap">
+            { feed.map((msg, idx) =>
+              <Message key={+msg.timestamp + "-" + msg.from + idx} msg={msg} />,
+            )}
+            { selectedFeed !== GLOBAL_FEED_BRAND && feed.length === 0 &&
+              <div className="chat-hint">
+                You have no message history with <strong>{
+                  selectedFeed.toString()}</strong>, say Hello!
+              </div>
+            }
+          </div>
         </div>
         <div className="chat-feeds">
           <GlobalOutlined
@@ -113,12 +129,10 @@ export function ChatView() {
           { allFeeds.length ? <Divider margin={8} /> : null }
           <div className="friend-feeds">
             { allFeeds.map((friend, idx) =>
-              <div
-                key={idx}
-                className={clazz("feed friend-feed", selectedFeed === friend && "active")}
-                style={{ backgroundColor: getColor(friend) }}
-                onClick={() => selectFeed(friend)}
-              >{friend[0]}</div>,
+              <FriendFeedIcon key={idx} friend={friend}
+                active={selectedFeed === friend}
+                onClick={selectFeed}
+              />,
             )}
           </div>
         </div>
