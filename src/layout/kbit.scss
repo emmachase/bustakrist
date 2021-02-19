@@ -17,8 +17,13 @@ $radius: 45px;
 
   .header-info {
     font-weight: bold;
-    margin: 0 0 0 1.5rem;
+    margin-left: 1.5em;
     text-transform: uppercase;
+  }
+
+  .header-out {
+    margin-left: 0.5em;
+    cursor: pointer;
   }
 }
 
@@ -63,6 +68,10 @@ $radius: 45px;
 }
 
 @media (max-width: 850px) {
+  .kbit-header {
+    padding: 0 $gutter/2;
+  }
+
   .kbit-layout {
     width: calc(100% - #{$gutter*3/2});
     height: calc(100% - #{$gutter*5/2});

@@ -42,6 +42,7 @@ $secondaryFontSize: 16px;
   }
 
   .suffix {
+    user-select: none;
     font-size: $primaryFontSize;
     font-weight: 900;
   }

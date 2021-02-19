@@ -1,18 +1,22 @@
-import { CSSProperties, FC } from "react";
+import { CSSProperties, FC, MutableRefObject, useRef, useState } from "react";
 import { BustChart } from "../components/chart";
 import "./kbit.scss";
 import { clazz } from "../util/class";
 import { useTranslation } from "react-i18next";
 import { BetUI } from "./betui";
 import { AuthUI } from "./auth";
-import { useSelector } from "react-redux";
-import { RootState } from "../store/reducers/RootReducer";
 import { ShortHistory } from "../components/history";
 import { Spacer } from "./flex";
 import { useKState } from "../util/types";
 import { ComboView } from "./combo";
 import { PlayerList } from "./players";
+import { ChatView } from "./chat";
 import useBreakpoint from "use-breakpoint";
+import { LogoutOutlined } from "@ant-design/icons";
+import { Tooltip } from "../components/pop";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../store/actions/UserActions";
+import { getConnection } from "../meta/connection";
 
 const Card: FC<{
   area?: string,
@@ -42,13 +46,34 @@ const Card: FC<{
 };
 
 export function KHeader() {
+  const [t] = useTranslation();
+  const [logout, setLogout] = useState<HTMLSpanElement | null>();
   const user = useKState(s => s.user);
+  const dispatch = useDispatch();
 
-  const profile = user ?
+  const onLogout = () => {
+    localStorage.removeItem("reauth");
+    dispatch(logoutUser());
+    getConnection().logout();
+  };
+
+  const profile = user.name ?
     <>
       <span className="header-info">{user.name}</span>
-      <span className="header-info">{((user.bal ?? 0)/100).toFixed(2)}KST</span>
-    </>: null;
+      <span className="header-info">{
+        ((user.bal ?? 0)/100).toFixed(2)}{
+        t("game.currencyShortname")}
+      </span>
+      <span className="header-out" ref={r => setLogout(r)} onClick={onLogout}>
+        <LogoutOutlined />
+      </span>
+      <Tooltip
+        refEl={logout as HTMLElement}
+        config={{ delayShow: 500, placement: "bottom-end" }}
+      >
+        {t("auth.logout")}
+      </Tooltip>
+    </> : null;
 
   return (
     <div className="kbit-header">
@@ -91,7 +116,9 @@ export function KBitLayout() {
       </Card>
       <Card area="multi">
         <ComboView>
-          <ComboView.Tab label={t("chat.tab")}>A</ComboView.Tab>
+          <ComboView.Tab label={t("chat.tab")}>
+            <ChatView />
+          </ComboView.Tab>
           <ComboView.Tab label={t("history.tab")}>B</ComboView.Tab>
           { breakpt.breakpoint === "mobile" ?
             <ComboView.Tab label={t("players.tab")}>

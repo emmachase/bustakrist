@@ -1,5 +1,6 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { clazz } from "../util/class";
+import { Tooltip } from "./pop";
 import "./form.scss";
 
 function numberInputOnly(e: React.KeyboardEvent<HTMLInputElement>): boolean {
@@ -12,12 +13,15 @@ function numberInputOnly(e: React.KeyboardEvent<HTMLInputElement>): boolean {
 }
 
 export const NumericalInput: FC<{
-  label: string,
+  label: string
   suffix?: string
+  suffixTooltip?: string
   reformatter?: (value: string) => string
   onChange?: (value: string) => void
   value?: string
 }> = (props) => {
+  const [suffixRef, setSuffix] = useState<HTMLElement | null>();
+
   return (
     <div className="input-container">
       <div className="label">
@@ -37,7 +41,15 @@ export const NumericalInput: FC<{
           }
         }}
       />
-      <div className="suffix">{props.suffix}</div>
+      <div className="suffix" ref={r => setSuffix(r)}>{props.suffix}</div>
+      { props.suffixTooltip
+      ? <Tooltip
+        refEl={suffixRef as HTMLElement}
+        config={{ delayShow: 300, placement: "top" }}
+      >
+        {props.suffixTooltip}
+      </Tooltip> : null
+      }
     </div>
   );
 };
@@ -46,8 +58,15 @@ export const TextInput: FC<{
   label: string
   password?: boolean
   onChange?: (value: string) => void
+  onFinish?: () => void
   value?: string
 }> = (props) => {
+  const checkKeys = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      props.onFinish?.();
+    }
+  };
+
   return (
     <div className="input-container">
       <div className="label">
@@ -56,6 +75,7 @@ export const TextInput: FC<{
       <input
         type={props.password ? "password" : "text"}
         value={props.value}
+        onKeyDown={checkKeys}
         onChange={(e) => props.onChange?.(e.target.value)}
       />
     </div>

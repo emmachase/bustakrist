@@ -52,8 +52,8 @@ function Blob() {
 /**
  * Provides a blurred blobby background.
  */
-export default function Blobs() {
-  const [blobs, setBlobs] = useState(() => new Array(10).fill(0));
+export default function Blobs(props: { count: number }) {
+  const blobs = useMemo(() => new Array(props.count).fill(0), [props.count]);
 
   return (
     <div>

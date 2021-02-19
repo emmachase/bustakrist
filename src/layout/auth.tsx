@@ -5,7 +5,7 @@ import { KButton, NumericalInput, TextInput } from "../components/form";
 import { getConnection } from "../meta/connection";
 import { AuthResponse, BalanceResponse } from "../meta/networkInterfaces";
 import { RequestCode } from "../meta/transportCodes";
-import { authUser } from "../store/actions/UserActions";
+import { addFriends, authUser } from "../store/actions/UserActions";
 import { Flexor, Spacer } from "./flex";
 
 export function AuthUI() {
@@ -26,14 +26,17 @@ export function AuthUI() {
 
     localStorage.setItem("reauth", result.token);
     dispatch(authUser(result.user, result.bal));
+    dispatch(addFriends(result.friends));
   };
 
   return (
     <Flexor fill direction="column">
       { mode
         ? <>
-          <TextInput label={t("auth.username")} value={formName} onChange={setName}/>
-          <TextInput label={t("auth.password")} value={formPass} onChange={setPass} password/>
+          <TextInput label={t("auth.username")} value={formName}
+            onChange={setName} onFinish={performAuth}/>
+          <TextInput label={t("auth.password")} value={formPass}
+            onChange={setPass} onFinish={performAuth} password/>
           <Spacer/>
           <KButton shorty onClick={() => performAuth()}>
             {mode === RequestCode.LOGIN ? t("auth.login") : t("auth.register")}

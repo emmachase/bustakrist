@@ -8,7 +8,9 @@ export function BetUI() {
 
   return (
     <Flexor fill direction="column">
-      <NumericalInput label={t("bet.betAmt")} suffix="KST"/>
+      <NumericalInput label={t("bet.betAmt")}
+        suffix={t("game.currencyShortname")}
+        suffixTooltip={t("game.currency")}/>
       <NumericalInput label={t("bet.betPayout")} suffix="&times;"/>
 
       <Spacer/>

@@ -7,7 +7,9 @@ export const receiveMessage = createAction(constants.RECEIVE_MESSAGE,
     (from: string, message: string, timestamp: Date):
     ReceiveMessagePayload => ({ from, message, timestamp }))();
 
-export interface ReceievePrivateMessagePayload { from: string, message: string, timestamp: Date }
+export interface ReceievePrivateMessagePayload {
+  from: string, message: string, timestamp: Date, feed: string
+}
 export const receievePrivateMessage = createAction(constants.RECEIVE_PRIVATE_MESSAGE,
-    (from: string, message: string, timestamp: Date):
-    ReceievePrivateMessagePayload => ({ from, message, timestamp }))();
+    (from: string, message: string, timestamp: Date, feed: string):
+    ReceievePrivateMessagePayload => ({ from, message, timestamp, feed }))();

@@ -16,6 +16,7 @@ export const ComboView: FC<{
       ?.filter(x => x.type === ComboView.Tab) ?? [];
 
   const [activeTab, setTab] = useState(0);
+  if (activeTab >= tabs.length) setTab(tabs.length - 1);
 
   return (
     <div className="combo-view">
@@ -30,7 +31,7 @@ export const ComboView: FC<{
           </div>) }
       </div>
       <div className="combo-content">
-        { tabs[activeTab].props.children }
+        { tabs[activeTab]?.props.children }
       </div>
     </div>
   );

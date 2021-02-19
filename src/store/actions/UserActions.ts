@@ -13,3 +13,7 @@ export const logoutUser = createAction(constants.LOGOUT_USER,
 export interface UpdateBalancePayload { bal: number }
 export const updateBalance = createAction(constants.UPDATE_BALANCE,
     (bal: number): UpdateBalancePayload => ({ bal }))();
+
+export interface AddFriendsPayload { friends: string[] }
+export const addFriends = createAction(constants.ADD_FRIENDS,
+    (friends: string[]): AddFriendsPayload => ({ friends }))();

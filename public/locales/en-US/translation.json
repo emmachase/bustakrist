@@ -7,16 +7,20 @@
   "game": {
     "connecting": "Connecting to Game Server...",
     "nextGame": "Next Game Will Start in {{time}}",
-    "busted": "Busted At"
+    "busted": "Busted At",
+    "currencyShortname": "KST",
+    "currency": "Krist"
   },
   "auth": {
     "login": "Login",
+    "logout": "Logout",
     "register": "Register",
     "username": "Name",
     "password": "Pass"
   },
   "chat": {
-    "tab": "Chat"
+    "tab": "Chat",
+    "inputPlaceholder": "Type a message here..."
   },
   "history": {
     "tab": "History"

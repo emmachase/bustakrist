@@ -1,0 +1,134 @@
+@import "../colors.scss";
+@import "../mixins.scss";
+
+.chat-view {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  height: 100%;
+
+  .chat-history {
+    display: flex; 
+    overflow: auto; 
+    flex-direction: column-reverse;
+
+    flex: 1;
+
+    @include card-scroller;
+  }
+
+  .chat-feeds {
+    position: absolute;
+    right: 20px;
+    top: 0;
+
+    font-size: 36px;
+
+    .friend-feed {
+      height: 36px;
+      width: 36px;
+      text-align: center;
+      line-height: 36px;
+      font-size: 30px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    .feed {
+      position: relative;
+      cursor: pointer;
+      outline: none;
+
+      &.active {
+        cursor: default;
+
+        &::after {
+          content: "";
+          position: absolute;
+          width: 4px;
+          height: 70%;
+          right: -8px;
+          top: 15%;
+          border-radius: 8px;
+          background: $text;
+          box-sizing: border-box;
+        }
+      }
+    }
+  }
+  
+  .chat-message {
+    margin: 10px 0;
+
+    .msg-time {
+      margin-right: 0.75em;
+      color: rgba($text, 0.2);
+    }
+
+    .msg-author {
+      font-weight: bold;
+    }
+
+    .msg-content {
+    }
+  }
+
+  .chat-hint {
+    margin: 20px 0;
+    color: rgba($text, 0.4);
+  }
+  
+  .chat-input {
+    display: flex;
+    position: relative;
+
+    input {
+      flex: 1;
+      background: rgba($ambient, 0.4);
+      border: 1px rgba($subtle, 0.1) solid;
+      font-size: 18px;
+      padding: 8px;
+      padding-right: 40px;
+      min-width: 0;
+      border-radius: 8px;
+      outline: none;
+      color: rgba($text, 0.7);
+
+      &:focus {
+        border: 1px rgba($subtle, 0.2) solid;
+      }
+
+      &::placeholder {
+        font-style: italic;
+        opacity: 0.5;
+      }
+    }
+
+    .send {
+      position: absolute;
+      height: 100%;
+      right: 0;
+      padding: 0 12px;
+
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      &:hover, &:active {
+        color: rgba($text, 0.9);
+      }
+    }
+  }
+}
+
+/*
+
+::-webkit-scrollbar — the entire scrollbar.
+::-webkit-scrollbar-button — the buttons on the scrollbar (arrows pointing upwards and downwards).
+::-webkit-scrollbar-thumb — the draggable scrolling handle.
+::-webkit-scrollbar-track — the track (progress bar) of the scrollbar.
+::-webkit-scrollbar-track-piece — the part of the track (progress bar) not covered by the handle.
+::-webkit-scrollbar-corner — the bottom corner of the scrollbar, where both horizontal and vertical scrollbars meet.
+::-webkit-resizer — the draggable resizing handle that appears at the bottom corner of some elements.
+
+*/

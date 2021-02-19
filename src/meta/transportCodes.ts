@@ -1,6 +1,9 @@
+/* eslint-disable no-unused-vars */
+
 export enum RequestCode {
   PING,
   LOGIN,
+  LOGOUT,
   REGISTER,
   REAUTH,
   GETBAL,

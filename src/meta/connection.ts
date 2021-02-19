@@ -1,6 +1,8 @@
 import { store } from "../App";
+import { receievePrivateMessage, receiveMessage } from "../store/actions/ChatActions";
 import { bustGame, startGame } from "../store/actions/GameActions";
-import { authUser, logoutUser } from "../store/actions/UserActions";
+import { addFriends, authUser, logoutUser } from "../store/actions/UserActions";
+import { MINUTE, SECOND } from "../util/time";
 import { AuthResponse, BalanceResponse } from "./networkInterfaces";
 import { RequestCode, UpdateCode } from "./transportCodes";
 
@@ -32,6 +34,7 @@ export class Connection {
         const res = await this.reauth(token);
         if (res.user) {
           store.dispatch(authUser(res.user, res.bal));
+          store.dispatch(addFriends(res.friends));
         }
       }
     };
@@ -41,7 +44,7 @@ export class Connection {
       console.warn(`Lost WS connection, retrying in ${this.connectDebounce}ms...`);
       setTimeout(() => {
         console.warn("Reconnecting...");
-        this.connectDebounce = this.connectDebounce*2 + 100;
+        this.connectDebounce = Math.min(this.connectDebounce*2 + 100, 10*SECOND);
         this.tryConnection();
       }, this.connectDebounce);
     };
@@ -82,6 +85,24 @@ export class Connection {
         store.dispatch(bustGame(msg.data.bust, msg.data.hash));
         break;
 
+      case UpdateCode.MESSAGE:
+        if (msg.data.private) {
+          store.dispatch(receievePrivateMessage(
+              msg.data.from,
+              msg.data.message,
+              new Date(msg.data.timestamp),
+              msg.data.feed,
+          ));
+        } else {
+          store.dispatch(receiveMessage(
+              msg.data.from,
+              msg.data.message,
+              new Date(msg.data.timestamp),
+          ));
+        }
+
+        break;
+
       case UpdateCode.REPLY:
         const handlerIdx = this.activeRequests.findIndex(r => r.id === msg.id);
         if (handlerIdx !== -1) {
@@ -105,7 +126,7 @@ export class Connection {
     }
   }
 
-  public makeRequest<R>(code: RequestCode, data: unknown): Promise<R> {
+  public makeRequest<R>(code: RequestCode, data?: unknown): Promise<R> {
     return new Promise((resolve, reject) => {
       const id = this.genID();
       this.activeRequests.push({
@@ -135,6 +156,19 @@ export class Connection {
   public reauth(token: string) {
     return this.makeRequest<AuthResponse>(RequestCode.REAUTH, {
       t: token,
+    });
+  }
+
+  public logout() {
+    return this.makeRequest(RequestCode.LOGOUT);
+  }
+
+
+  // Social
+  public sendMessage(msg: string, to?: string) {
+    console.log("to", to);
+    return this.makeRequest(RequestCode.SENDMSG, {
+      msg, to,
     });
   }
 }
