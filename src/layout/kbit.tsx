@@ -93,7 +93,6 @@ export function KBitLayout() {
   const breakpt = useBreakpoint(BREAKPOINTS, "desktop");
 
   const username = useKState(s => s.user.name);
-  console.log("uname", username);
 
   return (
     <div className="kbit-layout">

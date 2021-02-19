@@ -116,7 +116,6 @@ export const BustChart: FC<{
 
     const state = store.getState();
     const timeDiff = (performance.now() + perfOff - state.game.start - state.game.tdiff)/1000;
-    // console.log(timeDiff);
 
     const ctx = canvas.current.getContext("2d")!;
 

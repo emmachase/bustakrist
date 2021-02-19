@@ -82,6 +82,10 @@ export function ChatView() {
     }
   };
 
+  if (!user.name && currText.length) {
+    setText("");
+  }
+
   return (
     <div className="chat-view">
       <div className="chat-history" ref={containerRef}>
@@ -99,13 +103,18 @@ export function ChatView() {
       <div className="chat-input">
         <input
           type="text"
-          placeholder={t("chat.inputPlaceholder")}
+          placeholder={user.name ? t("chat.inputPlaceholder") : t("chat.loginPlaceholder")}
           disabled={!user.name}
           value={currText}
           onChange={e => setText(e.target.value)}
           onKeyDown={checkKeys}
         />
-        <SendOutlined onClick={sendMessage} className="send" style={{ fontSize: "18px" }} />
+        <SendOutlined
+          disabled={!user.name}
+          onClick={sendMessage}
+          className="send"
+          style={{ fontSize: "18px" }}
+        />
       </div>
       <div className="chat-feeds">
         <GlobalOutlined

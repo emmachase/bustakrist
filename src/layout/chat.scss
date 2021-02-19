@@ -8,8 +8,8 @@
   height: 100%;
 
   .chat-history {
-    display: flex; 
-    overflow: auto; 
+    display: flex;
+    overflow: auto;
     flex-direction: column-reverse;
 
     flex: 1;
@@ -56,7 +56,7 @@
       }
     }
   }
-  
+
   .chat-message {
     margin: 10px 0;
 
@@ -77,7 +77,7 @@
     margin: 20px 0;
     color: rgba($text, 0.4);
   }
-  
+
   .chat-input {
     display: flex;
     position: relative;
@@ -114,8 +114,14 @@
       align-items: center;
       cursor: pointer;
 
+      outline: none;
       &:hover, &:active {
         color: rgba($text, 0.9);
+      }
+
+      &[disabled] {
+        cursor: default;
+        color: rgba($text, 0.2);
       }
     }
   }

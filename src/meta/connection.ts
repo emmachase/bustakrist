@@ -107,7 +107,6 @@ export class Connection {
         const handlerIdx = this.activeRequests.findIndex(r => r.id === msg.id);
         if (handlerIdx !== -1) {
           const handler = this.activeRequests[handlerIdx];
-          console.log(handler, msg);
           if (msg.ok) {
             handler.resolve(msg.data);
           } else {
@@ -166,7 +165,6 @@ export class Connection {
 
   // Social
   public sendMessage(msg: string, to?: string) {
-    console.log("to", to);
     return this.makeRequest(RequestCode.SENDMSG, {
       msg, to,
     });
