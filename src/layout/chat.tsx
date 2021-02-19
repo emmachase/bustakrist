@@ -58,8 +58,7 @@ export function ChatView() {
     selectFeed(GLOBAL_FEED_BRAND);
   }
 
-  let allFeeds = Array.from(new Set(Object.keys(messageStore.dms).concat(user.friends)));
-  allFeeds = allFeeds.concat(allFeeds).concat(allFeeds).concat(allFeeds);
+  const allFeeds = Array.from(new Set(Object.keys(messageStore.dms).concat(user.friends)));
 
   const containerRef = useRef() as MutableRefObject<HTMLDivElement>;
   if (containerRef.current) {
