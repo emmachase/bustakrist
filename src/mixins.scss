@@ -14,3 +14,13 @@
     width: 8px;
   }
 }
+
+@mixin no-scroller {
+  scrollbar-width: none;
+  scrollbar-color: transparent;
+
+  &::-webkit-scrollbar {
+    background: none;
+    width: 0;
+  }
+}

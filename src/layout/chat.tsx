@@ -1,4 +1,4 @@
-import { FC, MutableRefObject, useRef, useState } from "react";
+import { FC, MutableRefObject, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ChatMessage } from "../store/reducers/ChatReducer";
 import { useKState } from "../util/types";
@@ -42,9 +42,10 @@ function getColor(name: string): string {
   return color.asRGB().toString() + "88";
 }
 
-const GLOBAL_FEED_BRAND = {};
 
 export function ChatView() {
+  const GLOBAL_FEED_BRAND = useMemo(() => ({}), []);
+
   const [t] = useTranslation();
   const user = useKState(s => s.user);
   const messageStore = useKState(s => s.chat);
@@ -53,7 +54,12 @@ export function ChatView() {
     ? messageStore.chat
     : messageStore.dms[selectedFeed as string]) ?? [];
 
-  const allFeeds = Array.from(new Set(Object.keys(messageStore.dms).concat(user.friends)));
+  if (typeof selectedFeed === "object" && selectedFeed !== GLOBAL_FEED_BRAND) {
+    selectFeed(GLOBAL_FEED_BRAND);
+  }
+
+  let allFeeds = Array.from(new Set(Object.keys(messageStore.dms).concat(user.friends)));
+  allFeeds = allFeeds.concat(allFeeds).concat(allFeeds).concat(allFeeds);
 
   const containerRef = useRef() as MutableRefObject<HTMLDivElement>;
   if (containerRef.current) {
@@ -95,9 +101,27 @@ export function ChatView() {
           )}
           { selectedFeed !== GLOBAL_FEED_BRAND && feed.length === 0 &&
             <div className="chat-hint">
-              You have no message history with <strong>{selectedFeed}</strong>, say Hello!
+              You have no message history with <strong>{
+                selectedFeed.toString()}</strong>, say Hello!
             </div>
           }
+        </div>
+        <div className="chat-feeds">
+          <GlobalOutlined
+            className={clazz("feed", selectedFeed === GLOBAL_FEED_BRAND && "active")}
+            onClick={() => selectFeed(GLOBAL_FEED_BRAND)}
+          />
+          { allFeeds.length ? <Divider margin={8} /> : null }
+          <div className="friend-feeds">
+            { allFeeds.map((friend, idx) =>
+              <div
+                key={idx}
+                className={clazz("feed friend-feed", selectedFeed === friend && "active")}
+                style={{ backgroundColor: getColor(friend) }}
+                onClick={() => selectFeed(friend)}
+              >{friend[0]}</div>,
+            )}
+          </div>
         </div>
       </div>
       <div className="chat-input">
@@ -115,21 +139,6 @@ export function ChatView() {
           className="send"
           style={{ fontSize: "18px" }}
         />
-      </div>
-      <div className="chat-feeds">
-        <GlobalOutlined
-          className={clazz("feed", selectedFeed === GLOBAL_FEED_BRAND && "active")}
-          onClick={() => selectFeed(GLOBAL_FEED_BRAND)}
-        />
-        { allFeeds.length ? <Divider margin={8} /> : null }
-        { allFeeds.map((friend, idx) =>
-          <div
-            key={idx}
-            className={clazz("feed friend-feed", selectedFeed === friend && "active")}
-            style={{ backgroundColor: getColor(friend) }}
-            onClick={() => selectFeed(friend)}
-          >{friend[0]}</div>,
-        )}
       </div>
     </div>
   );
