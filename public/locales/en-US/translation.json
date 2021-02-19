@@ -27,6 +27,10 @@
     "tab": "History"
   },
   "players": {
-    "tab": "Players"
+    "tab": "Players",
+    "user": "User",
+    "at": "@",
+    "bet": "Bet",
+    "profit": "Profit"
   }
 }
