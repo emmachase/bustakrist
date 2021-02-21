@@ -12,13 +12,14 @@ export function useElementSize(target: HTMLElement | undefined, def?: {w: number
   useEffect(() => {
     if (!target) return;
 
-    const observer = new ResizeObserver(() => {
+    const resizer = () => {
       setSize({
         w: target.clientWidth,
         h: target.clientHeight,
       });
-    });
+    };
 
+    const observer = new ResizeObserver(resizer);
     observer.observe(target);
 
     return () => {

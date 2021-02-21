@@ -4,25 +4,18 @@ import { useSelector, useStore } from "react-redux";
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
 import useAnimationFrame from "use-animation-frame";
 import { useElementSize } from "../hooks/resize";
+import { getTimeDiff, usePerfOff } from "../hooks/time";
 import { getConnection } from "../meta/connection";
 import { RootState } from "../store/reducers/RootReducer";
 import { getMajorInterval } from "../util/axis";
 import { Color, HSVColor, lerpColorsRGB } from "../util/color";
 import { clamp } from "../util/math";
+import { inverseScoreFunction, scoreFunction } from "../util/score";
 
 const smoothness = 4;
 
 const glowCutoff = 100;
 const nyanCutoff = 400;
-
-const TIME_DIVISOR = 10;
-export function scoreFunction(time: number): number {
-  return 2**(time / TIME_DIVISOR);
-}
-
-export function inverseScoreFunction(score: number): number {
-  return Math.log2(score)*TIME_DIVISOR;
-}
 
 type LinearScale = ReturnType<typeof linearScale>;
 function linearScale() {
@@ -109,13 +102,13 @@ export const BustChart: FC<{
 
   const bustEffectTime = useMemo(() => performance.now(), [bust]);
 
-  const perfOff = useMemo(() => +new Date() - performance.now(), []);
+  const perfOff = usePerfOff();
   useAnimationFrame((e) => {
     if (!canvas.current) return;
     if (!width || !height) return;
 
     const state = store.getState();
-    const timeDiff = (performance.now() + perfOff - state.game.start - state.game.tdiff)/1000;
+    const timeDiff = getTimeDiff(perfOff, state.game.start, state.game.tdiff);
 
     const ctx = canvas.current.getContext("2d")!;
 
@@ -124,7 +117,7 @@ export const BustChart: FC<{
 
     const currentScore = (state.game.bust/100) || scoreFunction(timeDiff);
     const aTime = inverseScoreFunction(currentScore);
-    if (aTime > x.inMax()) {
+    if (aTime > x.inMax() && currentScore !== Infinity) {
       x.domain([0, aTime]);
       y.domain([1, currentScore]);
     }

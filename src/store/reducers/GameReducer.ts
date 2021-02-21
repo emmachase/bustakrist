@@ -1,4 +1,5 @@
 import { createReducer, ActionType, Reducer } from "typesafe-actions";
+import { playSound } from "../../audio/AudioManager";
 import { bustGame, RoundHistory, startGame } from "../actions/GameActions";
 
 export interface State {

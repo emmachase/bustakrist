@@ -1,5 +1,5 @@
 import { FC, MutableRefObject, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import { ChatMessage } from "../store/reducers/ChatReducer";
 import { useKState } from "../util/types";
 import { SendOutlined, GlobalOutlined } from "@ant-design/icons";
@@ -8,6 +8,7 @@ import { Divider } from "./misc";
 import "./chat.scss";
 import { HSVColor } from "../util/color";
 import { clazz } from "../util/class";
+import { Tooltip } from "../components/pop";
 
 export const Message: FC<{
   msg: ChatMessage
@@ -26,12 +27,21 @@ export const FriendFeedIcon: FC<{
   active: boolean
   onClick: (friend: string) => void
 }> = ({ friend, active, onClick }) => {
+  const [refEl, setRef] = useState<HTMLElement | null>();
+
   return (
-    <div
-      className={clazz("feed friend-feed", active && "active")}
-      style={{ backgroundColor: getColor(friend) }}
-      onClick={() => onClick(friend)}
-    >{friend[0]}</div>
+    <>
+      <div
+        className={clazz("feed friend-feed", active && "active")}
+        style={{ backgroundColor: getColor(friend) }}
+        onClick={() => onClick(friend)}
+        ref={r => setRef(r)}
+      >{friend[0]}</div>
+      <Tooltip 
+        refEl={refEl as HTMLElement}
+        config={{ placement: "left" }}
+      >{friend}</Tooltip>
+    </>
   );
 };
 
@@ -53,7 +63,7 @@ function hashCode(str: string): number {
 function getColor(name: string): string {
   const code = hashCode(name);
   const color = new HSVColor((code/1000) % 1, 0.8, 0.6);
-  return color.asRGB().toString() + "88";
+  return color.asRGB().toString();
 }
 
 
@@ -115,8 +125,10 @@ export function ChatView() {
             )}
             { selectedFeed !== GLOBAL_FEED_BRAND && feed.length === 0 &&
               <div className="chat-hint">
-                You have no message history with <strong>{
-                  selectedFeed.toString()}</strong>, say Hello!
+                <Trans i18nKey="chat.noHistoryHint">
+                  You have no message history with <strong>{{
+                    name: selectedFeed.toString() }}</strong>, say Hello!
+                </Trans>
               </div>
             }
           </div>
@@ -145,6 +157,7 @@ export function ChatView() {
           value={currText}
           onChange={e => setText(e.target.value)}
           onKeyDown={checkKeys}
+          maxLength={200}
         />
         <SendOutlined
           disabled={!user.name}

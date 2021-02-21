@@ -12,13 +12,13 @@ import { ComboView } from "./combo";
 import { PlayerList } from "./players";
 import { ChatView } from "./chat";
 import useBreakpoint from "use-breakpoint";
-import { LogoutOutlined } from "@ant-design/icons";
+import { LogoutOutlined, WechatOutlined } from "@ant-design/icons";
 import { Tooltip } from "../components/pop";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../store/actions/UserActions";
 import { getConnection } from "../meta/connection";
 
-const Card: FC<{
+export const Card: FC<{
   area?: string,
   row?: number,
   col?: number,
@@ -45,7 +45,9 @@ const Card: FC<{
   );
 };
 
-export function KHeader() {
+export const KHeader: FC<{
+  onChatOnly: () => void
+}> = (props) => {
   const [t] = useTranslation();
   const [logout, setLogout] = useState<HTMLSpanElement | null>();
   const user = useKState(s => s.user);
@@ -79,11 +81,12 @@ export function KHeader() {
     <div className="kbit-header">
       <img src="/krist.webp"/>
       <h1>BustAKrist</h1>
+      <WechatOutlined style={{ marginLeft: 20 }} onClick={() => props.onChatOnly?.()} />
       <Spacer/>
       {profile}
     </div>
   );
-}
+};
 
 const BREAKPOINTS = { mobile: 0, desktop: 1101 };
 
@@ -110,7 +113,7 @@ export function KBitLayout() {
             : <BetUI />
         }
       </Card>
-      <Card id="players" area="play">
+      <Card className="players-righttab" area="play">
         <PlayerList />
       </Card>
       <Card area="multi">

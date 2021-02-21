@@ -1,6 +1,6 @@
 @import "../colors.scss";
 
-#players {
+.players-container {
   table {
     width: 100%;
     text-align: right;
@@ -17,11 +17,13 @@
     text-shadow: 0 0 1px orange;
     animation: booking 1s;
   }
-  .trans-container .c-win {
+  .c-win .trans-container {
     //TODO: make these transition and look really pretty
+    color: green;
     text-shadow: 0 0 1px green;
   }
-  .trans-container .c-lose {
+  .c-lose .trans-container {
+    color: red;
     text-shadow: 0 0 1px red;
   }
 }

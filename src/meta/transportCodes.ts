@@ -7,7 +7,9 @@ export enum RequestCode {
   REGISTER,
   REAUTH,
   GETBAL,
-  SENDMSG
+  SENDMSG,
+  COMMIT_WAGER,
+  PULLOUT_WAGER,
 }
 
 export enum UpdateCode {
@@ -15,7 +17,12 @@ export enum UpdateCode {
   REPLY,
   MESSAGE,
   GAME_STARTING,
-  BUSTED
+  BUSTED,
+  UPDATE_PLAYING,
+  ADD_PLAYER,
+  ADD_ALL_PLAYERS,
+  PLAYER_CASHEDOUT,
+  UPDATE_BALANCE,
 }
 
 export enum ErrorCode {
@@ -23,7 +30,8 @@ export enum ErrorCode {
   MALFORMED,
   UNKNOWN_TYPE,
   INVALID_DATA,
-  UNAUTHORIZED
+  UNAUTHORIZED,
+  UNFULFILLABLE,
 }
 
 export enum ErrorDetail {
@@ -32,5 +40,8 @@ export enum ErrorDetail {
   NO_TYPE,
   USERNAME_TAKEN,
   NOT_LOGGED_IN,
-  INVALID_CREDENTIALS
+  INVALID_CREDENTIALS,
+  LOW_BALANCE,
+  NOT_PLAYING,
+  ALREADY_PLAYING,
 }

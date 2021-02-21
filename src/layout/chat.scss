@@ -38,6 +38,10 @@
 
     @include no-scroller;
 
+    .tooltip-container {
+      font-size: 16px;
+    }
+
     .friend-feed {
       height: 36px;
       width: 36px;
@@ -53,6 +57,7 @@
       cursor: pointer;
       outline: none;
 
+
       &.active {
         cursor: default;
 
@@ -64,7 +69,7 @@
           right: -8px;
           top: 15%;
           border-radius: 8px;
-          background: $text;
+          background: rgba($text, 0.8);
           box-sizing: border-box;
         }
       }
@@ -84,6 +89,7 @@
     }
 
     .msg-content {
+      word-break: break-all;
     }
   }
 

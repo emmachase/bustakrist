@@ -2,7 +2,9 @@
   "bet": {
     "betAction": "Bet",
     "betAmt": "Bet",
-    "betPayout": "Payout"
+    "betPayout": "Payout",
+    "cancel": "Cancel",
+    "pullout": "Pullout"
   },
   "game": {
     "connecting": "Connecting to Game Server...",
@@ -21,7 +23,8 @@
   "chat": {
     "tab": "Chat",
     "inputPlaceholder": "Type a message here...",
-    "loginPlaceholder": "Login to send a message..."
+    "loginPlaceholder": "Login to send a message...",
+    "noHistoryHint": "You have no message history with <1>{{name}}</1>, say Hello!"
   },
   "history": {
     "tab": "History"
@@ -32,5 +35,8 @@
     "at": "@",
     "bet": "Bet",
     "profit": "Profit"
+  },
+  "audio": {
+    "songBy": "by {{artist}}"
   }
 }

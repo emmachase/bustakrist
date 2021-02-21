@@ -31,7 +31,7 @@ export function ShortHistory() {
               opacity: 1 - idxAlpha**1.5,
             }}
             key={idx}>
-            {(b.bust/100).toFixed(2)}x
+            {(b.bust/100).toFixed(2)}×
           </div>
         );
       })}

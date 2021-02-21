@@ -1,12 +1,17 @@
 import { store } from "../App";
 import { receievePrivateMessage, receiveMessage } from "../store/actions/ChatActions";
 import { bustGame, startGame } from "../store/actions/GameActions";
-import { addFriends, authUser, logoutUser } from "../store/actions/UserActions";
+import { clearPlayerlist, playerCashedout, updatePlaying,
+  wagerAdd, wagerAddBulk } from "../store/actions/PlayersActions";
+import { addFriends, authUser, logoutUser, updateBalance } from "../store/actions/UserActions";
+import { Subject } from "../util/Subject";
 import { MINUTE, SECOND } from "../util/time";
 import { AuthResponse, BalanceResponse } from "./networkInterfaces";
 import { RequestCode, UpdateCode } from "./transportCodes";
 
 let activeConnection: Connection;
+
+export const GameStream = new Subject<{ start: number }>();
 
 export class Connection {
   private ws!: WebSocket;
@@ -78,11 +83,20 @@ export class Connection {
         break;
 
       case UpdateCode.GAME_STARTING:
-        store.dispatch(startGame(+new Date() - msg.data.now, msg.data.start));
+        const adjustment = +new Date() - msg.data.now;
+        store.dispatch(startGame(adjustment, msg.data.start));
+        store.dispatch(updateBalance(msg.data.newBal));
+        store.dispatch(clearPlayerlist());
+        setTimeout(() => {
+          GameStream.next({
+            start: msg.data.start + adjustment,
+          });
+        }, 0);
         break;
 
       case UpdateCode.BUSTED:
         store.dispatch(bustGame(msg.data.bust, msg.data.hash));
+        store.dispatch(updateBalance(msg.data.newBal));
         break;
 
       case UpdateCode.MESSAGE:
@@ -102,6 +116,26 @@ export class Connection {
         }
 
         break;
+
+      case UpdateCode.UPDATE_PLAYING:
+        store.dispatch(updatePlaying(msg.data.playing));
+        break;
+
+      case UpdateCode.ADD_PLAYER: {
+        const data = msg.data;
+        store.dispatch(wagerAdd(data.name, data.wager));
+        break;
+      }
+
+      case UpdateCode.ADD_ALL_PLAYERS:
+        store.dispatch(wagerAddBulk(msg.data.players));
+        break;
+
+      case UpdateCode.PLAYER_CASHEDOUT: {
+        const data = msg.data;
+        store.dispatch(playerCashedout(data.name, data.cashout));
+        break;
+      }
 
       case UpdateCode.REPLY:
         const handlerIdx = this.activeRequests.findIndex(r => r.id === msg.id);
@@ -168,6 +202,21 @@ export class Connection {
     return this.makeRequest(RequestCode.SENDMSG, {
       msg, to,
     });
+  }
+
+  // Game
+  public async makeBet(wager: number, cashout: number) {
+    const res = await this.makeRequest<{ newBal: number }>(RequestCode.COMMIT_WAGER, {
+      bet: wager, cashout,
+    });
+
+    store.dispatch(updateBalance(res.newBal));
+
+    return res;
+  }
+
+  public pulloutBet() {
+    return this.makeRequest(RequestCode.PULLOUT_WAGER);
   }
 }
 

@@ -3,24 +3,29 @@ import { clazz } from "../util/class";
 import { Tooltip } from "./pop";
 import "./form.scss";
 
-function numberInputOnly(e: React.KeyboardEvent<HTMLInputElement>): boolean {
-  if (e.key.length === 1 && !e.key.match(/[0-9.]/)) {
-    e.preventDefault();
-    return false;
-  }
+// function numberInputOnly(e: React.KeyboardEvent<HTMLInputElement>): boolean {
+//   if (e.key.length === 1 && !e.key.match(/[0-9.]/)) {
+//     e.preventDefault();
+//     return false;
+//   }
 
-  return true;
-}
+//   return true;
+// }
 
 export const NumericalInput: FC<{
   label: string
   suffix?: string
   suffixTooltip?: string
   reformatter?: (value: string) => string
-  onChange?: (value: string) => void
+  onChange?: (value: number) => void
   value?: string
+  initialValue?: number | string
 }> = (props) => {
   const [suffixRef, setSuffix] = useState<HTMLElement | null>();
+
+  const reformatter = props.reformatter ?? (x => x);
+  const [iv, setIV] = useState(() =>
+    reformatter((props.initialValue ?? props.value ?? 0).toString()));
 
   return (
     <div className="input-container">
@@ -30,14 +35,17 @@ export const NumericalInput: FC<{
       <input
         className="right"
         type="text"
-        onKeyDown={numberInputOnly}
-        value={props.value}
+        value={props.value ?? iv}
         onChange={(e) => {
-          const value = e.target.value;
-          props.onChange?.(value);
+          setIV(e.target.value);
+          props.onChange?.(+e.target.value);
+        }}
 
+        onBlur={(e) => {
           if (props.reformatter) {
-            e.target.value = props.reformatter(value);
+            const newV = props.reformatter(e.target.value);
+            props.onChange?.(+newV);
+            setIV(newV);
           }
         }}
       />
@@ -86,9 +94,11 @@ export const KButton: FC<{
   card?: boolean
   shorty?: boolean
   onClick?: () => void
+  disabled?: boolean
 }> = (props) => {
   return (
     <button
+      disabled={props.disabled}
       onClick={props.onClick}
       className={clazz(
           "th-button",

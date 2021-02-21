@@ -17,6 +17,7 @@
     "strictFunctionTypes": true,
     "strictBindCallApply": true,
     "module": "esnext",
+    "downlevelIteration": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,

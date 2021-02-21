@@ -100,7 +100,14 @@ $secondaryFontSize: 16px;
 
   &:hover {
     background: rgba($text, 0.1);
-    border-color: rgba($text, 0.0)
+    border-color: rgba($text, 0.0);
+  }
+
+  &[disabled] {
+    cursor: default;
+    background: rgba($text, 0.05);
+    border-color: rgba($text, 0.0);
+    color: rgba($text, 0.1);
   }
 
   &.full-card {

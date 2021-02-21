@@ -1,0 +1,83 @@
+@import "../colors.scss";
+
+.unlock-button {
+  position: fixed;
+  display: flex;
+  z-index: 100;
+  font-size: 36px;
+  bottom: 0;
+  left: 0;
+  padding: 12px;
+
+  .sliders {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-left: 1rem;
+  
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  
+    .volume-slider {
+      position: relative;
+      width: 100px;
+      height: 16px;
+      background: transparent;
+      cursor: pointer;
+      
+      &::before {
+        position: absolute;
+        display: block;
+        background: $subtle;
+        content: "";
+        width: 100%;
+        height: 4px;
+        top: 6px;
+      }
+  
+      .slider-handle {
+        position: relative;
+        background: $subtle;
+        height: 4px;
+        top: 6px;
+      }
+    }
+  }
+
+  &:hover .sliders {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-out {
+  0% { 
+    opacity: 0%;
+  }
+
+  25% { 
+    opacity: 100%
+  }
+
+  75% {
+    opacity: 100%;
+  }
+
+  100% { 
+    opacity: 0%;
+  }
+}
+
+.audio-track {
+  position: fixed;
+  z-index: 100;
+  font-size: 28px;
+  bottom: 0;
+  right: 0;
+  padding: 12px;
+  opacity: 0;
+  text-align: right;
+
+  &.show {
+    animation: fade-in-out 6s ease;
+  }
+}

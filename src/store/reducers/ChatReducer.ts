@@ -22,7 +22,7 @@ export const ChatReducer: Reducer<State, any> = createReducer(initialState)
     .handleAction(receiveMessage, (state: State, { payload }
       : ActionType<typeof receiveMessage>) => ({
       ...state,
-      chat: (state.chat ?? []).concat([payload]),
+      chat: (state.chat ?? []).concat([payload]).slice(-100),
     }))
 
     // Receive Private Message
@@ -31,6 +31,6 @@ export const ChatReducer: Reducer<State, any> = createReducer(initialState)
       ...state,
       dms: {
         ...state.dms,
-        [payload.feed]: (state.dms[payload.feed] ?? []).concat(payload),
+        [payload.feed]: (state.dms[payload.feed] ?? []).concat(payload).slice(-200),
       },
     }));
