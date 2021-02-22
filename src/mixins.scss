@@ -1,3 +1,5 @@
+@import "./colors.scss";
+
 @mixin card-scroller {
   scrollbar-width: thin;
   scrollbar-color: $subtle transparent;

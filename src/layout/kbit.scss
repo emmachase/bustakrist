@@ -19,6 +19,10 @@ $radius: 45px;
     font-weight: bold;
     margin-left: 1.5em;
     text-transform: uppercase;
+
+    &.btn {
+      cursor: pointer;
+    }
   }
 
   .header-out {

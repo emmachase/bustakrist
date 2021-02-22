@@ -1,8 +1,9 @@
 import { createReducer, ActionType, Reducer } from "typesafe-actions";
 import { playSound } from "../../audio/AudioManager";
-import { bustGame, RoundHistory, startGame } from "../actions/GameActions";
+import { bustGame, loadHistory, RoundHistory, startGame } from "../actions/GameActions";
 
 export interface State {
+  readonly gameid: number;
   readonly tdiff: number;
   readonly start: number;
   readonly bust: number;
@@ -14,6 +15,7 @@ export interface State {
 }
 
 const initialState: State = {
+  gameid: 0,
   tdiff: 0,
   start: 0,
   bust: 0,
@@ -28,6 +30,7 @@ export const GameReducer: Reducer<State, any> = createReducer(initialState)
     // Start Game
     .handleAction(startGame, (state: State, { payload }: ActionType<typeof startGame>) => ({
       ...state,
+      gameid: payload.id,
       tdiff: payload.tdiff,
       start: payload.start,
       bust: 0,
@@ -37,9 +40,15 @@ export const GameReducer: Reducer<State, any> = createReducer(initialState)
       ...state,
       bust: payload.bust,
       bustHistory: [{
+        id: state.gameid,
         bust: payload.bust,
         hash: payload.hash,
         bet: state.wager,
         multiplier: state.multiplier,
-      } as RoundHistory].concat(state.bustHistory).slice(0, 20),
+      } as RoundHistory].concat(state.bustHistory).slice(0, 40),
+    }))
+    // Preload History
+    .handleAction(loadHistory, (state: State, { payload }: ActionType<typeof loadHistory>) => ({
+      ...state,
+      bustHistory: payload.history.concat(state.bustHistory).slice(0, 40),
     }));

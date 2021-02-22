@@ -76,6 +76,7 @@
   padding: 12px;
   opacity: 0;
   text-align: right;
+  pointer-events: none;
 
   &.show {
     animation: fade-in-out 6s ease;

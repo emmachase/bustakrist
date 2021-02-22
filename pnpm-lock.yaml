@@ -15,9 +15,11 @@ dependencies:
   i18next: 19.8.7
   i18next-browser-languagedetector: 6.0.1
   i18next-http-backend: 1.1.0
+  luxon: 1.26.0
   moment: 2.29.1
   react: 17.0.1
   react-dom: 17.0.1_react@17.0.1
+  react-error-boundary: 3.1.0_react@17.0.1
   react-i18next: 11.8.6_i18next@19.8.7+react@17.0.1
   react-popper: 2.2.4_react@17.0.1
   react-popper-tooltip: 4.1.0_react-dom@17.0.1+react@17.0.1
@@ -33,8 +35,10 @@ dependencies:
   use-animation-frame: 0.1.0_react-dom@17.0.1+react@17.0.1
   use-breakpoint: 1.1.5_react-dom@17.0.1+react@17.0.1
   web-vitals: 1.1.0
+  webpack-bundle-analyzer: 4.4.0
 devDependencies:
   '@types/howler': 2.2.1
+  '@types/luxon': 1.26.0
   '@types/react': 17.0.1
   '@types/react-dom': 17.0.0
   '@types/react-redux': 7.1.16
@@ -2516,6 +2520,10 @@ packages:
         optional: true
     resolution:
       integrity: sha512-br5Qwvh8D2OQqSXpd1g/xqXKnK0r+Jz6qVKBbWmpUcrbGOxUrf39V5oZ1876084CGn18uMdR5uvPqBv9UqtBjQ==
+  /@polka/url/1.0.0-next.11:
+    dev: false
+    resolution:
+      integrity: sha512-3NsZsJIA/22P3QUyrEDNA2D133H4j224twJrdipXN38dpnIOzAbUDtOwkcJ5pXmn75w7LSQDjA4tO9dm1XlqlA==
   /@popperjs/core/2.7.0:
     dev: false
     resolution:
@@ -2862,6 +2870,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
+  /@types/luxon/1.26.0:
+    dev: true
+    resolution:
+      integrity: sha512-zYmLYGczqBaOFaFjR1giG1QCbGMlXWOJcYgH9Mnk0MGcZHq1aer3ZwGXX8vd9NOfai6mAI/mVU6jD9hK0Wys7Q==
   /@types/minimatch/3.0.3:
     dev: false
     resolution:
@@ -3306,6 +3318,12 @@ packages:
       node: '>=0.4.0'
     resolution:
       integrity: sha512-OPdCF6GsMIP+Az+aWfAAOEt2/+iVDKE7oy6lJ098aoe59oAmK76qV6Gw60SbZ8jHuG2wH058GF4pLFbYamYrVA==
+  /acorn-walk/8.0.2:
+    dev: false
+    engines:
+      node: '>=0.4.0'
+    resolution:
+      integrity: sha512-+bpA9MJsHdZ4bgfDcpk0ozQyhhVct7rzOmO0s1IIr0AGGgKBljss8n2zp11rRP2wid5VGeh04CgeKzgat5/25A==
   /acorn/6.4.2:
     dev: false
     engines:
@@ -3319,6 +3337,13 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
+  /acorn/8.0.5:
+    dev: false
+    engines:
+      node: '>=0.4.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-v+DieK/HJkJOpFBETDJioequtc3PfxsWMaxIdIwujtF7FEV/MAyDQLlm6/zPvr7Mix07mLh6ccVwIsloceodlg==
   /address/1.1.2:
     dev: false
     engines:
@@ -4515,6 +4540,12 @@ packages:
       node: '>= 6'
     resolution:
       integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==
+  /commander/6.2.1:
+    dev: false
+    engines:
+      node: '>= 6'
+    resolution:
+      integrity: sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==
   /comment-parser/1.1.2:
     dev: true
     engines:
@@ -6721,6 +6752,14 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-FNHi6mmoHvs1mxZAds4PpdCS6QG8B4C1krxJsMutgxl5t3+GlRTzzI3NEkifXx2pVsOvJdOGSmIgDhQ55FwdPA==
+  /gzip-size/6.0.0:
+    dependencies:
+      duplexer: 0.1.2
+    dev: false
+    engines:
+      node: '>=10'
+    resolution:
+      integrity: sha512-ax7ZYomf6jqPTQ4+XCpUGyXKHk5WweS+e05MBO4/y3WJ5RkmPXNKvX+bx1behVILVwr6JSQvZAku021CHPXG3Q==
   /handle-thing/2.0.1:
     dev: false
     resolution:
@@ -8541,6 +8580,10 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
+  /luxon/1.26.0:
+    dev: false
+    resolution:
+      integrity: sha512-+V5QIQ5f6CDXQpWNICELwjwuHdqeJM1UenlZWx5ujcRMc9venvluCjFb4t5NYLhb6IhkbMVOxzVuOqkgMxee2A==
   /lz-string/1.4.4:
     dev: false
     hasBin: true
@@ -8716,6 +8759,13 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-ft3WayFSFUVBuJj7BMLKAQcSlItKtfjsKDDsii3rqFDAZ7t11zRe8ASw/GlmivGwVUYtwkQrxiGGpL6gFvB0ag==
+  /mime/2.5.2:
+    dev: false
+    engines:
+      node: '>=4.0.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-tqkh47FzKeCPD2PUiPB6pkbMzsCasjxAfC62/Wap5qrUWcb+sFasXUC5I3gYM5iBM8v/Qpn4UK0x+j0iHyFPDg==
   /mimic-fn/2.1.0:
     dev: false
     engines:
@@ -9247,6 +9297,11 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-PGoBCX/lclIWlpS/R2PQuIR4NJoXh6X5AwVzE7WXnWRGvHg7+4TBCgsujUgiPpm0K1y4qvQeWnCWVTpTKZBtvA==
+  /opener/1.5.2:
+    dev: false
+    hasBin: true
+    resolution:
+      integrity: sha512-ur5UIdyw5Y7yEj9wLzhqXiy6GZ3Mwx0yGI+5sMn2r0N0v3cKJvUmFH5yPP+WXh9e0xfyzyJX95D8l088DNFj7A==
   /opn/5.5.0:
     dependencies:
       is-wsl: 1.1.0
@@ -10681,6 +10736,18 @@ packages:
       react: 17.0.1
     resolution:
       integrity: sha512-6eV150oJZ9U2t9svnsspTMrWNyHc6chX0KzDeAOXftRa8bNeOKTTfCJ7KorIwenkHd2xqVTBTCZd79yk/lx/Ug==
+  /react-error-boundary/3.1.0_react@17.0.1:
+    dependencies:
+      '@babel/runtime': 7.12.18
+      react: 17.0.1
+    dev: false
+    engines:
+      node: '>=10'
+      npm: '>=6'
+    peerDependencies:
+      react: '>=16.13.1'
+    resolution:
+      integrity: sha512-lmPrdi5SLRJR+AeJkqdkGlW/CRkAUvZnETahK58J4xb5wpbfDngasEGu+w0T1iXEhVrYBJZeW+c4V1hILCnMWQ==
   /react-error-overlay/6.0.9:
     dev: false
     resolution:
@@ -11744,6 +11811,16 @@ packages:
     dev: false
     resolution:
       integrity: sha1-pNprY1/8zMoz9w0Xy5JZLeleVXo=
+  /sirv/1.0.11:
+    dependencies:
+      '@polka/url': 1.0.0-next.11
+      mime: 2.5.2
+      totalist: 1.1.0
+    dev: false
+    engines:
+      node: '>= 10'
+    resolution:
+      integrity: sha512-SR36i3/LSWja7AJNRBz4fF/Xjpn7lQFI30tZ434dIy+bitLYSP+ZEenHg36i23V2SGEz+kqjksg0uOGZ5LPiqg==
   /sisteransi/1.0.5:
     dev: false
     resolution:
@@ -12482,6 +12559,12 @@ packages:
       node: '>=0.6'
     resolution:
       integrity: sha512-yaOH/Pk/VEhBWWTlhI+qXxDFXlejDGcQipMlyxda9nthulaxLZUNcUqFxokp0vcYnvteJln5FNQDRrxj3YcbVw==
+  /totalist/1.1.0:
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-gduQwd1rOdDMGxFG1gEvhV88Oirdo2p+KjoYFU7k2g+i7n6AFFbDQ5kMPUsW0pNbfQsB/cwXvT1i4Bue0s9g5g==
   /tough-cookie/2.5.0:
     dependencies:
       psl: 1.8.0
@@ -12991,6 +13074,23 @@ packages:
       node: '>=10.4'
     resolution:
       integrity: sha512-qBIvFLGiBpLjfwmYAaHPXsn+ho5xZnGvyGvsarywGNc8VyQJUMHJ8OBKGGrPER0okBeMDaan4mNBlgBROxuI8w==
+  /webpack-bundle-analyzer/4.4.0:
+    dependencies:
+      acorn: 8.0.5
+      acorn-walk: 8.0.2
+      chalk: 4.1.0
+      commander: 6.2.1
+      gzip-size: 6.0.0
+      lodash: 4.17.21
+      opener: 1.5.2
+      sirv: 1.0.11
+      ws: 7.4.3
+    dev: false
+    engines:
+      node: '>= 10.13.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-9DhNa+aXpqdHk8LkLPTBU/dMfl84Y+WE2+KnfI6rSpNRNVKa0VGLjPd2pjFubDeqnWmulFggxmWBxhfJXZnR0g==
   /webpack-dev-middleware/3.7.3_webpack@4.44.2:
     dependencies:
       memory-fs: 0.4.1
@@ -13504,6 +13604,7 @@ specifiers:
   '@testing-library/react': ^11.1.0
   '@testing-library/user-event': ^12.1.10
   '@types/howler': ^2.2.1
+  '@types/luxon': ^1.26.0
   '@types/react': ^17.0.1
   '@types/react-dom': ^17.0.0
   '@types/react-redux': ^7.1.16
@@ -13518,9 +13619,11 @@ specifiers:
   i18next: ^19.8.7
   i18next-browser-languagedetector: ^6.0.1
   i18next-http-backend: ^1.1.0
+  luxon: ^1.26.0
   moment: ^2.29.1
   react: ^17.0.1
   react-dom: ^17.0.1
+  react-error-boundary: ^3.1.0
   react-i18next: ^11.8.6
   react-popper: ^2.2.4
   react-popper-tooltip: ^4.1.0
@@ -13536,3 +13639,4 @@ specifiers:
   use-animation-frame: ^0.1.0
   use-breakpoint: ^1.1.5
   web-vitals: ^1.0.1
+  webpack-bundle-analyzer: ^4.4.0

@@ -1,0 +1,46 @@
+.player-modal {
+  h1 {
+    font-weight: 100;
+  }
+}
+
+.player-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .i-slot {
+    margin: 8px;
+
+    .label {
+      opacity: 0.8;
+    }
+
+    .value {
+      font-weight: bold;
+    }
+  }
+}
+
+.bet-chart {
+  margin-top: 2rem;
+
+  .chart-tooltip {
+    padding: 0 1rem;
+    background: #000a;
+    border: 1px solid #fff5;
+    border-radius: 8px;
+
+    .label {
+      margin: 4px 0;
+
+      &.subtle {
+        opacity: 0.6;
+      }
+    }
+  }
+
+  .th-button {
+    min-width: 150px;
+  }
+}

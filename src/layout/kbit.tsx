@@ -1,4 +1,4 @@
-import { CSSProperties, FC, MutableRefObject, useRef, useState } from "react";
+import { CSSProperties, FC, MutableRefObject, useContext, useRef, useState } from "react";
 import { BustChart } from "../components/chart";
 import "./kbit.scss";
 import { clazz } from "../util/class";
@@ -17,6 +17,9 @@ import { Tooltip } from "../components/pop";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../store/actions/UserActions";
 import { getConnection } from "../meta/connection";
+import { LongHistory } from "../components/history";
+import { ModalContext } from "../components/modal";
+import { PlayerModal } from "./modal/PlayerModal";
 
 export const Card: FC<{
   area?: string,
@@ -59,9 +62,16 @@ export const KHeader: FC<{
     getConnection().logout();
   };
 
+  const modalCtx = useContext(ModalContext);
+  const openProfile = () => {
+    if (!user.name) return;
+    modalCtx?.show(<PlayerModal user={user.name}/>);
+  };
+
+
   const profile = user.name ?
     <>
-      <span className="header-info">{user.name}</span>
+      <span className="header-info btn" onClick={openProfile}>{user.name}</span>
       <span className="header-info">{
         ((user.bal ?? 0)/100).toFixed(2)}{
         t("game.currencyShortname")}
@@ -121,7 +131,9 @@ export function KBitLayout() {
           <ComboView.Tab label={t("chat.tab")}>
             <ChatView />
           </ComboView.Tab>
-          <ComboView.Tab label={t("history.tab")}>B</ComboView.Tab>
+          <ComboView.Tab label={t("history.tab")}>
+            <LongHistory />
+          </ComboView.Tab>
           { breakpt.breakpoint === "mobile" ?
             <ComboView.Tab label={t("players.tab")}>
               <PlayerList />

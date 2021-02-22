@@ -31,6 +31,7 @@ module.exports = {
     "arrow-parens": "off",
     "spaced-comment": "off",
     "max-len": ["error", 100],
+    "indent": "off",
 
     "react/prop-types": "off",
 

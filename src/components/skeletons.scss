@@ -1,0 +1,23 @@
+@import "../colors.scss";
+
+@keyframes pulse {
+  0% {
+    background: rgba($text, 0.1);
+  }
+
+  100% {
+    background: rgba($text, 0.2);
+  }
+}
+
+.skeleton {
+  display: inline-block;
+  background: rgba($text, 0.1);
+  animation: pulse 1s infinite linear alternate;
+
+  border-radius: 8px;
+
+  &.block {
+    display: block;
+  }
+}

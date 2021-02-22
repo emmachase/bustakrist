@@ -12,6 +12,10 @@ body {
   color: $text;
 }
 
-code {
+code, .code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+pre {
+  margin: 0;
 }

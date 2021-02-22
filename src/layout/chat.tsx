@@ -1,4 +1,4 @@
-import { FC, MutableRefObject, useMemo, useRef, useState } from "react";
+import { FC, MutableRefObject, useContext, useMemo, useRef, useState } from "react";
 import { useTranslation, Trans } from "react-i18next";
 import { ChatMessage } from "../store/reducers/ChatReducer";
 import { useKState } from "../util/types";
@@ -9,14 +9,22 @@ import "./chat.scss";
 import { HSVColor } from "../util/color";
 import { clazz } from "../util/class";
 import { Tooltip } from "../components/pop";
+import { ModalContext } from "../components/modal";
+import { PlayerModal } from "./modal/PlayerModal";
 
 export const Message: FC<{
   msg: ChatMessage
 }> = (props) => {
+  const modalCtx = useContext(ModalContext);
+
+  const openAuthor = () => {
+    modalCtx?.show(<PlayerModal user={props.msg.from}/>);
+  };
+
   return (
     <div className="chat-message">
       <span className="msg-time">{props.msg.timestamp.toLocaleTimeString()}</span>
-      <span className="msg-author">{props.msg.from}</span>:&nbsp;
+      <span className="msg-author" onClick={openAuthor}>{props.msg.from}</span>:&nbsp;
       <span className="msg-content">{props.msg.message}</span>
     </div>
   );
@@ -37,7 +45,7 @@ export const FriendFeedIcon: FC<{
         onClick={() => onClick(friend)}
         ref={r => setRef(r)}
       >{friend[0]}</div>
-      <Tooltip 
+      <Tooltip
         refEl={refEl as HTMLElement}
         config={{ placement: "left" }}
       >{friend}</Tooltip>

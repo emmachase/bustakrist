@@ -95,11 +95,13 @@ export function GameAudio() {
 
   useEffect(() => {
     return GameStream.subscribe(() => {
-      Object.keys(state.current).forEach(key => {
-        (state.current as any)[key] = false;
-      });
+      setTimeout(() => {
+        Object.keys(state.current).forEach(key => {
+          (state.current as any)[key] = false;
+        });
 
-      runCheck(false);
+        runCheck(false);
+      }, 0);
     });
   }, [perfOff, game.tdiff]);
 
@@ -148,6 +150,21 @@ export function VolumeSlider(props: {
   );
 }
 
+function advanceSong(idx: number): number {
+  const newSong = idx + 1;
+  if (musicHowls[newSong]) {
+    return newSong;
+  }
+
+  // Otherwise we need to reshuffle the songs
+  const lastSong = musicHowls[idx];
+  do {
+    shuffle(musicHowls);
+  } while (musicHowls[0] === lastSong);
+
+  return 0;
+}
+
 export function GameMusic() {
   const [t] = useTranslation();
 
@@ -179,7 +196,7 @@ export function GameMusic() {
       }
 
       currentSong.howl.once("end", () => {
-        setSong(currentSongIdx + 1);
+        setSong(advanceSong(currentSongIdx));
       });
     }
   };
@@ -217,8 +234,8 @@ export function GameMusic() {
         }}/>
       </div>
     </div>
-    <div className={clazz("audio-track", showTitle && "show")}>
+    {currentSong && <div className={clazz("audio-track", showTitle && "show")}>
       {currentSong.title}<br/>{t("audio.songBy", { artist: currentSong.artist })}
-    </div>
+    </div>}
   </>;
 }

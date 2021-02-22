@@ -1,12 +1,12 @@
 import { store } from "../App";
 import { receievePrivateMessage, receiveMessage } from "../store/actions/ChatActions";
-import { bustGame, startGame } from "../store/actions/GameActions";
+import { bustGame, loadHistory, startGame } from "../store/actions/GameActions";
 import { clearPlayerlist, playerCashedout, updatePlaying,
   wagerAdd, wagerAddBulk } from "../store/actions/PlayersActions";
 import { addFriends, authUser, logoutUser, updateBalance } from "../store/actions/UserActions";
 import { Subject } from "../util/Subject";
 import { MINUTE, SECOND } from "../util/time";
-import { AuthResponse, BalanceResponse } from "./networkInterfaces";
+import { AuthResponse, BalanceResponse, ProfileBetsResponse, ProfileResponse } from "./networkInterfaces";
 import { RequestCode, UpdateCode } from "./transportCodes";
 
 let activeConnection: Connection;
@@ -82,9 +82,13 @@ export class Connection {
         }));
         break;
 
+      case UpdateCode.HISTORY:
+        store.dispatch(loadHistory(msg.data.history));
+        break;
+
       case UpdateCode.GAME_STARTING:
         const adjustment = +new Date() - msg.data.now;
-        store.dispatch(startGame(adjustment, msg.data.start));
+        store.dispatch(startGame(adjustment, msg.data.start, msg.data.gameid));
         store.dispatch(updateBalance(msg.data.newBal));
         store.dispatch(clearPlayerlist());
         setTimeout(() => {
@@ -201,6 +205,18 @@ export class Connection {
   public sendMessage(msg: string, to?: string) {
     return this.makeRequest(RequestCode.SENDMSG, {
       msg, to,
+    });
+  }
+
+  public getProfile(user: string) {
+    return this.makeRequest<ProfileResponse>(RequestCode.PROFILE, {
+      user,
+    });
+  }
+
+  public getProfileBets(user: string, page: number) {
+    return this.makeRequest<ProfileBetsResponse>(RequestCode.PROFILE_BETS, {
+      user, page,
     });
   }
 

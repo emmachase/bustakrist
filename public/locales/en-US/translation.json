@@ -27,7 +27,11 @@
     "noHistoryHint": "You have no message history with <1>{{name}}</1>, say Hello!"
   },
   "history": {
-    "tab": "History"
+    "tab": "History",
+    "gameNo": "Game Number",
+    "mult": "Multiplier",
+    "bust": "Busted At",
+    "hash": "Hash"
   },
   "players": {
     "tab": "Players",
@@ -38,5 +42,25 @@
   },
   "audio": {
     "songBy": "by {{artist}}"
+  },
+  "profile": {
+    "profileHeader": "User Profile: <1>{{user}}</1>",
+    "failedFetch": "Unable to fetch profile details.",
+    "net": "Net-profit:",
+    "joined": "Joined {{joined}}",
+    "gamesPlayed": "Games played:",
+    "allTimeLow": "All-time low net-profit:",
+    "allTimeHigh": "All-time high net-profit:",
+    "totalWagered": "Total wagered:",
+    "gameBusted": "Busted @{{bust}}X",
+    "specificGame": "Game {{game}}",
+    "specificWager": "Wager: {{wager}}KST",
+    "specificCashout": "Cashed Out @{{cashout}}X",
+    "specificProfit": "Profit: {{profit}}KST",
+    "specificLoss": "Loss: {{loss}}KST",
+    "specificNet": "Net: {{net}}KST",
+    "playedAgo": "Played {{ago}}",
+    "previousPage": "Previous",
+    "nextPage": "Next"
   }
 }

@@ -46,13 +46,13 @@ $secondaryFontSize: 16px;
     font-size: $primaryFontSize;
     font-weight: 900;
   }
-}
 
-.label {
-  background: rgba($text, 0.1);
-  padding: $innerPadding;
-
-  font-size: $primaryFontSize;
+  .label {
+    background: rgba($text, 0.1);
+    padding: $innerPadding;
+  
+    font-size: $primaryFontSize;
+  }
 }
 
 .inline-action {

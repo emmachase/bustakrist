@@ -1,0 +1,29 @@
+@import "../mixins.scss";
+
+.roll-history {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  @include card-scroller;
+
+  table {
+    width: 100%;
+
+    .gnum-d {
+      text-align: center;
+      max-width: 50px;
+    }
+
+    .bust-d {
+      text-align: center;
+      max-width: 50px;
+    }
+
+    .hash-d {
+      text-align: right;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 250px;
+    }
+  }
+}

@@ -1,8 +1,12 @@
+import { FC } from "react";
+import { clazz } from "../../util/class";
 import "./spinner.scss";
 
-export function Spinner() {
+export const Spinner: FC<{
+  relative?: boolean
+}> = (props) => {
   return (
-    <div className="center">
+    <div className={clazz("center", props.relative && "relative")}>
       <div className="loader">
         <div className="spinner a"></div>
         <div className="spinner b"></div>
@@ -10,4 +14,4 @@ export function Spinner() {
       </div>
     </div>
   );
-}
+};

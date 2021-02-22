@@ -2,6 +2,8 @@ import { useTranslation } from "react-i18next";
 import "./players.scss";
 import "../components/playersTable";
 import { PlayersTable } from "../components/playersTable";
+import React from "react";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
 
 export function PlayerList() {

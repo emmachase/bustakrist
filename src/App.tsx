@@ -1,7 +1,6 @@
 import React, { Suspense, useState } from "react";
 import { createStore, Store } from "redux";
 import { Provider } from "react-redux";
-import "./App.scss";
 import Blobs from "./components/aesthetic/blobs";
 import { Spinner } from "./components/aesthetic/spinner";
 import { Card, KBitLayout, KHeader } from "./layout/kbit";
@@ -10,6 +9,7 @@ import { devToolsEnhancer } from "redux-devtools-extension";
 import { createConnection } from "./meta/connection";
 import { ChatView } from "./layout/chat";
 import { GameAudio, GameMusic } from "./audio/GameAudio";
+import { ModalProvider } from "./components/modal";
 
 export const store: Store<RootState> = createStore(
     RootReducer,
@@ -20,7 +20,7 @@ export type AppDispatch = typeof store.dispatch;
 
 
 // Server websocket connection
-createConnection("bust.loca.lt");
+createConnection("localhost:8080");
 
 function App() {
   const [chatOnly, setChatOnly] = useState(false);
@@ -30,14 +30,16 @@ function App() {
       <Provider store={store}>
         <Blobs count={15}/>
         <Suspense fallback={<Spinner/>}>
-          {chatOnly
-          ? <Card>
-            <ChatView />
-          </Card>
-          : <>
-            <KHeader onChatOnly={() => setChatOnly(true)}/>
-            <KBitLayout/>
-          </>}
+          <ModalProvider>
+            {chatOnly
+            ? <Card>
+              <ChatView />
+            </Card>
+            : <>
+              <KHeader onChatOnly={() => setChatOnly(true)}/>
+              <KBitLayout/>
+            </>}
+          </ModalProvider>
           <GameAudio/>
           <GameMusic/>
         </Suspense>
