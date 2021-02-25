@@ -1,13 +1,23 @@
 [
   {
-    "filename": "NKTrapid.mp3",
-    "artist": "NKT",
-    "title": "Rapid"
+    "filename": "akai-tsuchi-wo-funde.mp3",
+    "artist": "カモキング",
+    "title": "紅い土を踏んで"
   },
   {
-    "filename": "ParadoxRoom.mp3",
-    "artist": "YOSHI",
-    "title": "Paradox Room"
+    "filename": "asu-wo-matte.mp3",
+    "artist": "守已",
+    "title": "明日を待って"
+  },
+  {
+    "filename": "bikou-seyo.mp3",
+    "artist": "衛門幸志",
+    "title": "尾行せよ"
+  },
+  {
+    "filename": "blue-moon.mp3",
+    "artist": "Akiko Shioyama",
+    "title": "blue moon"
   },
   {
     "filename": "burari-tokyo.mp3",
@@ -15,9 +25,9 @@
     "title": "ぶらりTOKYO"
   },
   {
-    "filename": "chika-wakana.mp3",
-    "artist": "ちか",
-    "title": "若菜"
+    "filename": "cluster-shoujo.mp3",
+    "artist": "ピンポン東山",
+    "title": "クラスター少女"
   },
   {
     "filename": "gekikou.mp3",
@@ -25,9 +35,29 @@
     "title": "激昂"
   },
   {
+    "filename": "hakujitsumu.mp3",
+    "artist": "ピンポン東山",
+    "title": "白日夢"
+  },
+  {
+    "filename": "haritsumeru-kuuki.mp3",
+    "artist": "セントラルパーク吉田",
+    "title": "はりつめる空気"
+  },
+  {
     "filename": "hatsuyuki.mp3",
     "artist": "YOSHI",
     "title": "初雪"
+  },
+  {
+    "filename": "ichizu.mp3",
+    "artist": "高橋岳",
+    "title": "一途"
+  },
+  {
+    "filename": "kagayakeru-hitotoki.mp3",
+    "artist": "TSUTOMU",
+    "title": "輝けるひととき"
   },
   {
     "filename": "kaidou-no-kamisama.mp3",
@@ -35,13 +65,63 @@
     "title": "街道の神様"
   },
   {
-    "filename": "pinpon-higashiyama-hakujitsuyume.mp3",
-    "artist": "ピンポン東山",
-    "title": "白日夢"
+    "filename": "maniawanakunattemo-shiranzo.mp3",
+    "artist": "おメガネ",
+    "title": "間に合わなくなってもしらんぞ！？"
+  },
+  {
+    "filename": "nadenade.mp3",
+    "artist": "高橋岳",
+    "title": "なでなで"
+  },
+  {
+    "filename": "obscured.mp3",
+    "artist": "TOMO",
+    "title": "Obscured"
+  },
+  {
+    "filename": "okurimono.mp3",
+    "artist": "TSUTOMU",
+    "title": "贈り物"
+  },
+  {
+    "filename": "paradox-room.mp3",
+    "artist": "YOSHI",
+    "title": "Paradox Room"
   },
   {
     "filename": "quiet-spell.mp3",
     "artist": "直行-NAOYUKI-",
     "title": "Quiet spell"
+  },
+  {
+    "filename": "rapid.mp3",
+    "artist": "NKT",
+    "title": "rapid"
+  },
+  {
+    "filename": "subarashii-nichijou.mp3",
+    "artist": "TSUTOMU",
+    "title": "素晴らしい日常"
+  },
+  {
+    "filename": "wakana.mp3",
+    "artist": "ちか",
+    "title": "若菜"
+  },
+  {
+    "filename": "why.mp3",
+    "artist": "直行-NAOYUKI-",
+    "title": "Why"
+  },
+  {
+    "filename": "yakousei-no-utage.mp3",
+    "artist": "カモキング",
+    "title": "夜行性の宴"
+  },
+  {
+    "filename": "yokan.mp3",
+    "artist": "aki",
+    "title": "予感"
   }
 ]

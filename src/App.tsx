@@ -20,7 +20,7 @@ export type AppDispatch = typeof store.dispatch;
 
 
 // Server websocket connection
-createConnection("localhost:8080");
+createConnection("localhost:8081");
 
 function App() {
   const [chatOnly, setChatOnly] = useState(false);

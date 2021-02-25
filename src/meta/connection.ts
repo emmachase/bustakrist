@@ -6,7 +6,8 @@ import { clearPlayerlist, playerCashedout, updatePlaying,
 import { addFriends, authUser, logoutUser, updateBalance } from "../store/actions/UserActions";
 import { Subject } from "../util/Subject";
 import { MINUTE, SECOND } from "../util/time";
-import { AuthResponse, BalanceResponse, ProfileBetsResponse, ProfileResponse } from "./networkInterfaces";
+import { AuthResponse, BalanceResponse,
+  ProfileBetsResponse, ProfileResponse } from "./networkInterfaces";
 import { RequestCode, UpdateCode } from "./transportCodes";
 
 let activeConnection: Connection;

@@ -50,5 +50,5 @@ export const GameReducer: Reducer<State, any> = createReducer(initialState)
     // Preload History
     .handleAction(loadHistory, (state: State, { payload }: ActionType<typeof loadHistory>) => ({
       ...state,
-      bustHistory: payload.history.concat(state.bustHistory).slice(0, 40),
+      bustHistory: payload.history.concat(state.bustHistory).slice(0, 200),
     }));
