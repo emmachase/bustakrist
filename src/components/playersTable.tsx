@@ -21,13 +21,12 @@ export function PlayersTable() {
         return (
           <tr key={idx}
             className={clazz(
-                //(b.bust >= 198) ? "c-win" : "c-lose",
                 b.multiplier !== undefined && "c-win",
                 bust > 0 && b.multiplier === undefined && "c-lose",
             )}>
             <td className="players-user"><div className="trans-container">{b.name}</div></td>
             <td><div className="trans-container">{multiplier}</div></td>
-            <td><div className="trans-container">{wager}{t("game.currencyShortname")}</div></td>
+            <td><div className="trans-container">{wager}<small>{t("game.currencyShortname")}</small></div></td>
             <td className="players-profit"><div className="trans-container">{profit}</div></td>
           </tr>
         );

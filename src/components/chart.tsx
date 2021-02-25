@@ -190,8 +190,10 @@ export const BustChart: FC<{
       ctx.fillText(text, x.max() + Math.cos(angle)*shake, y.min() + Math.sin(angle)*shake);
 
       if (bust) {
+        const bustElapsed = (performance.now() - bustEffectTime)/1000; // janked from the multiplier bust effect. should this be higher scope?
+        const bustedText = t("game.busted").split("").join(String.fromCharCode(8202).repeat(5-Math.min(bustElapsed*50, 5))).toLocaleUpperCase(); // im sorry ill fix it i promise
         ctx.font = "bold 18px Roboto";
-        ctx.fillText(t("game.busted").toLocaleUpperCase(), x.max(), y.min() - 48);
+        ctx.fillText(bustedText, x.max(), y.min() - 48);
       }
 
       ctx.closePath();
