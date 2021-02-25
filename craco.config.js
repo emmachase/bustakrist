@@ -9,6 +9,6 @@ module.exports = {
   },
 
   webpack: {
-    plugins: [new BundleAnalyzerPlugin()],
+    // plugins: [new BundleAnalyzerPlugin()],
   },
 };
