@@ -5,8 +5,8 @@
   --tooltipBorder: #{$tooltipBorder};
 
   background-color: var(--tooltipBackground);
-  border-radius: 3px;
   border: 1px solid var(--tooltipBorder);
+  border-radius: 3px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
   color: $text;
   display: flex;
@@ -14,6 +14,14 @@
   padding: 0.4rem;
   transition: opacity 0.3s;
   z-index: 9999;
+  font-size: 14px;
+
+  backdrop-filter: blur(10px);
+}
+
+.error .tooltip-container {
+  --tooltipBackground: #{rgba(mix($ambientError, red, 80%), 0.5)};
+  --tooltipBorder: #{$tooltipBorder};
 }
 
 .tooltip-arrow {

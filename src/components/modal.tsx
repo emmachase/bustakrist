@@ -18,7 +18,10 @@ export const ModalProvider: FC<{}> = (props) => {
 
   const context = useRef({
     show(modal: React.ReactElement<typeof Modal>) {
-      setTimeout(() => setTransition(true), 0);
+      if (activeModal === undefined) {
+        setTimeout(() => setTransition(true), 0);
+      }
+
       setActiveModal(modal);
     },
 

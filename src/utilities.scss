@@ -19,6 +19,19 @@
   width: 100%;
 }
 
+.sub-h1 {
+  margin: 0;
+  position: absolute;
+  right: 0;
+  bottom: -16px;
+  line-height: 30px;
+  text-align: right;
+}
+
+.m-auto {
+  margin: auto;
+}
+
 .grow {
   flex: 1;
 }
@@ -30,3 +43,24 @@
 .c-lose {
   color: red;
 }
+
+$spacer: 1rem;
+.mb-0 { margin-bottom: 0!important }
+.mb-1 { margin-bottom: 0.25 *$spacer!important }
+.mb-2 { margin-bottom: 0.5  *$spacer!important }
+.mb-3 { margin-bottom: 1    *$spacer!important }
+.mb-4 { margin-bottom: 1.5  *$spacer!important }
+.mb-5 { margin-bottom: 3    *$spacer!important }
+
+.mt-0 { margin-top: 0!important }
+.mt-1 { margin-top: 0.25 *$spacer!important }
+.mt-2 { margin-top: 0.5  *$spacer!important }
+.mt-3 { margin-top: 1    *$spacer!important }
+.mt-4 { margin-top: 1.5  *$spacer!important }
+.mt-5 { margin-top: 3    *$spacer!important }
+
+.fs-2 {
+  font-size: 18px;
+}
+
+

@@ -14,8 +14,8 @@ export interface ProfileResponse {
   joined: number
   balance: number
   netBase: number
-  allTimeLow: number
-  allTimeHigh: number
+  allTimeNetLow: number
+  allTimeNetHigh: number
   gamesPlayed: number
   totalWagered: number
 }
@@ -25,10 +25,15 @@ export interface ProfileBetsResponse {
     id: number
     game: number
     newBalance: number
+    newNetBalance: number
     bet: number
     busted: number
     cashout?: number
     timestamp: number
   }[]
   more: boolean
+}
+
+export interface WithdrawResponse {
+  newBal: number
 }

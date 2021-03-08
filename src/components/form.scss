@@ -11,9 +11,27 @@ $secondaryFontSize: 16px;
   margin-bottom: 24px;
   color: $text;
 
+  transition: background 0.15s ease;
+
   &.shorty {
     margin-bottom: 12px;
   }
+}
+
+.error, .input-container.error {
+  background: rgba($ambientError, 0.4);
+}
+
+.error-fg {
+  color: $textError;
+}
+
+.form-prelabel {
+  padding: 8px 16px 8px 0;
+}
+
+.nomargin {
+  margin: 0 !important;
 }
 
 .input-container {
@@ -24,12 +42,22 @@ $secondaryFontSize: 16px;
   align-items: center;
   padding: 0 24px 0 0;
 
+  &.disabled {
+    background: rgba($text, 0.05);
+    border-color: rgba($text, 0.0);
+    
+    .label {
+      background: transparent;
+    }
+  }
+
   input {
     flex: 1;
     background: none;
     border: none;
     outline: none;
     min-width: 0;
+    padding: 12px 2px;
 
     font-size: $primaryFontSize;
     color: $text;

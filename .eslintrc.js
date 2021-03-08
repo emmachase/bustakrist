@@ -55,7 +55,7 @@ module.exports = {
     "jsdoc/newline-after-description": 1,
     "jsdoc/no-undefined-types": 1,
     "jsdoc/require-hyphen-before-param-description": 1,
-    "jsdoc/require-jsdoc": [1, {
+    "jsdoc/require-jsdoc": [0, {
       publicOnly: true,
       contexts: [
         "ArrowFunctionExpression",

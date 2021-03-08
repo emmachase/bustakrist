@@ -1,4 +1,11 @@
 {
+  "credits": {
+    "title": "<0>made by</0> <2>Emma</2>",
+    "progDesign": "Programming and Design",
+    "soundDesign": "Sound Design",
+    "music": "Music",
+    "contributions": "With Contributions From"
+  },
   "bet": {
     "betAction": "Bet",
     "betAmt": "Bet",
@@ -11,7 +18,10 @@
     "nextGame": "Next Game Will Start in {{time}}",
     "busted": "Busted At",
     "currencyShortname": "KST",
-    "currency": "Krist"
+    "currency": "Krist",
+    "tipped": "{{from}} tipped you {{amount}}KST!",
+    "tipper": "You tipped {{to}} {{amount}}KST!",
+    "withdrew": "Successfully withdrew {{amount}}KST"
   },
   "auth": {
     "login": "Login",
@@ -24,7 +34,7 @@
     "tab": "Chat",
     "inputPlaceholder": "Type a message here...",
     "loginPlaceholder": "Login to send a message...",
-    "noHistoryHint": "You have no message history with <1>{{name}}</1>, say Hello!"
+    "noHistoryHint": "You have no message history with <1>{{name}}</1> in this session, say Hello!"
   },
   "history": {
     "tab": "History",
@@ -46,6 +56,32 @@
   "profile": {
     "profileHeader": "User Profile: <1>{{user}}</1>",
     "failedFetch": "Unable to fetch profile details.",
+    "addFriend": {
+      "title": "Add New Friend",
+      "label": "Friend Name",
+      "action": "Add Friend"
+    },
+    "tipModal": {
+      "title": "Tip <1>{{user}}</1>",
+      "label": "Amount",
+      "action": "Send Tip",
+      "yourBalance": "Your Balance",
+      "newBalance": "New Balance"
+    },
+    "balanceModal": {
+      "title": "Manage Balance",
+      "label": "Amount",
+      "action": "Withdraw",
+      "depositHeader": "Deposit",
+      "withdrawHeader": "Withdraw",
+      "yourBalance": "Your Balance",
+      "newBalance": "New Balance",
+      "withdrawTo": "Withdraw to",
+      "sendTo": "To deposit Krist into your account, send to the following address:"
+    },
+    "friend": "Add this user as a friend",
+    "unfriend": "Remove this user as a friend",
+    "tip": "Tip this user",
     "net": "Net-profit:",
     "joined": "Joined {{joined}}",
     "gamesPlayed": "Games played:",
@@ -62,5 +98,20 @@
     "playedAgo": "Played {{ago}}",
     "previousPage": "Previous",
     "nextPage": "Next"
+  },
+  "errors": {
+    "unknown": "An unknown error occurred",
+    "user404": "This user does not exist",
+    "friendNoop": "You are already friends with this user",
+    "lowBalance": "You do not have enough Krist to do this",
+    "atLeastOne": "Bet must be at least 1KST",
+    "atLeastOneHundred": "Payout must be at least 1.01×",
+    "nameAllowed": "Must be alphanumeric, underscore, or dash",
+    "formMax": "Max of {{max}} characters",
+    "formMin": "Must be at least {{min}} characters",
+    "invalidCredentials": "Username or Password incorrect",
+    "userExists": "Username taken",
+    "autoCashout": "You were automatically cashed-out due to reaching the max profit.",
+    "invalidAddress": "Invalid destination address"
   }
 }

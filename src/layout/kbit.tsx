@@ -19,7 +19,8 @@ import { logoutUser } from "../store/actions/UserActions";
 import { getConnection } from "../meta/connection";
 import { LongHistory } from "../components/history";
 import { ModalContext } from "../components/modal";
-import { PlayerModal } from "./modal/PlayerModal";
+import { PlayerModal, BalanceModal } from "./modal/PlayerModal";
+import { CreditsModal } from "./modal/CreditsModal";
 
 export const Card: FC<{
   area?: string,
@@ -68,11 +69,20 @@ export const KHeader: FC<{
     modalCtx?.show(<PlayerModal user={user.name}/>);
   };
 
+  const openBalance = () => {
+    if (!user.name) return;
+    modalCtx?.show(<BalanceModal />);
+  };
+
+  const openCredits = () => {
+    modalCtx?.show(<CreditsModal/>);
+  };
+
 
   const profile = user.name ?
     <>
       <span className="header-info btn" onClick={openProfile}>{user.name}</span>
-      <span className="header-info">{
+      <span className="header-info btn" onClick={openBalance}>{
         ((user.bal ?? 0)/100).toFixed(2)}{
         t("game.currencyShortname")}
       </span>
@@ -90,8 +100,7 @@ export const KHeader: FC<{
   return (
     <div className="kbit-header">
       <img src="/krist.webp"/>
-      <h1>BustAKrist</h1>
-      <WechatOutlined style={{ marginLeft: 20 }} onClick={() => props.onChatOnly?.()} />
+      <h1 onClick={openCredits}>BustAKrist</h1>
       <Spacer/>
       {profile}
     </div>

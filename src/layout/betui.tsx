@@ -1,8 +1,8 @@
-import React, { FC, MutableRefObject, useRef, useState } from "react";
+import React, { FC, MutableRefObject, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import useAnimationFrame from "use-animation-frame";
-import { KButton, NumericalInput } from "../components/form";
+import { KButton, KInput } from "../components/form";
 import { getConnection } from "../meta/connection";
 import { updateBalance } from "../store/actions/UserActions";
 import { useKState } from "../util/types";
@@ -19,7 +19,7 @@ import { playSound } from "../audio/AudioManager";
 // }
 
 const BetButton: FC<{
-  bet: number, cashout: number
+  bet: number, cashout: number, disabled: boolean
 }> = (props) => {
   const [t] = useTranslation();
   const dispatch = useDispatch();
@@ -76,7 +76,7 @@ const BetButton: FC<{
     );
   } else {
     return (
-      <KButton card
+      <KButton card disabled={props.disabled}
         onClick={async () => {
           await getConnection().makeBet(props.bet, props.cashout);
         }}>{t("bet.betAction")}</KButton>
@@ -86,36 +86,74 @@ const BetButton: FC<{
 
 export function BetUI() {
   const [t] = useTranslation();
-  const dispatch = useDispatch();
+
+  const userBalance = useKState(s => s.user.bal);
+  const userIsPlaying = useKState(s => s.players.userIsPlaying);
 
   const [amt, setAmt] = useState(1);
   const [cashout, setCashout] = useState(200);
 
-  const betButton = () => {
-
+  const betAction = async () => {
+    if (userIsPlaying === false) {
+      await getConnection().makeBet(amt, cashout);
+    } else {
+      await getConnection().pulloutBet();
+    }
   };
+
+  const [betError, setBetError] = useState<string | null>(null);
+  const [cashoutError, setCashoutError] = useState<string | null>(null);
+
+  const checkAmt = (val: number) => {
+    if (val < 1) {
+      setBetError(t("errors.atLeastOne"));
+    } else if (val*100 > (userBalance ?? 0)) {
+      setBetError(t("errors.lowBalance"));
+    } else {
+      setBetError(null);
+    }
+  };
+
+  const checkCashout = (val: number) => {
+    if (val <= 100) {
+      setCashoutError(t("errors.atLeastOneHundred"));
+    } else {
+      setCashoutError(null);
+    }
+  };
+
+  useEffect(() => {
+    checkAmt(amt);
+  }, [userBalance]);
 
   return (
     <Flexor fill direction="column">
-      <NumericalInput
+      <KInput
         label={t("bet.betAmt")}
         suffix={t("game.currencyShortname")}
         suffixTooltip={t("game.currency")}
         initialValue={amt}
-        onChange={v => setAmt(v)}
+        onChange={v => (setAmt(+v), checkAmt(+v))}
         reformatter={v => (+v ? +v : 1).toFixed(0)}
+        onFinish={betAction}
+        error={userIsPlaying ? null : betError}
+        disabled={true && !!userIsPlaying}
       />
-      <NumericalInput
+      <KInput
         label={t("bet.betPayout")}
         suffix="&times;"
         initialValue={cashout/100}
-        onChange={v => setCashout(Math.floor(100*v))}
+        onChange={v => (setCashout(Math.floor(100*+v)), checkCashout(100*+v))}
         reformatter={v => (+v ? +v : 2).toFixed(2)}
+        onFinish={betAction}
+        error={userIsPlaying ? null : cashoutError}
+        disabled={true && !!userIsPlaying}
       />
 
       <Spacer/>
 
-      <BetButton bet={amt} cashout={cashout}/>
+      <BetButton bet={amt} cashout={cashout}
+        disabled={ userIsPlaying ? false : !!(betError || cashoutError) }/>
     </Flexor>
   );
 }

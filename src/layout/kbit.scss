@@ -15,6 +15,10 @@ $radius: 45px;
     margin: 0 0.5rem;
   }
 
+  h1 {
+    cursor: pointer;
+  }
+
   .header-info {
     font-weight: bold;
     margin-left: 1.5em;
@@ -29,6 +33,15 @@ $radius: 45px;
     margin-left: 0.5em;
     cursor: pointer;
   }
+}
+
+.tip-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
 }
 
 .kbit-layout {
@@ -114,9 +127,7 @@ $radius: 45px;
 
     padding: 20px;
   }
-}
-
-@media (max-height: 700px) {
+  
   .kbit-layout {
     height: auto;
     grid-template-rows: unset;
@@ -124,5 +135,13 @@ $radius: 45px;
 
   .card {
     min-height: 200px;
+  }
+}
+
+@media (max-width: 500px) {
+  .kbit-header {
+    h1 {
+      display: none;
+    }
   }
 }

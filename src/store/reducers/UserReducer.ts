@@ -1,5 +1,6 @@
 import { createReducer, ActionType, Reducer } from "typesafe-actions";
-import { addFriends, authUser, logoutUser, updateBalance } from "../actions/UserActions";
+import { addFriends, authUser, logoutUser
+  , removeFriend, updateBalance } from "../actions/UserActions";
 
 export interface State {
   readonly name: string | null
@@ -36,4 +37,9 @@ export const UserReducer: Reducer<State, any> = createReducer(initialState)
     .handleAction(addFriends, (state: State, { payload }: ActionType<typeof addFriends>) => ({
       ...state,
       friends: Array.from(new Set(state.friends.concat(payload.friends))),
+    }))
+    // Remove Friend
+    .handleAction(removeFriend, (state: State, { payload }: ActionType<typeof removeFriend>) => ({
+      ...state,
+      friends: state.friends.filter(f => f !== payload.friend),
     }));

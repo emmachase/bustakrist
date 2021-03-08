@@ -1,22 +1,25 @@
 import { FC } from "react";
 import { clazz } from "../util/class";
 
-export function Spacer() {
+export function Spacer(props: any) {
   return <div style={{
     flex: 1,
-  }}></div>;
+  }}>{props.children}</div>;
 }
 
 export const Flexor: FC<{
-  direction?: "row" | "column",
+  className?: string
+  direction?: "row" | "column"
   fill?: boolean
   justify?: "space-around" | "space-between" | "center"
+  align?: "center"
 }> = (props) => {
   return (
-    <div className={clazz(props.fill && "full-size")} style={{
+    <div className={clazz(props.fill && "full-size", props.className)} style={{
       display: "flex",
       flexDirection: props.direction ?? "row",
       justifyContent: props.justify,
+      alignItems: props.align,
     }}>
       {props.children}
     </div>

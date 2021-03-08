@@ -13,6 +13,7 @@ export const Tooltip: FC<{
     setTooltipRef,
     setTriggerRef,
     visible,
+    forceUpdate,
   } = usePopperTooltip(props.config);
 
   useMemo(() => {

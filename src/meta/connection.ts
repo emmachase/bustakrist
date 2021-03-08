@@ -7,12 +7,15 @@ import { addFriends, authUser, logoutUser, updateBalance } from "../store/action
 import { Subject } from "../util/Subject";
 import { MINUTE, SECOND } from "../util/time";
 import { AuthResponse, BalanceResponse,
-  ProfileBetsResponse, ProfileResponse } from "./networkInterfaces";
-import { RequestCode, UpdateCode } from "./transportCodes";
+  ProfileBetsResponse, ProfileResponse, WithdrawResponse } from "./networkInterfaces";
+import { ErrorCode, ErrorDetail, RequestCode, UpdateCode } from "./transportCodes";
 
 let activeConnection: Connection;
 
 export const GameStream = new Subject<{ start: number }>();
+export const TipStream = new Subject<{ from: string, to: string, amount: number }>();
+export const TipToStream = new Subject<{ to: string, amount: number }>();
+export const AlertStream = new Subject();
 
 export class Connection {
   private ws!: WebSocket;
@@ -102,6 +105,19 @@ export class Connection {
       case UpdateCode.BUSTED:
         store.dispatch(bustGame(msg.data.bust, msg.data.hash));
         store.dispatch(updateBalance(msg.data.newBal));
+        break;
+
+      case UpdateCode.UPDATE_BALANCE:
+        store.dispatch(updateBalance(msg.data.newBal));
+        break;
+
+      case UpdateCode.RECIEVE_TIP:
+        store.dispatch(updateBalance(msg.data.newBal));
+        TipStream.next(msg.data);
+        break;
+
+      case UpdateCode.ALERT_SAFETY:
+        AlertStream.next(null);
         break;
 
       case UpdateCode.MESSAGE:
@@ -221,6 +237,24 @@ export class Connection {
     });
   }
 
+  public updateFriend(user: string, action: boolean) {
+    return this.makeRequest(RequestCode.UPDATE_FRIEND, {
+      name: user, action,
+    });
+  }
+
+  public sendTip(user: string, amount: number) {
+    return this.makeRequest(RequestCode.TIP, {
+      to: user, amount,
+    });
+  }
+
+  public withdrawKrist(to: string, amount: number) {
+    return this.makeRequest<WithdrawResponse>(RequestCode.WITHDRAW, {
+      to, amount,
+    });
+  }
+
   // Game
   public async makeBet(wager: number, cashout: number) {
     const res = await this.makeRequest<{ newBal: number }>(RequestCode.COMMIT_WAGER, {
@@ -250,4 +284,19 @@ export function getConnection() {
   } else {
     throw Error("Attempted to getConnection before connection was initialized");
   }
+}
+
+export interface RequestError {
+  ok: false,
+  errorType: ErrorCode,
+  error: ErrorDetail
+}
+
+export function isRequestError(x: unknown): x is RequestError {
+  if (typeof x === "object") {
+    const err = x as RequestError;
+    if (err.error && err.errorType) return true;
+  }
+
+  return false;
 }

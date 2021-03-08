@@ -1,8 +1,8 @@
 import { Howler } from "howler";
 import { Dispatch, MutableRefObject, useEffect, useRef, useState } from "react";
 import useAnimationFrame from "use-animation-frame";
-import { getTimeDiff, usePerfOff } from "../hooks/time";
-import { GameStream } from "../meta/connection";
+import { getTimeDiff, usePerfOff, useRecurTimeout } from "../hooks/time";
+import { GameStream, TipStream } from "../meta/connection";
 import { clamp, shuffle } from "../util/math";
 import { scoreFunction } from "../util/score";
 import { useKState } from "../util/types";
@@ -37,6 +37,8 @@ const transitions = [
   // 1.1, 1.2, 1.3, 1.4, 1.5,
 ];
 
+let first = true;
+
 export function GameAudio() {
   const game = useKState(s => s.game);
   const user = useKState(s => s.user.name);
@@ -61,15 +63,21 @@ export function GameAudio() {
     playSound("bust-win");
   }
 
+  useEffect(() => {
+    return TipStream.subscribe(() => {
+      playSound("tip");
+    });
+  });
+
   const perfOff = usePerfOff();
-  const runCheck = (real: boolean) => {
+  const runCheck = () => {
     const c = state.current;
     const timeDiff = getTimeDiff(perfOff, game.start, game.tdiff);
 
     const score = (game.bust/100) || scoreFunction(timeDiff);
     if (!c.started && timeDiff > 0.1) {
       c.started = true;
-      if (real) playSound("transition-1");
+      if (!first) playSound("transition-1");
     }
 
     for (let t = 0; t < transitions.length; t++) {
@@ -77,13 +85,13 @@ export function GameAudio() {
       const k = "t" + (t + 1);
       if (!cx[k] && score > transitions[t]) {
         cx[k] = true;
-        if (real) playSound("transition-" + (t + 2) as any);
+        if (!first) playSound("transition-" + (t + 2) as any);
       }
     }
 
     if (!c.bust && game.bust) {
       c.bust = true;
-      if (real) {
+      if (!first) {
         if (inActiveGame && !inActiveGame.multiplier) {
           playSound("bust-lose");
         } else {
@@ -91,6 +99,8 @@ export function GameAudio() {
         }
       }
     }
+
+    first = false;
   };
 
   useEffect(() => {
@@ -99,13 +109,14 @@ export function GameAudio() {
         Object.keys(state.current).forEach(key => {
           (state.current as any)[key] = false;
         });
-
-        runCheck(false);
       }, 0);
     });
   }, [perfOff, game.tdiff]);
 
-  useAnimationFrame(() => runCheck(true));
+  useAnimationFrame(() => runCheck());
+
+  // Effective interval for unfocused pages as animationFrames don't run then
+  useRecurTimeout(() => runCheck(), 100);
 
   return null;
 }
@@ -136,10 +147,24 @@ export function VolumeSlider(props: {
     setPercent(newPercent);
   });
 
+  const updateWheel = (e: React.WheelEvent) => {
+    let delta;
+    if (e.deltaY > 0) {
+      delta = -Math.min(0.1, percent**2 / 2);
+    } else {
+      delta = -Math.max(-0.1, -1 * ((1 - percent**2) / 2));
+    }
+
+    const newPercent = Math.max(0, Math.min(1, percent + delta));
+    props.onChange?.(newPercent);
+    setPercent(newPercent);
+  };
+
   return (
     <div
       className="volume-slider"
       ref={r => setSliderRef(r as HTMLDivElement)}
+      onWheel={updateWheel}
       // onClick={handleDrag}
       // onDrag={handleDrag}
       // draggable

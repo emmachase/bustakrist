@@ -11,6 +11,7 @@ export const UPDATE_BALANCE = "UPDATE_BALANCE";
 export const LOGOUT_USER = "LOGOUT_USER";
 
 export const ADD_FRIENDS = "ADD_FRIENDS";
+export const REMOVE_FRIEND = "REMOVE_FRIEND";
 
 // Chat State
 // ---

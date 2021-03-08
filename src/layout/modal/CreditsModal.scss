@@ -1,0 +1,73 @@
+.credits-modal {
+  .title {
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+    
+    > div {
+      position: relative;
+    }
+
+    h1 {
+      margin: 0 20px;
+      font-size: 64px;
+      line-height: 80px;
+    }
+
+    h2 {
+      margin: 0 20px;
+      font-weight: 100;
+      
+      span {
+        opacity: 0.6;
+      }
+
+      strong {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .item-credits {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2.5em 0 1em;
+
+    .item {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+
+      width: 90%;
+      margin: 0.5em 0;
+
+      .label {
+        position: relative;
+        opacity: 0.8;
+
+        overflow: hidden;
+        
+        span {
+          padding-right: 1rem;
+        }
+      }
+      
+      .dot {
+        position: relative;
+        flex: 1;
+        height: 0;
+        border-top: 4px dotted;
+        top: -0.25em;
+        opacity: 0.35;
+      }
+      
+      .value {
+        font-weight: bold;
+        padding-left: 1rem;
+        font-size: 1.1em;
+      }
+    }
+  }
+}

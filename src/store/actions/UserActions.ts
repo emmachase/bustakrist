@@ -17,3 +17,7 @@ export const updateBalance = createAction(constants.UPDATE_BALANCE,
 export interface AddFriendsPayload { friends: string[] }
 export const addFriends = createAction(constants.ADD_FRIENDS,
     (friends: string[]): AddFriendsPayload => ({ friends }))();
+
+export interface RemoveFriendPayload { friend: string }
+export const removeFriend = createAction(constants.REMOVE_FRIEND,
+    (friend: string): RemoveFriendPayload => ({ friend }))();

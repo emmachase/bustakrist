@@ -10,6 +10,7 @@ import { createConnection } from "./meta/connection";
 import { ChatView } from "./layout/chat";
 import { GameAudio, GameMusic } from "./audio/GameAudio";
 import { ModalProvider } from "./components/modal";
+import { TipOverlay } from "./components/aesthetic/tips";
 
 export const store: Store<RootState> = createStore(
     RootReducer,
@@ -40,6 +41,7 @@ function App() {
               <KBitLayout/>
             </>}
           </ModalProvider>
+          <TipOverlay/>
           <GameAudio/>
           <GameMusic/>
         </Suspense>

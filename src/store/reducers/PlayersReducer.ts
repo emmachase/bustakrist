@@ -9,19 +9,7 @@ export interface State {
 
 const initialState: State = {
   userIsPlaying: false,
-  players: [
-    { "name": "3d6", "wager": 2000 },
-    { "name": "byemoney", "wager": 1000 },
-    { "name": "bollark", "wager": 222.22 },
-    { "name": "ema", "wager": 50 },
-    { "name": "ustyn probblably", "wager": 20 },
-    { "name": "my alt", "wager": 2 },
-    { "name": "my 2nd alt", "wager": 2 },
-    { "name": "my 3rd alt", "wager": 2 },
-    { "name": "my 4th alt", "wager": 2 },
-    { "name": "my 5th alt", "wager": 2 },
-    { "name": "1lann", "wager": 0.02, "multiplier": 2 },
-  ],
+  players: [],
 };
 
 export const PlayersReducer: Reducer<State, any> = createReducer(initialState)

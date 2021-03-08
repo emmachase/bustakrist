@@ -1,8 +1,9 @@
-import { FC, MutableRefObject, useContext, useMemo, useRef, useState } from "react";
+import { createRef, FC, forwardRef, MutableRefObject,
+  useContext, useMemo, useRef, useState } from "react";
 import { useTranslation, Trans } from "react-i18next";
 import { ChatMessage } from "../store/reducers/ChatReducer";
 import { useKState } from "../util/types";
-import { SendOutlined, GlobalOutlined } from "@ant-design/icons";
+import { SendOutlined, GlobalOutlined, UserAddOutlined } from "@ant-design/icons";
 import { getConnection } from "../meta/connection";
 import { Divider } from "./misc";
 import "./chat.scss";
@@ -10,7 +11,7 @@ import { HSVColor } from "../util/color";
 import { clazz } from "../util/class";
 import { Tooltip } from "../components/pop";
 import { ModalContext } from "../components/modal";
-import { PlayerModal } from "./modal/PlayerModal";
+import { PlayerModal, AddFriendModal } from "./modal/PlayerModal";
 
 export const Message: FC<{
   msg: ChatMessage
@@ -30,12 +31,12 @@ export const Message: FC<{
   );
 };
 
-export const FriendFeedIcon: FC<{
+export const FriendFeedIcon = forwardRef<HTMLDivElement, {
   friend: string
   active: boolean
-  onClick: (friend: string) => void
-}> = ({ friend, active, onClick }) => {
-  const [refEl, setRef] = useState<HTMLElement | null>();
+  onClick:(friend: string) => void
+}>(({ friend, active, onClick }, ref) => {
+  // const [refEl, setRef] = useState<HTMLElement | null>();
 
   return (
     <>
@@ -43,15 +44,18 @@ export const FriendFeedIcon: FC<{
         className={clazz("feed friend-feed", active && "active")}
         style={{ backgroundColor: getColor(friend) }}
         onClick={() => onClick(friend)}
-        ref={r => setRef(r)}
+        ref={ref as any}
       >{friend[0]}</div>
-      <Tooltip
+      {/* <Tooltip
         refEl={refEl as HTMLElement}
         config={{ placement: "left" }}
-      >{friend}</Tooltip>
+      >{friend}</Tooltip> */}
     </>
   );
-};
+});
+
+FriendFeedIcon.displayName = "FriendFeedIcon";
+
 
 function hashCode(str: string): number {
   let hash = 0;
@@ -77,6 +81,8 @@ function getColor(name: string): string {
 
 export function ChatView() {
   const GLOBAL_FEED_BRAND = useMemo(() => ({}), []);
+
+  const modalCtx = useContext(ModalContext);
 
   const [t] = useTranslation();
   const user = useKState(s => s.user);
@@ -123,6 +129,18 @@ export function ChatView() {
     setText("");
   }
 
+  const arrLength = allFeeds.length;
+  const elRefs = useRef([]);
+
+  if (elRefs.current.length !== arrLength) {
+    // add or remove refs
+    elRefs.current = Array(arrLength).fill(null).map((_, i) => elRefs.current[i] || createRef());
+  }
+
+  if (selectedFeed !== GLOBAL_FEED_BRAND && !allFeeds.includes(selectedFeed.toString())) {
+    selectFeed(GLOBAL_FEED_BRAND);
+  }
+
   return (
     <div className="chat-view">
       <div className="chat-upper">
@@ -134,26 +152,47 @@ export function ChatView() {
             { selectedFeed !== GLOBAL_FEED_BRAND && feed.length === 0 &&
               <div className="chat-hint">
                 <Trans i18nKey="chat.noHistoryHint">
-                  You have no message history with <strong>{{
-                    name: selectedFeed.toString() }}</strong>, say Hello!
+                  You have no message history with <strong
+                    style={{ cursor: "pointer" }}
+                    onClick={() => modalCtx?.show(<PlayerModal user={selectedFeed.toString()}/>)}
+                  >{{
+                    name: selectedFeed.toString(),
+                  }}</strong>, say Hello!
                 </Trans>
               </div>
             }
           </div>
         </div>
-        <div className="chat-feeds">
-          <GlobalOutlined
-            className={clazz("feed", selectedFeed === GLOBAL_FEED_BRAND && "active")}
-            onClick={() => selectFeed(GLOBAL_FEED_BRAND)}
-          />
-          { allFeeds.length ? <Divider margin={8} /> : null }
-          <div className="friend-feeds">
-            { allFeeds.map((friend, idx) =>
-              <FriendFeedIcon key={idx} friend={friend}
-                active={selectedFeed === friend}
-                onClick={selectFeed}
-              />,
-            )}
+        <div className="chat-feeds-container">
+          <div className="chat-feeds">
+            <GlobalOutlined
+              className={clazz("feed", selectedFeed === GLOBAL_FEED_BRAND && "active")}
+              onClick={() => selectFeed(GLOBAL_FEED_BRAND)}
+            />
+            { user.name ? <Divider margin={8} /> : null }
+            <div className="friend-feeds">
+              { allFeeds.map((friend, idx) =>
+                <FriendFeedIcon key={idx}
+                  ref={elRefs.current[idx]}
+                  friend={friend}
+                  active={selectedFeed === friend}
+                  onClick={selectFeed}
+                />,
+              )}
+            </div>
+            { user.name && <UserAddOutlined onClick={() => modalCtx?.show(<AddFriendModal/>)} />}
+          </div>
+          <div>
+            { elRefs.current.map((ref: any, idx) => {
+              const friend = allFeeds[idx];
+
+              return ref.current && <Tooltip key={friend + "-" + idx}
+                refEl={ref.current as HTMLElement}
+                config={{ placement: "right" }}
+              >
+                {friend}
+              </Tooltip>;
+            })}
           </div>
         </div>
       </div>

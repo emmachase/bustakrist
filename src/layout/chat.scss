@@ -24,17 +24,19 @@
     @include card-scroller;
   }
 
-  .chat-feeds {
+  .chat-feeds-container {
     position: absolute;
     right: 20px;
     top: 0;
     
     font-size: 36px;
-    
-    padding-right: 8px;
-    max-height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
+
+    .chat-feeds {
+      padding-right: 8px;
+      max-height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
 
     @include no-scroller;
 
@@ -52,11 +54,13 @@
       margin-bottom: 8px;
     }
 
+    .anticon {
+      outline: none;
+    }
+
     .feed {
       position: relative;
       cursor: pointer;
-      outline: none;
-
 
       &.active {
         cursor: default;
