@@ -1,11 +1,15 @@
+import { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { clazz } from "../util/class";
 import { useKState } from "../util/types";
+import { ModalContext } from "./modal";
+import { PlayerModal } from "../layout/modal/PlayerModal";
 
 export function PlayersTable() {
   const [t] = useTranslation();
   const players = useKState(s => s.players.players);
   const bust = useKState(s => s.game.bust);
+  const modalCtx = useContext(ModalContext);
 
   const sortedPlayers = players.sort((a, b) => {
     if (a.multiplier && !b.multiplier) return 1;
@@ -31,7 +35,10 @@ export function PlayersTable() {
                 b.multiplier !== undefined && "c-win",
                 bust > 0 && b.multiplier === undefined && "c-lose",
             )}>
-            <td className="players-user"><div className="trans-container">{b.name}</div></td>
+            <td
+              className="players-user"
+              onClick={() => modalCtx?.show(<PlayerModal user={b.name}/>)}
+            ><div className="trans-container">{b.name}</div></td>
             <td><div className="trans-container">{multiplier}</div></td>
             <td><div className="trans-container">{wager}{t("game.currencyShortname")}</div></td>
             <td className="players-profit"><div className="trans-container">{profit}</div></td>
