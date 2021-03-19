@@ -1,5 +1,5 @@
 import { createRef, FC, forwardRef, MutableRefObject,
-  useContext, useMemo, useRef, useState } from "react";
+  useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation, Trans } from "react-i18next";
 import { ChatMessage } from "../store/reducers/ChatReducer";
 import { useKState } from "../util/types";
@@ -12,6 +12,8 @@ import { clazz } from "../util/class";
 import { Tooltip } from "../components/pop";
 import { ModalContext } from "../components/modal";
 import { PlayerModal, AddFriendModal } from "./modal/PlayerModal";
+import { playSound } from "../audio/AudioManager";
+import { canNotify } from "../util/notify";
 
 export const Message: FC<{
   msg: ChatMessage
@@ -35,24 +37,43 @@ export const FriendFeedIcon = forwardRef<HTMLDivElement, {
   friend: string
   active: boolean
   onClick:(friend: string) => void
-}>(({ friend, active, onClick }, ref) => {
-  // const [refEl, setRef] = useState<HTMLElement | null>();
+}>(
+  ({ friend, active, onClick }, ref) => {
+    const feed = useKState(s => s.chat.dms[friend]) ?? [];
+    const lastMessage = feed[feed.length - 1] ?? {};
 
-  return (
-    <>
+    // Effectively clear unread when feed is active
+    const [lastSeen, setLastSeen] = useState<Date>(() => new Date(0));
+    useEffect(() => void (active && setLastSeen(lastMessage.timestamp)), [active, lastMessage]);
+
+    const unreads = feed.filter(m => m.timestamp > lastSeen).length;
+    useEffect(() => {
+      if (unreads && active) return void setLastSeen(lastMessage.timestamp);
+      if (unreads) {
+        playSound("chat");
+
+        if (canNotify()) {
+          new Notification(friend + " (BustAKrist)", {
+            body: lastMessage.message,
+            timestamp: +lastMessage.timestamp,
+          });
+        }
+      }
+    }, [unreads]);
+
+    return (
       <div
         className={clazz("feed friend-feed", active && "active")}
         style={{ backgroundColor: getColor(friend) }}
         onClick={() => onClick(friend)}
         ref={ref as any}
-      >{friend[0]}</div>
-      {/* <Tooltip
-        refEl={refEl as HTMLElement}
-        config={{ placement: "left" }}
-      >{friend}</Tooltip> */}
-    </>
-  );
-});
+      >
+        {friend[0]}
+        {unreads > 0 && <div className="unread-badge">{unreads}</div>}
+      </div>
+    );
+  },
+);
 
 FriendFeedIcon.displayName = "FriendFeedIcon";
 
@@ -141,10 +162,20 @@ export function ChatView() {
     selectFeed(GLOBAL_FEED_BRAND);
   }
 
+  // Effectively clear unread when feed is active
+  const [lastSeen, setLastSeen] = useState<Date>(() => new Date(0));
+  const globalActive = selectedFeed === GLOBAL_FEED_BRAND;
+  const lastTimestamp = (messageStore.chat[messageStore.chat.length - 1] ?? {}).timestamp;
+  useEffect(() => void (globalActive && setLastSeen(lastTimestamp)), [
+    globalActive, lastTimestamp,
+  ]);
+
+  const globalUnreads = messageStore.chat.filter(m => m.timestamp > lastSeen).length;
+
   return (
     <div className="chat-view">
       <div className="chat-upper">
-        <div className="chat-history" ref={containerRef}>
+        <div className="chat-history scroller" ref={containerRef}>
           <div className="chat-hwrap">
             { feed.map((msg, idx) =>
               <Message key={+msg.timestamp + "-" + msg.from + idx} msg={msg} />,
@@ -163,12 +194,15 @@ export function ChatView() {
             }
           </div>
         </div>
-        <div className="chat-feeds-container">
+        <div className="chat-feeds-container no-scroller">
           <div className="chat-feeds">
             <GlobalOutlined
               className={clazz("feed", selectedFeed === GLOBAL_FEED_BRAND && "active")}
               onClick={() => selectFeed(GLOBAL_FEED_BRAND)}
             />
+            {!globalActive && globalUnreads > 0
+              && <div className="unread-badge subtle">{globalUnreads}</div>}
+
             { user.name ? <Divider margin={8} /> : null }
             <div className="friend-feeds">
               { allFeeds.map((friend, idx) =>

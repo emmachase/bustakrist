@@ -1,8 +1,8 @@
-import React, { FC, MutableRefObject, useEffect, useRef, useState } from "react";
+import React, { FC, MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import useAnimationFrame from "use-animation-frame";
-import { KButton, KInput } from "../components/form";
+import { KButton, KDropdown, KInput, reformatters } from "../components/form";
 import { getConnection } from "../meta/connection";
 import { updateBalance } from "../store/actions/UserActions";
 import { useKState } from "../util/types";
@@ -11,6 +11,7 @@ import { DisconnectOutlined, SketchOutlined } from "@ant-design/icons";
 import { getTimeDiff, usePerfOff } from "../hooks/time";
 import { formatScore, scoreFunction } from "../util/score";
 import { playSound } from "../audio/AudioManager";
+import { FlatBetHook, FlatBetUI, MartingaleBetUI, ReverseMartingaleBetUI, SplitMartingaleBetUI } from "./autobet";
 
 // enum BetState {
 //   NOT_BETTING,
@@ -18,11 +19,13 @@ import { playSound } from "../audio/AudioManager";
 //   BETTING,
 // }
 
-const BetButton: FC<{
-  bet: number, cashout: number, disabled: boolean
+export const BetButton: FC<{
+  bet: number, cashout: number, disabled?: boolean, disallowBets?: false
+} | {
+  bet?: never, cashout?: never, disabled?: never
+  disallowBets: true,
 }> = (props) => {
   const [t] = useTranslation();
-  const dispatch = useDispatch();
 
   const tdiff = useKState(s => s.game.tdiff);
   const nextStart = useKState(s => s.game.start);
@@ -76,9 +79,9 @@ const BetButton: FC<{
     );
   } else {
     return (
-      <KButton card disabled={props.disabled}
+      <KButton requireValid card disabled={props.disabled || props.disallowBets}
         onClick={async () => {
-          await getConnection().makeBet(props.bet, props.cashout);
+          await getConnection().makeBet(props.bet!, props.cashout!);
         }}>{t("bet.betAction")}</KButton>
     );
   }
@@ -96,8 +99,6 @@ export function BetUI() {
   const betAction = async () => {
     if (userIsPlaying === false) {
       await getConnection().makeBet(amt, cashout);
-    } else {
-      await getConnection().pulloutBet();
     }
   };
 
@@ -131,10 +132,9 @@ export function BetUI() {
       <KInput
         label={t("bet.betAmt")}
         suffix={t("game.currencyShortname")}
-        suffixTooltip={t("game.currency")}
         initialValue={amt}
         onChange={v => (setAmt(+v), checkAmt(+v))}
-        reformatter={v => (+v ? +v : 1).toFixed(0)}
+        reformatter={reformatters.int}
         onFinish={betAction}
         error={userIsPlaying ? null : betError}
         disabled={true && !!userIsPlaying}
@@ -144,7 +144,7 @@ export function BetUI() {
         suffix="&times;"
         initialValue={cashout/100}
         onChange={v => (setCashout(Math.floor(100*+v)), checkCashout(100*+v))}
-        reformatter={v => (+v ? +v : 2).toFixed(2)}
+        reformatter={reformatters.dec2}
         onFinish={betAction}
         error={userIsPlaying ? null : cashoutError}
         disabled={true && !!userIsPlaying}
@@ -155,5 +155,60 @@ export function BetUI() {
       <BetButton bet={amt} cashout={cashout}
         disabled={ userIsPlaying ? false : !!(betError || cashoutError) }/>
     </Flexor>
+  );
+}
+
+export function AutoBetUI() {
+  const [t] = useTranslation();
+
+  const [strat, setStrat] = useState<string>();
+
+  return (
+    <div className="full-size scroller" style={{ overflowX: "hidden", overflowY: "auto" }}>
+      <Flexor fill direction="column">
+        <KDropdown
+          value={strat}
+          onChange={v => setStrat(v)}
+          label={t("bet.autoui.strat")}
+          placeholder={t("bet.autoui.selectStrat")}
+          options={[
+            {
+              value: "flat",
+              label: t("bet.autoui.strats.flat.label"),
+              help: t("bet.autoui.strats.flat.info"),
+            },
+            {
+              value: "martingale",
+              label: t("bet.autoui.strats.martingale.label"),
+              help: t("bet.autoui.strats.martingale.info"),
+            },
+            {
+              value: "revmartingale",
+              label: t("bet.autoui.strats.revmartingale.label"),
+              help: t("bet.autoui.strats.revmartingale.info"),
+            },
+            {
+              value: "splitmartingale",
+              label: t("bet.autoui.strats.splitmartingale.label"),
+              help: t("bet.autoui.strats.splitmartingale.info"),
+            },
+          ]}
+        />
+        {(() => {
+          switch (strat) {
+            case "flat":
+              return <FlatBetUI />;
+            case "martingale":
+              return <MartingaleBetUI />;
+            case "revmartingale":
+              return <ReverseMartingaleBetUI />;
+            case "splitmartingale":
+              return <SplitMartingaleBetUI />;
+            default:
+              return null;
+          }
+        })()}
+      </Flexor>
+    </div>
   );
 }

@@ -10,8 +10,6 @@ $modal-blur: 12px;
   left: 0;
   pointer-events: none;
 
-  @include card-scroller;
-
   .modal {
     opacity: 0;
     transition: opacity 0.25s ease;
@@ -24,7 +22,6 @@ $modal-blur: 12px;
     justify-content: center;
     align-items: center;
     overflow: auto;
-
     backdrop-filter: blur(0);
     transition: backdrop-filter 0.5s ease;
   }

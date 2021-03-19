@@ -33,9 +33,12 @@ import "./audioStyles.scss";
 // }
 
 const transitions = [
-  2, 5, 25, 100, 500,
+  2, 5, 10, 50, 100, 400,
   // 1.1, 1.2, 1.3, 1.4, 1.5,
 ];
+
+// Seconds between successive plays of the "max power" sound
+const maxReplayDelay = 6;
 
 let first = true;
 
@@ -54,6 +57,7 @@ export function GameAudio() {
     t3: true,
     t4: true,
     t5: true,
+    t6: true,
     bust: false,
     pullout: false,
   });
@@ -69,15 +73,17 @@ export function GameAudio() {
     });
   });
 
+  const maxReplay = useRef(0);
+
   const perfOff = usePerfOff();
-  const runCheck = () => {
+  const runCheck = (frame: { delta: number }) => {
     const c = state.current;
     const timeDiff = getTimeDiff(perfOff, game.start, game.tdiff);
 
     const score = (game.bust/100) || scoreFunction(timeDiff);
-    if (!c.started && timeDiff > 0.1) {
+    if (!c.started && timeDiff > 0.0) {
       c.started = true;
-      if (!first) playSound("transition-1");
+      if (!first) playSound("game-start");
     }
 
     for (let t = 0; t < transitions.length; t++) {
@@ -85,7 +91,16 @@ export function GameAudio() {
       const k = "t" + (t + 1);
       if (!cx[k] && score > transitions[t]) {
         cx[k] = true;
-        if (!first) playSound("transition-" + (t + 2) as any);
+        if (!first) playSound("transition-" + (t + 1) as any);
+      }
+    }
+
+    if (c.t6 && game.bust === 0) {
+      maxReplay.current += frame.delta;
+      if (maxReplay.current > maxReplayDelay) {
+        maxReplay.current = 0;
+
+        if (!first) playSound("transition-6");
       }
     }
 
@@ -109,14 +124,16 @@ export function GameAudio() {
         Object.keys(state.current).forEach(key => {
           (state.current as any)[key] = false;
         });
+
+        maxReplay.current = 0;
       }, 0);
     });
   }, [perfOff, game.tdiff]);
 
-  useAnimationFrame(() => runCheck());
+  useAnimationFrame(e => runCheck(e));
 
   // Effective interval for unfocused pages as animationFrames don't run then
-  useRecurTimeout(() => runCheck(), 100);
+  useRecurTimeout(() => runCheck({ delta: 0 }), 100);
 
   return null;
 }
@@ -200,7 +217,7 @@ export function GameMusic() {
     // shuffle(musicHowls);
   }, []);
 
-  const [globalMute, setGlobalMute] = useState(true);
+  const [globalMute, setGlobalMute] = useState(() => true);
   const [currentSongIdx, setSong] = useState(0);
   const [showTitle, setShowTitle] = useState(false);
 
@@ -212,12 +229,12 @@ export function GameMusic() {
         currentSong.howl.once("load", () => {
           currentSong.howl.play();
           setShowTitle(true);
-          setTimeout(() => setShowTitle(false), 6000);
+          setTimeout(() => setShowTitle(false), 4000);
         });
       } else {
         currentSong.howl.play();
         setShowTitle(true);
-        setTimeout(() => setShowTitle(false), 6000);
+        setTimeout(() => setShowTitle(false), 4000);
       }
 
       currentSong.howl.once("end", () => {

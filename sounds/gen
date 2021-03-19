@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+audiosprite --autoplay sfx --gap 1 --output 0_spritesheet *.wav

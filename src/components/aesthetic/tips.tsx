@@ -4,6 +4,7 @@ import useAnimationFrame from "use-animation-frame";
 import { useElementSize } from "../../hooks/resize";
 import { AlertStream, TipStream, TipToStream } from "../../meta/connection";
 import { DepositStream } from "../../layout/modal/PlayerModal";
+import { Subject } from "../../util/Subject";
 
 const imageShrink = 8;
 function drawRotated(
@@ -76,6 +77,8 @@ class ToastText {
   }
 }
 
+export const ToastSink = new Subject<{ text: string, time: number }>();
+
 export const TipOverlay: FC = () => {
   const [t] = useTranslation();
   const [wrapper, setWrapper] = useState<HTMLElement>();
@@ -120,6 +123,12 @@ export const TipOverlay: FC = () => {
   useEffect(() => {
     return DepositStream.subscribe(next => {
       toCredits.current.push(new ToastText(t("game.withdrew", { amount: next.amount }), 3));
+    });
+  });
+
+  useEffect(() => {
+    return ToastSink.subscribe(next => {
+      toCredits.current.push(new ToastText(next.text, next.time));
     });
   });
 

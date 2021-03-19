@@ -1,3 +1,5 @@
+@import "./colors.scss";
+
 .full-size {
   position: relative;
   width: 100%;
@@ -59,8 +61,49 @@ $spacer: 1rem;
 .mt-4 { margin-top: 1.5  *$spacer!important }
 .mt-5 { margin-top: 3    *$spacer!important }
 
+.ml-0 { margin-left: 0!important }
+.ml-1 { margin-left: 0.25 *$spacer!important }
+.ml-2 { margin-left: 0.5  *$spacer!important }
+.ml-3 { margin-left: 1    *$spacer!important }
+.ml-4 { margin-left: 1.5  *$spacer!important }
+.ml-5 { margin-left: 3    *$spacer!important }
+
+.mr-0 { margin-right: 0!important }
+.mr-1 { margin-right: 0.25 *$spacer!important }
+.mr-2 { margin-right: 0.5  *$spacer!important }
+.mr-3 { margin-right: 1    *$spacer!important }
+.mr-4 { margin-right: 1.5  *$spacer!important }
+.mr-5 { margin-right: 3    *$spacer!important }
+
 .fs-2 {
   font-size: 18px;
 }
 
+
+.scroller {
+  scrollbar-width: thin;
+  scrollbar-color: $subtle transparent;
+
+  &::-webkit-scrollbar {
+    background: none;
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $subtle;
+    border-radius: 16px;
+    opacity: 0.2;
+    width: 8px;
+  }
+}
+
+.no-scroller {
+  scrollbar-width: none;
+  scrollbar-color: transparent;
+
+  &::-webkit-scrollbar {
+    background: none;
+    width: 0;
+  }
+}
 

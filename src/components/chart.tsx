@@ -1,7 +1,6 @@
 import { FC, MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector, useStore } from "react-redux";
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
 import useAnimationFrame from "use-animation-frame";
 import { useElementSize } from "../hooks/resize";
 import { getTimeDiff, usePerfOff } from "../hooks/time";

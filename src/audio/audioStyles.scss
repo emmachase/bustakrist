@@ -49,24 +49,6 @@
   }
 }
 
-@keyframes fade-in-out {
-  0% { 
-    opacity: 0%;
-  }
-
-  25% { 
-    opacity: 100%
-  }
-
-  75% {
-    opacity: 100%;
-  }
-
-  100% { 
-    opacity: 0%;
-  }
-}
-
 .audio-track {
   position: fixed;
   z-index: 100;
@@ -78,7 +60,9 @@
   text-align: right;
   pointer-events: none;
 
+  transition: opacity 1.5s ease;
+
   &.show {
-    animation: fade-in-out 6s ease;
+    opacity: 1;
   }
 }

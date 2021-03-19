@@ -1,3 +1,5 @@
+@import "../../colors.scss";
+
 .player-modal, .tip-modal {
   h1 {
     font-weight: 100;
@@ -25,11 +27,13 @@
 .bet-chart {
   margin-top: 2rem;
 
+  .rv-crosshair__inner__content {
+    background: rgba($ambient, 0.7);
+  }
+
   .chart-tooltip {
-    padding: 0 1rem;
-    background: #000a;
-    border: 1px solid #fff5;
-    border-radius: 8px;
+    white-space: nowrap;
+    color: rgba($text, 0.8);
 
     .label {
       margin: 4px 0;

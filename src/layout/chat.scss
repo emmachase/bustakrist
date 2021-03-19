@@ -20,8 +20,6 @@
     overflow: auto;
     flex-direction: column-reverse;
     height: 100%;
-
-    @include card-scroller;
   }
 
   .chat-feeds-container {
@@ -38,8 +36,6 @@
       overflow-x: hidden;
     }
 
-    @include no-scroller;
-
     .tooltip-container {
       font-size: 16px;
     }
@@ -52,6 +48,24 @@
       font-size: 30px;
       border-radius: 8px;
       margin-bottom: 8px;
+    }
+
+    .unread-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      font-size: 12px;
+      line-height: 12px;
+      background: red;
+      padding: 2px 4px;
+      color: white;
+      border-radius: 4px;
+      text-align: center;
+
+      &.subtle {
+        background: rgba($text, 0.2);
+        color: $text;
+      }
     }
 
     .anticon {

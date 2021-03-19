@@ -19,6 +19,11 @@
   backdrop-filter: blur(10px);
 }
 
+.attention.tooltip-container {
+  --tooltipBackground: #{rgba(white, 0.2)};
+  --tooltipBorder: #{$tooltipBorder};
+}
+
 .error .tooltip-container {
   --tooltipBackground: #{rgba(mix($ambientError, red, 80%), 0.5)};
   --tooltipBorder: #{$tooltipBorder};

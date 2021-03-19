@@ -51,7 +51,7 @@ export const LongHistory: FC<{
   const history = useKState(s => s.game.bustHistory);
 
   return (
-    <div className="roll-history">
+    <div className="scroller roll-history">
       <table>
         <thead>
           <tr>

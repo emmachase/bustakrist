@@ -11,6 +11,7 @@ import { ChatView } from "./layout/chat";
 import { GameAudio, GameMusic } from "./audio/GameAudio";
 import { ModalProvider } from "./components/modal";
 import { TipOverlay } from "./components/aesthetic/tips";
+import { NotifyPopup } from "./components/notifyPopup";
 
 export const store: Store<RootState> = createStore(
     RootReducer,
@@ -21,7 +22,8 @@ export type AppDispatch = typeof store.dispatch;
 
 
 // Server websocket connection
-createConnection("localhost:8081");
+createConnection(process.env.NODE_ENV === "development"
+  ? "localhost:8081" : window.location.host);
 
 function App() {
   const [chatOnly, setChatOnly] = useState(false);
@@ -44,6 +46,7 @@ function App() {
           <TipOverlay/>
           <GameAudio/>
           <GameMusic/>
+          <NotifyPopup/>
         </Suspense>
       </Provider>
     </div>

@@ -2,8 +2,8 @@ import { CSSProperties, FC, MutableRefObject, useContext, useRef, useState } fro
 import { BustChart } from "../components/chart";
 import "./kbit.scss";
 import { clazz } from "../util/class";
-import { useTranslation } from "react-i18next";
-import { BetUI } from "./betui";
+import { useTranslation, Trans } from "react-i18next";
+import { BetUI, AutoBetUI } from "./betui";
 import { AuthUI } from "./auth";
 import { ShortHistory } from "../components/history";
 import { Spacer } from "./flex";
@@ -18,9 +18,10 @@ import { useDispatch } from "react-redux";
 import { logoutUser } from "../store/actions/UserActions";
 import { getConnection } from "../meta/connection";
 import { LongHistory } from "../components/history";
-import { ModalContext } from "../components/modal";
+import { ModalContext, Modal } from "../components/modal";
 import { PlayerModal, BalanceModal } from "./modal/PlayerModal";
 import { CreditsModal } from "./modal/CreditsModal";
+import { KButton } from "../components/form";
 
 export const Card: FC<{
   area?: string,
@@ -52,10 +53,15 @@ export const Card: FC<{
 export const KHeader: FC<{
   onChatOnly: () => void
 }> = (props) => {
+  const dispatch = useDispatch();
   const [t] = useTranslation();
   const [logout, setLogout] = useState<HTMLSpanElement | null>();
+  const [balanceTooltip, setBalanceTooltip] = useState<HTMLSpanElement | null>();
   const user = useKState(s => s.user);
-  const dispatch = useDispatch();
+
+  const busted = useKState(s => s.game.bust);
+  const pendingStake = useKState(s => s.players.players.find(p => p.name === user.name));
+  const hasPendingBalance = pendingStake?.multiplier && !busted;
 
   const onLogout = () => {
     localStorage.removeItem("reauth");
@@ -69,8 +75,10 @@ export const KHeader: FC<{
     modalCtx?.show(<PlayerModal user={user.name}/>);
   };
 
+  const [forceToolip, setForceTooltip] = useState(true);
   const openBalance = () => {
     if (!user.name) return;
+    setForceTooltip(false);
     modalCtx?.show(<BalanceModal />);
   };
 
@@ -78,11 +86,12 @@ export const KHeader: FC<{
     modalCtx?.show(<CreditsModal/>);
   };
 
-
   const profile = user.name ?
     <>
       <span className="header-info btn" onClick={openProfile}>{user.name}</span>
-      <span className="header-info btn" onClick={openBalance}>{
+      <span className={clazz("header-info", "btn", hasPendingBalance && "pending")}
+        onClick={openBalance} ref={r => setBalanceTooltip(r)}
+      >{
         ((user.bal ?? 0)/100).toFixed(2)}{
         t("game.currencyShortname")}
       </span>
@@ -95,12 +104,26 @@ export const KHeader: FC<{
       >
         {t("auth.logout")}
       </Tooltip>
+      { user.bal === 0 && <Tooltip className="attention"
+        refEl={balanceTooltip as HTMLElement}
+        config={{ visible: forceToolip, placement: "bottom-end" }}
+      >
+        {t("hint.lowBalance")}
+      </Tooltip> }
+      { hasPendingBalance && <Tooltip
+        refEl={balanceTooltip as HTMLElement}
+        config={{ placement: "bottom-end" }}
+      >
+        {t("hint.pendingBalance")}
+      </Tooltip> }
     </> : null;
 
   return (
     <div className="kbit-header">
       <img src="/krist.webp"/>
       <h1 onClick={openCredits}>BustAKrist</h1>
+      {process.env.NODE_ENV === "development" && <span className="dev-badge">dev</span>}
+
       <Spacer/>
       {profile}
     </div>
@@ -129,7 +152,14 @@ export function KBitLayout() {
         {
           username === null
             ? <AuthUI/>
-            : <BetUI />
+            : <ComboView>
+                <ComboView.Tab label={t("bet.manual")}>
+                  <BetUI />
+                </ComboView.Tab>
+                <ComboView.Tab label={t("bet.auto")}>
+                  <AutoBetUI />
+                </ComboView.Tab>
+              </ComboView>
         }
       </Card>
       <Card className="players-righttab" area="play">

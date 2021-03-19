@@ -10,8 +10,37 @@
     "betAction": "Bet",
     "betAmt": "Bet",
     "betPayout": "Payout",
+    "betTarget": "Target",
+    "betSplits": "Splits",
     "cancel": "Cancel",
-    "pullout": "Pullout"
+    "pullout": "Pullout",
+    "manual": "Manual",
+    "auto": "Auto",
+    "autoui": {
+      "strat": "Strategy",
+      "selectStrat": "None",
+      "start": "Start",
+      "stop": "Stop",
+      "strats": {
+        "flat": {
+          "label": "Flat",
+          "info": "This strategy bets the same wager and cashout threshold every time."
+        },
+        "martingale": {
+          "label": "Martingale",
+          "info": "This strategy bets the given wager and cashout threshold until a loss, in which case the wager is doubled for the next bet, this continues until a win in which case the wager is reset to the original amount."
+        },
+        "revmartingale": {
+          "label": "Reverse Martingale",
+          "info": "This strategy doubles the given wager and cashout threshold every time until a loss, in which case the wager is reset to the original amount."
+        },
+        "splitmartingale": {
+          "label": "Labouchère (Split)",
+          "info": "This strategy generates a list of specified size, containing a split of the target profit. For each round the wager is the sum of the first and last elements on the list (with fixed 2x cashout), if it's a win, the items are removed, if it's a loss, the lost amount is appended to the list.",
+          "finished": "AutoBet completed all splits"
+        }
+      }
+    }
   },
   "game": {
     "connecting": "Connecting to Game Server...",
@@ -88,8 +117,9 @@
     "allTimeLow": "All-time low net-profit:",
     "allTimeHigh": "All-time high net-profit:",
     "totalWagered": "Total wagered:",
+    "genesis": "Genesis",
     "gameBusted": "Busted @{{bust}}X",
-    "specificGame": "Game {{game}}",
+    "specificGame": "Game {{game}} (Seed {{hash}})",
     "specificWager": "Wager: {{wager}}KST",
     "specificCashout": "Cashed Out @{{cashout}}X",
     "specificProfit": "Profit: {{profit}}KST",
@@ -105,13 +135,25 @@
     "friendNoop": "You are already friends with this user",
     "lowBalance": "You do not have enough Krist to do this",
     "atLeastOne": "Bet must be at least 1KST",
+    "atLeastOneTarget": "Target must be at least 1KST",
     "atLeastOneHundred": "Payout must be at least 1.01×",
+    "atLeastTwoSplits": "Must use at least 2 splits",
+    "splitLessThanOne": "Splits would be less than 1KST",
     "nameAllowed": "Must be alphanumeric, underscore, or dash",
     "formMax": "Max of {{max}} characters",
     "formMin": "Must be at least {{min}} characters",
     "invalidCredentials": "Username or Password incorrect",
     "userExists": "Username taken",
     "autoCashout": "You were automatically cashed-out due to reaching the max profit.",
-    "invalidAddress": "Invalid destination address"
+    "invalidAddress": "Invalid destination address",
+    "required": "This field is required",
+    "autoStopFromBalance": "AutoBet was stopped due to insufficient balance"
+  },
+  "notify": {
+    "request": "This site optionally uses notifications for DM's"
+  },
+  "hint": {
+    "lowBalance": "Click to add Krist!",
+    "pendingBalance": "Your earnings are pending, and will be added after the round ends."
   }
 }

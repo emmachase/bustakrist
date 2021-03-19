@@ -1,3 +1,5 @@
+export type CancelSubscription = () => void;
+
 export class Subject<T> {
   private observers: ((x: T) => void)[] = [];
 
@@ -7,7 +9,7 @@ export class Subject<T> {
     }
   }
 
-  public subscribe(cb: (value: T) => void) {
+  public subscribe(cb: (value: T) => void): CancelSubscription {
     this.observers.push(cb);
 
     return () => {

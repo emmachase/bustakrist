@@ -1,10 +1,12 @@
 import { FC, MutableRefObject, useMemo, useRef } from "react";
 import { usePopperTooltip, Config as PopperConfig } from "react-popper-tooltip";
+import { clazz } from "../util/class";
 import "./pop.scss";
 
 export const Tooltip: FC<{
   refEl: HTMLElement
   config?: PopperConfig
+  className?: string
 }> = (props) => {
   // const rtest = useRef() as any;
   const {
@@ -22,11 +24,10 @@ export const Tooltip: FC<{
 
   return (
     <>
-      {/* <div ref={rtest}>Test</div> */}
       {visible && (
         <div
           ref={setTooltipRef}
-          {...getTooltipProps({ className: "tooltip-container" })}
+          {...getTooltipProps({ className: clazz("tooltip-container", props.className) })}
         >
           {props.children}
           <div {...getArrowProps({ className: "tooltip-arrow" })} />

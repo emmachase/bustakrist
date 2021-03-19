@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState, Suspense, useContext } from "react";
+import React, { FC, useEffect, useMemo, useState, Suspense, useContext, useRef } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Modal, ModalContext, ModalElement } from "../../components/modal";
 import { getConnection, isRequestError, TipToStream } from "../../meta/connection";
@@ -9,9 +9,6 @@ import { formatFixed2 } from "../../util/score";
 import { DateTime } from "luxon";
 import "./PlayerModal.scss";
 import { BlockSkeleton } from "../../components/skeletons";
-import { CartesianGrid, Tooltip as ChartTooltip, Line, LineChart,
-  ReferenceLine,
-  ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { Flexor, Spacer } from "../flex";
 import { KButton, KInput } from "../../components/form";
 import { useKState } from "../../util/types";
@@ -22,6 +19,9 @@ import { addFriends, removeFriend, updateBalance } from "../../store/actions/Use
 import { ErrorDetail } from "../../meta/transportCodes";
 import { clazz } from "../../util/class";
 import { Subject } from "../../util/Subject";
+import { Crosshair, FlexibleWidthXYPlot, Highlight,
+  HorizontalGridLines, LineMarkSeries, XAxis, YAxis } from "react-vis";
+import "react-vis/dist/style.css";
 
 function useProfile(username: string): () => ProfileResponse {
   return useMemo(() => suspend(getConnection().getProfile(username)), [username]);
@@ -42,34 +42,47 @@ function useProfileBets(
 
 const PlayerChart: FC<{
   page: number
+  user: string
   profile: ProfileResponse
   readBets: () => ProfileBetsResponse | undefined
   onNavigate: (dx: number) => void
 }> = (props) => {
-  const [t] = useTranslation();
+  const [t, i18n] = useTranslation();
+
+  const [zoomArea, setZoomArea] = useState<any>(null);
+  const [crosshairValue, setCrosshairValue] = useState<any>(null);
+  const canSet = useRef(true);
+
+  useEffect(() => void setZoomArea(null), [props.page]);
 
   const bets = props.readBets();
   if (!bets) return <BlockSkeleton className="bet-chart" height="20rem" />;
 
   const erev = [...bets.entities].reverse();
   const edata = erev.map(e => ({
+    ...e,
     id: e.id,
-    newNetBalance: e.newNetBalance/100,
+    newNetBalance: e.newNetBalance,
   }));
 
   if (edata[0].id === 1) {
     // Insert a genesis game to show zero net
-    edata.unshift({ id: 0, newNetBalance: 0 });
+    edata.unshift({ id: 0, newNetBalance: 0 } as any);
   }
 
-  const KTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      const bet = bets.entities.find(e => e.id === label);
-      if (!bet) return null;
-      // props.profile.
-      return (
-        <div className="chart-tooltip">
-          <div className="label">{t("profile.specificGame", { game: bet.game })}</div>
+  const KTooltip = (tProps: { betIndex: number }) => {
+    const bet = edata[tProps.betIndex];
+    if (!bet) return null;
+
+    return (
+      <div className="chart-tooltip">
+        { bet.timestamp ? <>
+          <div className="label">
+            <strong>{t("profile.specificGame", {
+              hash: bet.game.toLocaleString(),
+              game: bet.id.toLocaleString(),
+            })}</strong>
+          </div>
           <div className="label">{t("profile.specificWager", { wager: bet.bet })}</div>
           { bet.cashout
           ? <><div className="label c-win">
@@ -92,34 +105,93 @@ const PlayerChart: FC<{
           <div className="label subtle">{t("profile.playedAgo",
             { ago: DateTime.fromMillis(bet.timestamp).toRelative() })}
           </div>
-        </div>
-      );
-    }
-
-    return null;
+        </> : <>
+          <div>{t("profile.genesis")}</div>
+        </>}
+      </div>
+    );
   };
+
+  let yMin = 0;
+  let yMax = 0;
+  if (zoomArea) {
+    const values = edata
+      .filter(d => zoomArea.left <= d.id && d.id <= zoomArea.right)
+      .map(d => d.newNetBalance);
+    yMin = Math.min(...values)/100;
+    yMax = Math.max(...values)/100;
+
+    if (values.length === 0) {
+      yMin = -50;
+      yMax =  50;
+    } else if (values.length === 1) {
+      yMin -= 50;
+      yMax += 50;
+    }
+  }
+
 
   return (
     <div className="bet-chart">
-      <ResponsiveContainer width="100%" aspect={2/1}>
-        <LineChart
-          data={edata}
-          margin={{
-            top: 5,
-            right: 35,
-            bottom: 5,
+      <FlexibleWidthXYPlot
+        margin={{ left: 50 }}
+        animation={{ duration: 1000 }} height={350}
+        onMouseLeave={() => setCrosshairValue(null)}
+        xDomain={
+          zoomArea && [
+            zoomArea.left,
+            zoomArea.right,
+          ]
+        }
+        yDomain={
+          zoomArea && [
+            yMin, yMax,
+          ]
+        }
+      >
+        <HorizontalGridLines  style={{ stroke: "#fff4" }} />
+        <XAxis
+          style={{ stroke: "#ffffff44", userSelect: "none", ticks: { stroke: "transparent" } }}
+          tickFormat={v => v === Math.floor(v) ? v.toLocaleString() : null}
+        />
+        <YAxis
+          style={{ stroke: "#ffffff44", userSelect: "none", ticks: { stroke: "transparent" } }}
+          tickFormat={v =>
+            Math.abs(v) > 1000000 ? Math.round(v/1000000)+"M" :
+            Math.abs(v) > 1000 ? Math.round(v/1000)+"K" :
+            v.toLocaleString()}
+        />
+
+        <LineMarkSeries curve={"curveCatmullRom"}
+          color="#3d63d6aa"
+          data={edata.map(d => ({ x: d.id, y: d.newNetBalance/100 }))}
+          onNearestX={(value, { index }) => {
+            if (canSet.current && (!crosshairValue || crosshairValue.index !== index)) {
+              setCrosshairValue({ value, index });
+            }
           }}
-        >
-          <CartesianGrid strokeDasharray="3 3" stroke="#fff4" vertical={false} />
-          <XAxis dataKey="id" stroke="#fff7" />
-          <YAxis stroke="#fff7" />
-          <ChartTooltip isAnimationActive={false} content={<KTooltip/>} />
-          {/* <Legend /> */}
-          <ReferenceLine y={0} stroke="#fff7" />
-          <Line type="monotone" dataKey="newNetBalance" stroke="#8884d8"  />
-          {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" /> */}
-        </LineChart>
-      </ResponsiveContainer>
+        />
+
+        <Highlight
+          enableY={false}
+          onBrushEnd={area => {
+            setCrosshairValue(null);
+            setZoomArea(area);
+            if (canSet.current) {
+              canSet.current = false;
+              setTimeout(() => {
+                canSet.current = true;
+              }, 1000);
+            }
+          }}
+        />
+
+        <Crosshair values={crosshairValue ? [crosshairValue.value]: []}>
+          <div className="rv-crosshair__inner__content">
+            {crosshairValue !== null && <KTooltip betIndex={crosshairValue.index} />}
+          </div>
+        </Crosshair>
+      </FlexibleWidthXYPlot>
       <Flexor justify="space-around">
         <KButton disabled={!bets.more} onClick={() => props.onNavigate(1)}>
           {t("profile.previousPage")}
@@ -181,6 +253,7 @@ const PlayerModalContent: FC<{
             <BlockSkeleton className="bet-chart" height="20rem" />
           }>
             <PlayerChart
+              user={props.user}
               page={graphPage}
               profile={profile}
               readBets={profileBets}
@@ -427,7 +500,9 @@ export const BalanceModal: () => ModalElement = () => {
       <Modal.Content>
         <h2 className="mt-0">{t("profile.balanceModal.depositHeader")}</h2>
         <p>{t("profile.balanceModal.sendTo")}</p>
-        <h3 className="t-center"><strong>{authedUser.name}@bust.kst</strong></h3>
+        <h3 className="t-center" style={{ fontSize: "2em" }}>
+          <strong>{authedUser.name}@bust.kst</strong>
+        </h3>
         <h2 className="mt-5">{t("profile.balanceModal.withdrawHeader")}</h2>
         <Flexor align="center" className="mb-4">
           <span>{t("profile.balanceModal.yourBalance")}</span>

@@ -35,7 +35,7 @@ export const ModalProvider: FC<{}> = (props) => {
     <>
       <ModalContext.Provider value={context.current}>
         {props.children}
-        <div className={clazz("modal-provider", transition && "active")}>
+        <div className={clazz("scroller", "modal-provider", transition && "active")}>
           {activeModal}
         </div>
       </ModalContext.Provider>
@@ -53,12 +53,15 @@ export const Modal: FC<{
   const ctx = useContext(ModalContext);
 
   return (
-    <div className="modal-background" onClick={() => {
+    <div className="modal-background" onMouseDown={e => {
       if (!props.undismissable) {
+        console.log(e);
         ctx?.close();
       }
     }}>
-      <div className={clazz("modal", props.className)} onClick={e => e.stopPropagation()}>
+      <div className={clazz("modal", props.className)}
+        onMouseDown={e => e.stopPropagation()}
+      >
         {props.children}
       </div>
     </div>

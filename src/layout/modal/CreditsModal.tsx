@@ -40,6 +40,7 @@ export const CreditsModal: (props: {}) => ModalElement = (props) => {
           <CreditItem label={t("credits.soundDesign")} value="Lemmmy &amp; Emma" />
           <CreditItem label={t("credits.music")} value="Hurt Record" />
           <CreditItem label={t("credits.contributions")} value="3d6" />
+          <div style={{ fontSize: 8 }}>also aly is cute</div>
         </div>
       </Modal.Content>
     </Modal>
