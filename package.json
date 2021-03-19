@@ -44,8 +44,8 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "optimise": "gzip -kr build/static",
-    "full-build": "NODE_ENV=production npm run build; npm run optimise",
+    "optimize": "gzip -kr build/static",
+    "full-build": "NODE_ENV=production npm run build; npm run optimize",
     "test": "craco test",
     "eject": "craco eject"
   },
