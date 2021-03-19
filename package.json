@@ -46,6 +46,7 @@
     "build": "craco build",
     "optimize": "gzip -kr build/static",
     "full-build": "NODE_ENV=production npm run build; npm run optimize",
+    "deploy": "sudo -u www-data ./deploy.sh",
     "test": "craco test",
     "eject": "craco eject"
   },
