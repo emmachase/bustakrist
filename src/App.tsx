@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { createStore, Store } from "redux";
 import { Provider } from "react-redux";
 import Blobs from "./components/aesthetic/blobs";
@@ -6,12 +6,13 @@ import { Spinner } from "./components/aesthetic/spinner";
 import { Card, KBitLayout, KHeader } from "./layout/kbit";
 import RootReducer, { RootState } from "./store/reducers/RootReducer";
 import { devToolsEnhancer } from "redux-devtools-extension";
-import { createConnection } from "./meta/connection";
+import { Banned, createConnection } from "./meta/connection";
 import { ChatView } from "./layout/chat";
 import { GameAudio, GameMusic } from "./audio/GameAudio";
 import { ModalProvider } from "./components/modal";
 import { TipOverlay } from "./components/aesthetic/tips";
 import { NotifyPopup } from "./components/notifyPopup";
+import { useTranslation } from "react-i18next";
 
 export const store: Store<RootState> = createStore(
     RootReducer,
@@ -28,29 +29,47 @@ createConnection(process.env.NODE_ENV === "development"
 function App() {
   const [chatOnly, setChatOnly] = useState(false);
 
+  const [banned, acknowledgeBan] = useState(false);
+  useEffect(() => {
+    if (sessionStorage.getItem("banned") === "true") {
+      acknowledgeBan(true);
+    }
+
+    return Banned.subscribe(() => acknowledgeBan(true));
+  }, []);
+
   return (
     <div className="App">
       <Provider store={store}>
-        <Blobs count={15}/>
+        {!banned && <Blobs count={15}/>}
         <Suspense fallback={<Spinner/>}>
-          <ModalProvider>
-            {chatOnly
-            ? <Card>
-              <ChatView />
-            </Card>
-            : <>
-              <KHeader onChatOnly={() => setChatOnly(true)}/>
-              <KBitLayout/>
-            </>}
-          </ModalProvider>
-          <TipOverlay/>
-          <GameAudio/>
-          <GameMusic/>
-          <NotifyPopup/>
+          {banned ?
+            <BannedMessage />
+          : <>
+            <ModalProvider>
+              {chatOnly
+              ? <Card>
+                <ChatView />
+              </Card>
+              : <>
+                <KHeader onChatOnly={() => setChatOnly(true)}/>
+                <KBitLayout/>
+              </>}
+            </ModalProvider>
+            <TipOverlay/>
+            <GameAudio/>
+            <GameMusic/>
+            <NotifyPopup/>
+          </>}
         </Suspense>
       </Provider>
     </div>
   );
+}
+
+function BannedMessage() {
+  const [t] = useTranslation();
+  return <div className="banned">{t("banned")}</div>;
 }
 
 export default App;

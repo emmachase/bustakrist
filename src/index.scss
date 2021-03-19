@@ -19,3 +19,33 @@ code, .code {
 pre {
   margin: 0;
 }
+
+
+.banned {
+  display: grid;
+  place-items: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999999;
+  font-size: min(100px, 20vw);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: rgba(255, 220, 220, 0.8);
+  text-shadow: 0 0 12px #0000008c;
+  background: repeating-linear-gradient(
+    45deg, 
+    #8b0000, #8b0000 10px, 
+    #a70000 10px, #a70000 20px);
+
+  background-size: 200% 200%;
+  animation: astripe 10s linear infinite;
+}
+
+@keyframes astripe {
+  100% {
+    background-position: 100% 100%;
+  }
+}

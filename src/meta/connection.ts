@@ -12,6 +12,8 @@ import { ErrorCode, ErrorDetail, RequestCode, UpdateCode } from "./transportCode
 
 let activeConnection: Connection;
 
+export const Banned = new Subject();
+
 export const GameStream = new Subject<{ start: number }>();
 export const TipStream = new Subject<{ from: string, to: string, amount: number }>();
 export const TipToStream = new Subject<{ to: string, amount: number }>();
@@ -50,6 +52,10 @@ export class Connection {
     this.ws.onclose = () => {
       store.dispatch(logoutUser());
 
+      if (sessionStorage.getItem("banned") === "true") {
+        return;
+      }
+
       console.warn(`Lost WS connection, retrying in ${this.connectDebounce}ms...`);
       setTimeout(() => {
         console.warn("Reconnecting...");
@@ -81,9 +87,16 @@ export class Connection {
     const msg = JSON.parse(event.data);
     switch (msg.type) {
       case UpdateCode.HELLO:
-        this.ws.send(JSON.stringify({
-          type: RequestCode.PING,
-        }));
+        if (msg.ok) {
+          this.ws.send(JSON.stringify({
+            type: RequestCode.PING,
+          }));
+        } else {
+          if (msg.errorType === ErrorCode.BANNED) {
+            sessionStorage.setItem("banned", "true");
+            Banned.next(true);
+          }
+        }
         break;
 
       case UpdateCode.HISTORY:
