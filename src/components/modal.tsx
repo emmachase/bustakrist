@@ -55,7 +55,6 @@ export const Modal: FC<{
   return (
     <div className="modal-background" onMouseDown={e => {
       if (!props.undismissable) {
-        console.log(e);
         ctx?.close();
       }
     }}>

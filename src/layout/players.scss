@@ -16,6 +16,8 @@
     color: orange;
     text-shadow: 0 0 1px orange;
     animation: booking 1s;
+
+    transition: color 0.3s ease, text-shadow 0.3s ease;
   }
   .c-win .trans-container {
     //TODO: make these transition and look really pretty

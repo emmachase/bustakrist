@@ -7,9 +7,15 @@ export function PlayersTable() {
   const players = useKState(s => s.players.players);
   const bust = useKState(s => s.game.bust);
 
+  const sortedPlayers = players.sort((a, b) => {
+    if (a.multiplier && !b.multiplier) return 1;
+    else if (b.multiplier && !a.multiplier) return -1;
+    return b.wager - a.wager;
+  });
+
   return (
     <tbody id="players-list">
-      { players.map((b, idx) => { //TODO: sort by amount and whether or not they cahshed out
+      { sortedPlayers.map((b, idx) => {
         const multiplier = b.multiplier &&
           (b.multiplier / 100).toLocaleString(undefined, { minimumFractionDigits: 2 }) + "×";
         const wager = b.wager.toLocaleString(undefined);

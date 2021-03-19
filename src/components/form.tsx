@@ -191,12 +191,10 @@ export const KInput: FC<{
   const formCtx = useContext(FormContext);
   useEffect(() => formCtx?.validateEvent.subscribe(e => {
     for (const validator of props.validators ?? []) {
-      console.log("e", e[props.name!]);
       const [valid, err] = validator(e[props.name!] ?? "");
       if (valid) {
         formCtx.errors[props.name!] = null;
       } else {
-        console.log("theres an error", err);
         formCtx.validationState = false;
         formCtx.errors[props.name!] = err!;
         break;
@@ -308,7 +306,6 @@ export const KButton: FC<{
   requireValid?: boolean
 }> = (props) => {
   const formCtx = useContext(FormContext);
-  if (props.requireValid) console.log("require", formCtx?.validationState);
   const disabledByForm = props.requireValid && formCtx?.validationState === false;
 
   return (

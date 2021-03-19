@@ -26,9 +26,7 @@ export abstract class AutoBetHook<P> {
 
   private lastBust = 0;
   public constructor(private setRunning: (running: boolean) => void) {
-    console.log("Subscribe");
     this.subscriptions.push(GameStream.subscribe(async () => {
-      console.log("Game starting...", this.running);
       if (this.running) {
         const betPlan = this.onBet();
         if (!betPlan.cancelled) {
@@ -62,7 +60,6 @@ export abstract class AutoBetHook<P> {
   }
 
   public unload() {
-    console.log("Unsubscribe");
     this.subscriptions.forEach(s => s());
   }
 
