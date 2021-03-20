@@ -69,8 +69,11 @@ export function AuthUI() {
       dispatch(addFriends(result.friends));
     } catch (e) {
       if (mode === RequestCode.LOGIN) {
-        setUserError(" ");
-        setPassError(t("errors.invalidCredentials"));
+        if (e.errorType === ErrorCode.BANNED) setUserError(t("errors.userBanned"));
+        else {
+          setUserError(" ");
+          setPassError(t("errors.invalidCredentials"));
+        }
       } else {
         if (isRequestError(e)) {
           if (e.error === ErrorDetail.USERNAME_TAKEN) setUserError(t("errors.userExists"));
