@@ -14,5 +14,5 @@ fi
 cd /var/www/kbit # Destination
 
 # Copy in the files
-cp -r "$build/*" ./
+cp -r $build/* ./
 
