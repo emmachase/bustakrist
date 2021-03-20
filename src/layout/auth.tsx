@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { KButton, KInput } from "../components/form";
 import { getConnection, isRequestError } from "../meta/connection";
 import { AuthResponse, BalanceResponse } from "../meta/networkInterfaces";
-import { ErrorCode, ErrorCode, ErrorDetail, RequestCode } from "../meta/transportCodes";
+import { ErrorCode, ErrorDetail, RequestCode } from "../meta/transportCodes";
 import { addFriends, authUser } from "../store/actions/UserActions";
 import { Flexor, Spacer } from "./flex";
 
