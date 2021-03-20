@@ -33,6 +33,10 @@ export class Connection {
 
   public constructor(private url: string) {
     this.tryConnection();
+
+    setInterval(() => this.sendRaw({
+      type: RequestCode.PING,
+    }), 30*SECOND);
   }
 
   private connectDebounce = 5;
@@ -91,9 +95,9 @@ export class Connection {
     switch (msg.type) {
       case UpdateCode.HELLO:
         if (msg.ok) {
-          this.ws.send(JSON.stringify({
+          this.sendRaw({
             type: RequestCode.PING,
-          }));
+          });
         } else {
           if (msg.errorType === ErrorCode.BANNED) {
             sessionStorage.setItem("banned", "true");
