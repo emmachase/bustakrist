@@ -134,6 +134,8 @@
   "errors": {
     "unknown": "An unknown error occurred",
     "user404": "This user does not exist",
+    "userExists": "Username taken",
+    "userBanned": "This account has been banned",
     "friendNoop": "You are already friends with this user",
     "lowBalance": "You do not have enough Krist to do this",
     "atLeastOne": "Bet must be at least 1KST",
@@ -145,7 +147,6 @@
     "formMax": "Max of {{max}} characters",
     "formMin": "Must be at least {{min}} characters",
     "invalidCredentials": "Username or Password incorrect",
-    "userExists": "Username taken",
     "autoCashout": "You were automatically cashed-out due to reaching the max profit.",
     "invalidAddress": "Invalid destination address",
     "required": "This field is required",

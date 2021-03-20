@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { KButton, KInput } from "../components/form";
 import { getConnection, isRequestError } from "../meta/connection";
 import { AuthResponse, BalanceResponse } from "../meta/networkInterfaces";
-import { ErrorDetail, RequestCode } from "../meta/transportCodes";
+import { ErrorCode, ErrorCode, ErrorDetail, RequestCode } from "../meta/transportCodes";
 import { addFriends, authUser } from "../store/actions/UserActions";
 import { Flexor, Spacer } from "./flex";
 
@@ -74,6 +74,7 @@ export function AuthUI() {
       } else {
         if (isRequestError(e)) {
           if (e.error === ErrorDetail.USERNAME_TAKEN) setUserError(t("errors.userExists"));
+          else if (e.errorType === ErrorCode.BANNED) setUserError(t("errors.userBanned"));
           else {
             setUserError(" ");
             setPassError(t("errors.unknown"));
