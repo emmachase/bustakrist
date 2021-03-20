@@ -14,6 +14,8 @@ import { ModalContext } from "../components/modal";
 import { PlayerModal, AddFriendModal } from "./modal/PlayerModal";
 import { playSound } from "../audio/AudioManager";
 import { canNotify } from "../util/notify";
+import { useDispatch } from "react-redux";
+import { readMessages } from "../store/actions/ChatActions";
 
 export const Message: FC<{
   msg: ChatMessage
@@ -39,27 +41,14 @@ export const FriendFeedIcon = forwardRef<HTMLDivElement, {
   onClick:(friend: string) => void
 }>(
   ({ friend, active, onClick }, ref) => {
-    const feed = useKState(s => s.chat.dms[friend]) ?? [];
-    const lastMessage = feed[feed.length - 1] ?? {};
+    const dispatch = useDispatch();
+    const chat = useKState(s => s.chat);
+    const feed = chat.dms[friend] ?? [];
 
-    // Effectively clear unread when feed is active
-    const [lastSeen, setLastSeen] = useState<Date>(() => new Date(0));
-    useEffect(() => void (active && setLastSeen(lastMessage.timestamp)), [active, lastMessage]);
-
-    const unreads = feed.filter(m => m.timestamp > lastSeen).length;
+    const unreads = feed.filter(m => chat.unread.has(m.id));
     useEffect(() => {
-      if (unreads && active) return void setLastSeen(lastMessage.timestamp);
-      if (unreads) {
-        playSound("chat");
-
-        if (canNotify()) {
-          new Notification(friend + " (BustAKrist)", {
-            body: lastMessage.message,
-            timestamp: +lastMessage.timestamp,
-          });
-        }
-      }
-    }, [unreads]);
+      if (unreads.length && active) return void dispatch(readMessages(unreads.map(m => m.id)));
+    }, [unreads.length, active]);
 
     return (
       <div
@@ -69,7 +58,7 @@ export const FriendFeedIcon = forwardRef<HTMLDivElement, {
         ref={ref as any}
       >
         {friend[0]}
-        {unreads > 0 && <div className="unread-badge">{unreads}</div>}
+        {unreads.length > 0 && <div className="unread-badge">{unreads.length}</div>}
       </div>
     );
   },
@@ -106,6 +95,7 @@ export function ChatView() {
   const modalCtx = useContext(ModalContext);
 
   const [t] = useTranslation();
+  const dispatch = useDispatch();
   const user = useKState(s => s.user);
   const messageStore = useKState(s => s.chat);
   const [selectedFeed, selectFeed] = useState<typeof GLOBAL_FEED_BRAND | string>(GLOBAL_FEED_BRAND);
@@ -163,14 +153,14 @@ export function ChatView() {
   }
 
   // Effectively clear unread when feed is active
-  const [lastSeen, setLastSeen] = useState<Date>(() => new Date(0));
   const globalActive = selectedFeed === GLOBAL_FEED_BRAND;
-  const lastTimestamp = (messageStore.chat[messageStore.chat.length - 1] ?? {}).timestamp;
-  useEffect(() => void (globalActive && setLastSeen(lastTimestamp)), [
-    globalActive, lastTimestamp,
-  ]);
+  const globalUnreads = messageStore.chat.filter(m => messageStore.unread.has(m.id));
+  useEffect(() => {
+    if (globalUnreads.length && globalActive) {
+      return void dispatch(readMessages(globalUnreads.map(m => m.id)));
+    }
+  }, [globalUnreads.length, globalActive]);
 
-  const globalUnreads = messageStore.chat.filter(m => m.timestamp > lastSeen).length;
 
   return (
     <div className="chat-view">
@@ -200,8 +190,8 @@ export function ChatView() {
               className={clazz("feed", selectedFeed === GLOBAL_FEED_BRAND && "active")}
               onClick={() => selectFeed(GLOBAL_FEED_BRAND)}
             />
-            {!globalActive && globalUnreads > 0
-              && <div className="unread-badge subtle">{globalUnreads}</div>}
+            {!globalActive && globalUnreads.length > 0
+              && <div className="unread-badge subtle">{globalUnreads.length}</div>}
 
             { user.name ? <Divider margin={8} /> : null }
             <div className="friend-feeds">

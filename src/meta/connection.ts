@@ -1,9 +1,11 @@
 import { store } from "../App";
+import { playSound } from "../audio/AudioManager";
 import { receievePrivateMessage, receiveMessage } from "../store/actions/ChatActions";
 import { bustGame, loadHistory, startGame } from "../store/actions/GameActions";
 import { clearPlayerlist, playerCashedout, updatePlaying,
   wagerAdd, wagerAddBulk } from "../store/actions/PlayersActions";
 import { addFriends, authUser, logoutUser, updateBalance } from "../store/actions/UserActions";
+import { canNotify } from "../util/notify";
 import { Subject } from "../util/Subject";
 import { MINUTE, SECOND } from "../util/time";
 import { AuthResponse, BalanceResponse,
@@ -136,13 +138,24 @@ export class Connection {
       case UpdateCode.MESSAGE:
         if (msg.data.private) {
           store.dispatch(receievePrivateMessage(
+              msg.data.id,
               msg.data.from,
               msg.data.message,
               new Date(msg.data.timestamp),
               msg.data.feed,
           ));
+
+          playSound("chat");
+
+          if (canNotify()) {
+            new Notification(msg.data.from + " (BustAKrist)", {
+              body: msg.data.message,
+              timestamp: +msg.data.timestamp,
+            });
+          }
         } else {
           store.dispatch(receiveMessage(
+              msg.data.id,
               msg.data.from,
               msg.data.message,
               new Date(msg.data.timestamp),

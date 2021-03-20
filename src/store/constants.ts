@@ -17,6 +17,7 @@ export const REMOVE_FRIEND = "REMOVE_FRIEND";
 // ---
 export const RECEIVE_MESSAGE = "RECEIVE_MESSAGE";
 export const RECEIVE_PRIVATE_MESSAGE = "RECEIVE_PRIVATE_MESSAGE";
+export const READ_MESSAGES = "READ_MESSAGES";
 
 // Players State
 // ---
