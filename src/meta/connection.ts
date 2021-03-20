@@ -67,6 +67,7 @@ export class Connection {
     };
   }
 
+  public isPaused = false
   public get active() {
     return this.ws.readyState === 1;
   }
@@ -133,6 +134,10 @@ export class Connection {
 
       case UpdateCode.ALERT_SAFETY:
         AlertStream.next(null);
+        break;
+
+      case UpdateCode.PAUSED:
+        this.isPaused = Boolean(msg.data.value);
         break;
 
       case UpdateCode.MESSAGE:

@@ -122,7 +122,16 @@ export const BustChart: FC<{
     }
 
     const connected = getConnection().active;
-    if (connected && currentScore >= 1) {
+    if (getConnection().isPaused) {
+      const text = t("game.paused");
+
+      ctx.font = "bold 18px Roboto";
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#ffffff99";
+      ctx.shadowColor = "#00000099";
+      ctx.shadowBlur = 8;
+      ctx.fillText(text, width/2, height/2);
+    } else if (connected && currentScore >= 1) {
       drawAxisTicks(ctx, width, y, getMajorInterval(y.inMin(), y.inMax()));
 
       ctx.beginPath();

@@ -45,6 +45,7 @@
   },
   "game": {
     "connecting": "Connecting to Game Server...",
+    "paused": "The Game is Paused...",
     "nextGame": "Next Game Will Start in {{time}}",
     "busted": "Busted At",
     "currencyShortname": "KST",

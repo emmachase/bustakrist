@@ -31,6 +31,7 @@ export enum UpdateCode {
   RECIEVE_TIP = "RECIEVE_TIP",
   HISTORY = "HISTORY",
   ALERT_SAFETY = "ALERT_SAFETY",
+  PAUSED = "PAUSED",
 }
 
 export enum ErrorCode {
