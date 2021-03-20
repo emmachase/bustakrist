@@ -16,3 +16,4 @@ cd /var/www/kbit # Destination
 # Copy in the files
 cp -r $build/* ./
 
+echo "Deploy Complete!"
