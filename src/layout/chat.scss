@@ -44,7 +44,8 @@
       font-size: 16px;
     }
 
-    .friend-feed {
+    .feed-icon {
+      position: relative;
       height: 36px;
       width: 36px;
       text-align: center;
@@ -52,6 +53,10 @@
       font-size: 30px;
       border-radius: 8px;
       margin-bottom: 8px;
+
+      .anticon {
+        font-size: 36px;
+      }
     }
 
     .unread-badge {
@@ -67,8 +72,9 @@
       text-align: center;
 
       &.subtle {
-        background: rgba($text, 0.2);
-        color: $text;
+        top: 0;
+        background: rgba(#A7839F, 0.8);
+        color: rgba($text, 0.8);
       }
     }
 

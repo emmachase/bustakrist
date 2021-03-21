@@ -41,11 +41,28 @@ export class Connection {
 
   private connectDebounce = 5;
   private tryConnection() {
-    this.ws?.close();
+    if (this.connecting) return;
 
-    this.ws = new WebSocket(this.url);
-    this.ws.onmessage = this.handleMessage.bind(this);
-    this.ws.onopen = async () => {
+    if (this.ws) {
+      this.ws.onmessage = () => {};
+      this.ws.onopen = () => {};
+      this.ws.onclose = () => {};
+    }
+
+    this.connecting = true;
+    const newWs = new WebSocket(this.url);
+    newWs.onmessage = this.handleMessage.bind(this);
+    newWs.onopen = async () => {
+      this.connecting = false;
+
+      if (this.active) {
+        // Oops, double websocket, close this one
+        newWs.onclose = null; // Prevent retry system
+        newWs.close();
+        return;
+      }
+
+      this.ws = newWs;
       this.connectDebounce = 5;
 
       const token = localStorage.getItem("reauth");
@@ -57,7 +74,12 @@ export class Connection {
         }
       }
     };
-    this.ws.onclose = () => {
+    newWs.onclose = () => {
+      this.connecting = false;
+      if (this.active) {
+        return;
+      }
+
       store.dispatch(logoutUser());
 
       if (sessionStorage.getItem("banned") === "true") {
@@ -73,16 +95,18 @@ export class Connection {
     };
   }
 
+  private connecting = false;
+
   public isPaused = false
   public get active() {
-    return this.ws.readyState === 1;
+    return this.ws?.readyState === 1;
   }
 
   public sendRaw(data: unknown) {
-    if (this.ws.readyState === 1) {
+    if (this.ws?.readyState === 1) {
       this.ws.send(JSON.stringify(data));
     } else {
-      this.ws.close();
+      this.ws?.close();
       this.tryConnection();
     }
   }
