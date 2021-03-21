@@ -351,7 +351,7 @@ export function createConnection(host?: string) {
   const url = host ?? window.location.host;
   const proto = window.location.protocol;
   const wsProto = proto.startsWith("https") ? "wss://" : "ws://";
-  activeConnection = new Connection(wsProto + url + "/api/sock");
+  activeConnection = new Connection(wsProto + url + "/api/sock?v=2");
 }
 
 export function getConnection() {
