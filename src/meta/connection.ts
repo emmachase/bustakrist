@@ -41,6 +41,8 @@ export class Connection {
 
   private connectDebounce = 5;
   private tryConnection() {
+    this.ws?.close();
+
     this.ws = new WebSocket(this.url);
     this.ws.onmessage = this.handleMessage.bind(this);
     this.ws.onopen = async () => {
@@ -154,7 +156,9 @@ export class Connection {
               msg.data.feed,
           ));
 
-          playSound("chat");
+          if (msg.data.from !== store.getState().user.name) {
+            playSound("chat");
+          }
 
           if (canNotify()) {
             new Notification(msg.data.from + " (BustAKrist)", {
