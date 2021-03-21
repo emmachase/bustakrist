@@ -132,6 +132,10 @@ export class Connection {
         }
         break;
 
+      case UpdateCode.FORCERELOAD:
+        window.location.href = window.location.href + "?forcesync=" + +new Date();
+        break;
+
       case UpdateCode.HISTORY:
         store.dispatch(loadHistory(msg.data.history));
         break;

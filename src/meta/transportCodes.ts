@@ -32,6 +32,7 @@ export enum UpdateCode {
   HISTORY = "HISTORY",
   ALERT_SAFETY = "ALERT_SAFETY",
   PAUSED = "PAUSED",
+  FORCERELOAD = "FORCERELOAD",
 }
 
 export enum ErrorCode {
