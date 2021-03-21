@@ -22,14 +22,18 @@ export const Message: FC<{
 }> = (props) => {
   const modalCtx = useContext(ModalContext);
 
+  const isReal = props.msg.from !== "<SYSTEM>";
   const openAuthor = () => {
-    modalCtx?.show(<PlayerModal user={props.msg.from}/>);
+    if (isReal) {
+      modalCtx?.show(<PlayerModal user={props.msg.from}/>);
+    }
   };
 
   return (
     <div className="chat-message">
       <span className="msg-time">{props.msg.timestamp.toLocaleTimeString()}</span>
-      <span className="msg-author" onClick={openAuthor}>{props.msg.from}</span>:&nbsp;
+      <span className={clazz("msg-author", !isReal && "unclickable")} onClick={openAuthor}
+      >{props.msg.from}</span>:&nbsp;
       <span className="msg-content">{props.msg.message}</span>
     </div>
   );

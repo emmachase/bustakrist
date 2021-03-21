@@ -38,6 +38,10 @@ $secondaryFontSize: 16px;
   cursor: pointer;
 }
 
+.unclickable {
+  cursor: default !important;
+}
+
 .input-container {
   @include theme;
 
