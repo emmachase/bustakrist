@@ -36,7 +36,7 @@ export function PlayersTable() {
                 bust > 0 && b.multiplier === undefined && "c-lose",
             )}>
             <td
-              className="players-user"
+              className="players-user clickable"
               onClick={() => modalCtx?.show(<PlayerModal user={b.name}/>)}
             ><div className="trans-container">{b.name}</div></td>
             <td><div className="trans-container">{multiplier}</div></td>
