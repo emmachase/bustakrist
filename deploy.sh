@@ -15,5 +15,6 @@ cd /var/www/kbit # Destination
 
 # Copy in the files
 cp -r $build/* ./
+find /var/www/kbit -name '*.map*' -exec rm {} \;
 
 echo "Deploy Complete!"
