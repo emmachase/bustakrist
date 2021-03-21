@@ -19,20 +19,25 @@
     overflow: auto;
     flex-direction: column-reverse;
     height: 100%;
+    margin-right: 72px;
   }
 
   .chat-feeds-container {
     position: absolute;
-    right: 20px;
+    height: 100%;
+    right: 0;
     top: 0;
     
     font-size: 36px;
 
-    .chat-feeds {
-      padding-right: 8px;
+    .chat-feeds-scroller {
+      position: relative;
       max-height: 100%;
-      overflow-y: auto;
-      overflow-x: hidden;
+      overflow: auto;
+    }
+
+    .chat-feeds {
+      padding-right: 16px;
     }
 
     .tooltip-container {

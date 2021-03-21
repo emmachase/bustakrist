@@ -189,26 +189,28 @@ export function ChatView() {
           </div>
         </div>
         <div className="chat-feeds-container no-scroller">
-          <div className="chat-feeds">
-            <GlobalOutlined
-              className={clazz("feed", selectedFeed === GLOBAL_FEED_BRAND && "active")}
-              onClick={() => selectFeed(GLOBAL_FEED_BRAND)}
-            />
-            {!globalActive && globalUnreads.length > 0
-              && <div className="unread-badge subtle">{globalUnreads.length}</div>}
+          <div className="chat-feeds-scroller scroller">
+            <div className="chat-feeds">
+              <GlobalOutlined
+                className={clazz("feed", selectedFeed === GLOBAL_FEED_BRAND && "active")}
+                onClick={() => selectFeed(GLOBAL_FEED_BRAND)}
+              />
+              {!globalActive && globalUnreads.length > 0
+                && <div className="unread-badge subtle">{globalUnreads.length}</div>}
 
-            { user.name ? <Divider margin={8} /> : null }
-            <div className="friend-feeds">
-              { allFeeds.map((friend, idx) =>
-                <FriendFeedIcon key={idx}
-                  ref={elRefs.current[idx]}
-                  friend={friend}
-                  active={selectedFeed === friend}
-                  onClick={selectFeed}
-                />,
-              )}
+              { user.name ? <Divider margin={8} /> : null }
+              <div className="friend-feeds">
+                { allFeeds.map((friend, idx) =>
+                  <FriendFeedIcon key={idx}
+                    ref={elRefs.current[idx]}
+                    friend={friend}
+                    active={selectedFeed === friend}
+                    onClick={selectFeed}
+                  />,
+                )}
+              </div>
+              { user.name && <UserAddOutlined onClick={() => modalCtx?.show(<AddFriendModal/>)} />}
             </div>
-            { user.name && <UserAddOutlined onClick={() => modalCtx?.show(<AddFriendModal/>)} />}
           </div>
           <div>
             { elRefs.current.map((ref: any, idx) => {
