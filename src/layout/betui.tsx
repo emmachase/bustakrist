@@ -128,7 +128,7 @@ export function BetUI() {
   }, [userBalance]);
 
   return (
-    <Flexor fill direction="column">
+    <Flexor fill direction="column" className="o-auto scroller">
       <KInput
         label={t("bet.betAmt")}
         suffix={t("game.currencyShortname")}

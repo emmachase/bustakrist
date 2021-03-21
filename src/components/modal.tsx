@@ -16,8 +16,11 @@ export const ModalProvider: FC<{}> = (props) => {
   const [activeModal, setActiveModal] = useState<ModalElement>();
   const [transition, setTransition] = useState(false);
 
+  const activeTimeout = useRef<number>(0);
+
   const context = useRef({
     show(modal: React.ReactElement<typeof Modal>) {
+      window.clearTimeout(activeTimeout.current);
       if (activeModal === undefined) {
         setTimeout(() => setTransition(true), 0);
       }
@@ -26,7 +29,7 @@ export const ModalProvider: FC<{}> = (props) => {
     },
 
     close() {
-      setTimeout(() => setActiveModal(undefined), 250);
+      activeTimeout.current = window.setTimeout(() => setActiveModal(undefined), 250);
       setTransition(false);
     },
   });
@@ -34,7 +37,9 @@ export const ModalProvider: FC<{}> = (props) => {
   return (
     <>
       <ModalContext.Provider value={context.current}>
-        {props.children}
+        <div className={clazz("modal-bg-wrapper", transition && "active")}>
+          {props.children}
+        </div>
         <div className={clazz("scroller", "modal-provider", transition && "active")}>
           {activeModal}
         </div>
@@ -58,10 +63,12 @@ export const Modal: FC<{
         ctx?.close();
       }
     }}>
-      <div className={clazz("modal", props.className)}
-        onMouseDown={e => e.stopPropagation()}
-      >
-        {props.children}
+      <div className="modal-margin no-scroller">
+        <div className={clazz("modal", props.className)}
+          onMouseDown={e => e.stopPropagation()}
+        >
+          {props.children}
+        </div>
       </div>
     </div>
   );

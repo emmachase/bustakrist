@@ -1,6 +1,22 @@
 @import "../colors.scss";
 
 $modal-blur: 12px;
+.modal-bg-wrapper {
+  filter: blur(0px);
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+
+  filter: blur(0);
+  transition: filter 0.5s ease;
+
+  &.active {
+    filter: blur($modal-blur);
+    transition: filter 0.25s ease;
+  }
+}
+
 .modal-provider {
   width: 100%;
   height: 100%;
@@ -21,8 +37,14 @@ $modal-blur: 12px;
     justify-content: center;
     align-items: center;
     overflow: auto;
-    backdrop-filter: blur(0);
-    transition: backdrop-filter 0.5s ease;
+  }
+
+  .modal-margin {
+    max-height: 100%;
+    padding: 50px 0;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   &.active {
@@ -30,11 +52,6 @@ $modal-blur: 12px;
 
     .modal {
       opacity: 1;
-    }
-
-    .modal-background {
-      backdrop-filter: blur($modal-blur);
-      transition: backdrop-filter 0.25s ease;
     }
   }
 }

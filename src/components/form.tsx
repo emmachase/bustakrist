@@ -243,48 +243,50 @@ export const KInput: FC<{
       {props.label && <div className="label">
         {props.label}
       </div>}
-      <input
-        className="input right"
-        type={props.password ? "password" : "text"}
-        value={props.value ?? iv}
-        onChange={(e) => {
-          setIV(e.target.value);
-          props.onChange?.(e.target.value);
-          formCtx?.setField(props.name!, e.target.value);
-        }}
+      <div className="method-wrapper">
+        <input
+          className="input right"
+          type={props.password ? "password" : "text"}
+          value={props.value ?? iv}
+          onChange={(e) => {
+            setIV(e.target.value);
+            props.onChange?.(e.target.value);
+            formCtx?.setField(props.name!, e.target.value);
+          }}
 
-        disabled={props.disabled}
+          disabled={props.disabled}
 
-        autoComplete={props.noFill ? "off" : undefined}
+          autoComplete={props.noFill ? "off" : undefined}
 
-        onKeyDown={checkKeys}
+          onKeyDown={checkKeys}
 
-        onBlur={(e) => {
-          let val = e.target.value;
-          if (props.reformatter) {
-            val = props.reformatter(e.target.value);
-            props.onChange?.(val);
-            setIV(val);
+          onBlur={(e) => {
+            let val = e.target.value;
+            if (props.reformatter) {
+              val = props.reformatter(e.target.value);
+              props.onChange?.(val);
+              setIV(val);
 
-            formCtx?.setField(props.name!, val);
-          }
+              formCtx?.setField(props.name!, val);
+            }
 
-          setDirty(true);
-          props.onBlur?.(val);
-        }}
-      />
-      { props.suffix && <>
-          <div className="suffix" ref={r => setSuffix(r)}>{props.suffix}</div>
-          { props.suffixTooltip
-          ? <Tooltip
-            refEl={suffixRef as HTMLElement}
-            config={{ delayShow: 300, placement: "top" }}
-          >
-            {props.suffixTooltip}
-          </Tooltip> : null
-          }
-        </>
-      }
+            setDirty(true);
+            props.onBlur?.(val);
+          }}
+        />
+        { props.suffix && <>
+            <div className="suffix" ref={r => setSuffix(r)}>{props.suffix}</div>
+            { props.suffixTooltip
+            ? <Tooltip
+              refEl={suffixRef as HTMLElement}
+              config={{ delayShow: 300, placement: "top" }}
+            >
+              {props.suffixTooltip}
+            </Tooltip> : null
+            }
+          </>
+        }
+      </div>
 
       {error && error.trim().length > 0 &&
         <Tooltip refEl={inputRef as HTMLElement}
