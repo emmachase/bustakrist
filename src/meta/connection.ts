@@ -40,17 +40,25 @@ export class Connection {
   }
 
   private connectDebounce = 5;
-  private tryConnection() {
-    if (this.connecting) return;
+  private tryConnection(onlyLink: boolean = false) {
+    const shouldConnect = !onlyLink;
 
-    if (this.ws) {
+    if (this.connecting && shouldConnect) return;
+
+    if (this.ws && shouldConnect) {
       this.ws.onmessage = () => {};
       this.ws.onopen = () => {};
       this.ws.onclose = () => {};
     }
 
-    this.connecting = true;
-    const newWs = new WebSocket(this.url);
+    let newWs: WebSocket;
+    if (shouldConnect) {
+      this.connecting = true;
+      newWs = new WebSocket(this.url);
+    } else {
+      newWs = this.ws;
+    }
+
     newWs.onmessage = this.handleMessage.bind(this);
     newWs.onopen = async () => {
       this.connecting = false;
@@ -59,7 +67,8 @@ export class Connection {
         // Oops, double websocket, close this one
         newWs.onclose = null; // Prevent retry system
         newWs.close();
-        return;
+
+        return void this.tryConnection(true); // Make sure the new socket is linked
       }
 
       this.ws = newWs;
