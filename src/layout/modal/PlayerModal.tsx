@@ -22,6 +22,7 @@ import { Subject } from "../../util/Subject";
 import { Crosshair, FlexibleWidthXYPlot, Highlight,
   HorizontalGridLines, LineMarkSeries, XAxis, YAxis } from "react-vis";
 import "react-vis/dist/style.css";
+import i18next from "i18next";
 
 function useProfile(username: string): () => ProfileResponse {
   return useMemo(() => suspend(getConnection().getProfile(username)), [username]);
@@ -79,8 +80,8 @@ const PlayerChart: FC<{
         { bet.timestamp ? <>
           <div className="label">
             <strong>{t("profile.specificGame", {
-              hash: bet.game.toLocaleString(),
-              game: bet.id.toLocaleString(),
+              hash: bet.game.toLocaleString(i18next.language),
+              game: bet.id.toLocaleString(i18next.language),
             })}</strong>
           </div>
           <div className="label">{t("profile.specificWager", { wager: bet.bet })}</div>
@@ -152,14 +153,14 @@ const PlayerChart: FC<{
         <HorizontalGridLines  style={{ stroke: "#fff4" }} />
         <XAxis
           style={{ stroke: "#ffffff44", userSelect: "none", ticks: { stroke: "transparent" } }}
-          tickFormat={v => v === Math.floor(v) ? v.toLocaleString() : null}
+          tickFormat={v => v === Math.floor(v) ? v.toLocaleString(i18next.language) : null}
         />
         <YAxis
           style={{ stroke: "#ffffff44", userSelect: "none", ticks: { stroke: "transparent" } }}
           tickFormat={v =>
             Math.abs(v) > 1000000 ? Math.round(v/1000000)+"M" :
             Math.abs(v) > 1000 ? Math.round(v/1000)+"K" :
-            v.toLocaleString()}
+            v.toLocaleString(i18next.language)}
         />
 
         <LineMarkSeries curve={"curveCatmullRom"}
@@ -216,7 +217,9 @@ const PlayerModalContent: FC<{
   const profileBets = useProfileBets(props.user, graphPage);
 
   useEffect(() => {
-    props.setJoined(DateTime.fromMillis(profile.joined).toRelative() ?? "Invalid Date");
+    props.setJoined(DateTime.fromMillis(profile.joined).toRelative({
+      locale: i18next.language,
+    }) ?? "Invalid Date");
   }, [profile.joined]);
 
   const InfoSlot = (props: { label: string, value: string }) =>
@@ -235,9 +238,10 @@ const PlayerModalContent: FC<{
               value={formatFixed2(profile.balance - profile.netBase)
                     + t("game.currencyShortname")}/>
             <InfoSlot label={t("profile.totalWagered")}
-              value={profile.totalWagered.toLocaleString() + t("game.currencyShortname")}/>
+              value={profile.totalWagered.toLocaleString(i18next.language)
+                    + t("game.currencyShortname")}/>
             <InfoSlot label={t("profile.gamesPlayed")}
-              value={profile.gamesPlayed.toLocaleString()}/>
+              value={profile.gamesPlayed.toLocaleString(i18next.language)}/>
           </div>
           <div className="player-stats">
             <InfoSlot label={t("profile.allTimeLow")}

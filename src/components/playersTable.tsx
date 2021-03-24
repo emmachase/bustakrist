@@ -4,6 +4,7 @@ import { clazz } from "../util/class";
 import { useKState } from "../util/types";
 import { ModalContext } from "./modal";
 import { PlayerModal } from "../layout/modal/PlayerModal";
+import i18next from "i18next";
 
 export function PlayersTable() {
   const [t] = useTranslation();
@@ -21,11 +22,11 @@ export function PlayersTable() {
     <tbody id="players-list">
       { sortedPlayers.map((b, idx) => {
         const multiplier = b.multiplier &&
-          (b.multiplier / 100).toLocaleString(undefined, { minimumFractionDigits: 2 }) + "×";
-        const wager = b.wager.toLocaleString(undefined);
+          (b.multiplier / 100).toLocaleString(i18next.language, { minimumFractionDigits: 2 }) + "×";
+        const wager = b.wager.toLocaleString(i18next.language);
         const profit = b.multiplier &&
           ((b.multiplier*b.wager)/100 - b.wager)
-              .toLocaleString(undefined,
+              .toLocaleString(i18next.language,
                   { minimumFractionDigits: 2 }) + t("game.currencyShortname");
 
         return (

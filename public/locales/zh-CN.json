@@ -131,7 +131,7 @@
     "specificLoss": "损失: {{loss}}KST",
     "specificNet": "净利: {{net}}KST",
     "playedAgo": "玩过{{ago}}",
-    "previousPage": "前",
+    "previousPage": "上",
     "nextPage": "下"
   },
   "errors": {

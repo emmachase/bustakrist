@@ -5,6 +5,7 @@ import { useElementSize } from "../../hooks/resize";
 import { AlertStream, TipStream, TipToStream } from "../../meta/connection";
 import { DepositStream } from "../../layout/modal/PlayerModal";
 import { Subject } from "../../util/Subject";
+import i18next from "i18next";
 
 const imageShrink = 8;
 function drawRotated(
@@ -101,14 +102,15 @@ export const TipOverlay: FC = () => {
         particles.current.push(new FallingKrist());
       }
 
-      credits.current.push(new TipCredit(tip.from, (tip.amount / 100).toLocaleString()));
+      credits.current.push(new TipCredit(tip.from, (tip.amount / 100)
+        .toLocaleString(i18next.language)));
     });
   });
 
   useEffect(() => {
     return TipToStream.subscribe(tip => {
       const to = tip.to;
-      const amount = (tip.amount / 100).toLocaleString();
+      const amount = (tip.amount / 100).toLocaleString(i18next.language);
       const text = t("game.tipper", { to, amount });
       toCredits.current.push(new ToastText(text));
     });

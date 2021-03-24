@@ -16,6 +16,7 @@ import { playSound } from "../audio/AudioManager";
 import { canNotify } from "../util/notify";
 import { useDispatch } from "react-redux";
 import { readMessages } from "../store/actions/ChatActions";
+import i18next from "i18next";
 
 export const Message: FC<{
   msg: ChatMessage
@@ -31,7 +32,7 @@ export const Message: FC<{
 
   return (
     <div className="chat-message">
-      <span className="msg-time">{props.msg.timestamp.toLocaleTimeString()}</span>
+      <span className="msg-time">{props.msg.timestamp.toLocaleTimeString(i18next.language)}</span>
       <span className={clazz("msg-author", !isReal && "unclickable")} onClick={openAuthor}
       >{props.msg.from}</span>:&nbsp;
       <span className="msg-content">{props.msg.message}</span>
