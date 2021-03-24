@@ -123,7 +123,7 @@ export const KHeader: FC<{
   return (
     <div className="kbit-header">
       <img src="/krist.webp"/>
-      <h1 onClick={openCredits}>BustAKrist</h1>
+      <h1 onClick={openCredits}>{t("name")}</h1>
       {process.env.NODE_ENV === "development" && <span className="dev-badge">dev</span>}
 
       <Spacer/>

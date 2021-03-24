@@ -1,11 +1,13 @@
 {
+  "name": "BustAKrist",
   "banned": "BANNED",
   "credits": {
     "title": "<0>made by</0> <2>Emma</2>",
     "progDesign": "Programming and Design",
     "soundDesign": "Sound Design",
     "music": "Music",
-    "contributions": "With Contributions From"
+    "contributions": "With Contributions From",
+    "cute": "also aly is cute"
   },
   "bet": {
     "betAction": "Bet",
