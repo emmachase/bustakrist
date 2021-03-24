@@ -65,7 +65,8 @@
     "tab": "Chat",
     "inputPlaceholder": "Type a message here...",
     "loginPlaceholder": "Login to send a message...",
-    "noHistoryHint": "You have no message history with <1>{{name}}</1> in this session, say Hello!"
+    "noHistoryHint": "You have no message history with <1>{{name}}</1> in this session, say Hello!",
+    "historyBeginning": "This is the beginning of your message history with <1>{{name}}</1>."
   },
   "history": {
     "tab": "History",

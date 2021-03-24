@@ -21,3 +21,13 @@ export interface ReadMessagesPayload {
 }
 export const readMessages = createAction(constants.READ_MESSAGES,
     (messages: string[]): ReadMessagesPayload => ({ messages }))();
+
+export const clearDMs = createAction(constants.CLEAR_DMS, (): {} => ({}))();
+
+export interface FetchMessagesPayload {
+  from: string | undefined
+  messages: ReceievePrivateMessagePayload[]
+}
+export const fetchMessages = createAction(constants.FETCH_MESSAGES,
+    (messages: ReceievePrivateMessagePayload[], from?: string):
+    FetchMessagesPayload => ({ from: from, messages }))();

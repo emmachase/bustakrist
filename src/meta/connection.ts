@@ -1,6 +1,6 @@
 import { store } from "../App";
 import { playSound } from "../audio/AudioManager";
-import { receievePrivateMessage, receiveMessage } from "../store/actions/ChatActions";
+import { clearDMs, fetchMessages, receievePrivateMessage, receiveMessage } from "../store/actions/ChatActions";
 import { bustGame, loadHistory, startGame } from "../store/actions/GameActions";
 import { clearPlayerlist, playerCashedout, updatePlaying,
   wagerAdd, wagerAddBulk } from "../store/actions/PlayersActions";
@@ -90,6 +90,7 @@ export class Connection {
       }
 
       store.dispatch(logoutUser());
+      store.dispatch(clearDMs());
 
       if (sessionStorage.getItem("banned") === "true") {
         return;
@@ -181,6 +182,20 @@ export class Connection {
 
       case UpdateCode.PAUSED:
         this.isPaused = Boolean(msg.data.value);
+        break;
+
+      case UpdateCode.MESSAGE_HISTORY:
+        const other = msg.data.for;
+        const history = msg.data.history.map((x: any) => ({
+          ...x, timestamp: new Date(x.timestamp),
+        }));
+
+        if (other) {
+          store.dispatch(fetchMessages(history, other));
+        } else {
+          store.dispatch(fetchMessages(history));
+        }
+
         break;
 
       case UpdateCode.MESSAGE:

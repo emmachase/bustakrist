@@ -171,9 +171,6 @@ export function ChatView() {
       <div className="chat-upper">
         <div className="chat-history scroller" ref={containerRef}>
           <div className="chat-hwrap">
-            { feed.map((msg, idx) =>
-              <Message key={+msg.timestamp + "-" + msg.from + idx} msg={msg} />,
-            )}
             { selectedFeed !== GLOBAL_FEED_BRAND && feed.length === 0 &&
               <div className="chat-hint">
                 <Trans i18nKey="chat.noHistoryHint">
@@ -186,6 +183,21 @@ export function ChatView() {
                 </Trans>
               </div>
             }
+            { selectedFeed !== GLOBAL_FEED_BRAND && feed.length !== 0 &&
+              <div className="chat-hint">
+                <Trans i18nKey="chat.historyBeginning">
+                  This is the beginning of your message history with <strong
+                    style={{ cursor: "pointer" }}
+                    onClick={() => modalCtx?.show(<PlayerModal user={selectedFeed.toString()}/>)}
+                  >{{
+                    name: selectedFeed.toString(),
+                  }}</strong>.
+                </Trans>
+              </div>
+            }
+            { feed.map((msg, idx) =>
+              <Message key={+msg.timestamp + "-" + msg.from + idx} msg={msg} />,
+            )}
           </div>
         </div>
         <div className="chat-feeds-container no-scroller">

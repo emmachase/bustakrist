@@ -15,6 +15,8 @@ export const REMOVE_FRIEND = "REMOVE_FRIEND";
 
 // Chat State
 // ---
+export const CLEAR_DMS = "CLEAR_DMS";
+export const FETCH_MESSAGES = "FETCH_MESSAGES";
 export const RECEIVE_MESSAGE = "RECEIVE_MESSAGE";
 export const RECEIVE_PRIVATE_MESSAGE = "RECEIVE_PRIVATE_MESSAGE";
 export const READ_MESSAGES = "READ_MESSAGES";

@@ -22,6 +22,7 @@ import { ModalContext, Modal } from "../components/modal";
 import { PlayerModal, BalanceModal } from "./modal/PlayerModal";
 import { CreditsModal } from "./modal/CreditsModal";
 import { KButton } from "../components/form";
+import { clearDMs } from "../store/actions/ChatActions";
 
 export const Card: FC<{
   area?: string,
@@ -66,6 +67,7 @@ export const KHeader: FC<{
   const onLogout = () => {
     localStorage.removeItem("reauth");
     dispatch(logoutUser());
+    dispatch(clearDMs());
     getConnection().logout();
   };
 

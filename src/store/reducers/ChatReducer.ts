@@ -1,5 +1,6 @@
 import { createReducer, ActionType, Reducer } from "typesafe-actions";
-import { readMessages, receievePrivateMessage, receiveMessage } from "../actions/ChatActions";
+import { clearDMs, fetchMessages, readMessages,
+  receievePrivateMessage, receiveMessage } from "../actions/ChatActions";
 
 export interface ChatMessage {
   id: string;
@@ -45,4 +46,27 @@ export const ChatReducer: Reducer<State, any> = createReducer(initialState)
       : ActionType<typeof readMessages>) => ({
         ...state,
         unread: new Set(Array.from(state.unread).filter(m => !payload.messages.includes(m))),
-      }));
+      }))
+
+    // Clear DMs
+    .handleAction(clearDMs, (state: State, {}
+      : ActionType<typeof clearDMs>) => ({
+        ...state,
+        dms: {},
+      }))
+
+    // Read Messages
+    .handleAction(fetchMessages, (state: State, { payload }
+      : ActionType<typeof fetchMessages>) => {
+        if (payload.from) {
+          return {
+            ...state,
+            dms: { ...state.dms, [payload.from]: payload.messages },
+          };
+        } else {
+          return {
+            ...state,
+            chat: payload.messages,
+          };
+        }
+      });
