@@ -1,0 +1,165 @@
+{
+  "name": "BustAKrist",
+  "banned": "禁止了",
+  "credits": {
+    "title": "<0>由</0><2>Emma</2>",
+    "progDesign": "电脑程序和设计",
+    "soundDesign": "声音设计",
+    "music": "音乐",
+    "contributions": "贡献来自",
+    "cute": "而且aly很可爱"
+  },
+  "bet": {
+    "betAction": "赌",
+    "betAmt": "赌",
+    "betPayout": "支付",
+    "betTarget": "目标",
+    "betSplits": "分裂",
+    "cancel": "取消",
+    "pullout": "退出",
+    "manual": "手动",
+    "auto": "自动",
+    "autoui": {
+      "strat": "战略",
+      "selectStrat": "毫无",
+      "start": "开始",
+      "stop": "停止",
+      "strats": {
+        "flat": {
+          "label": "平坦",
+          "info": "这个策略每次都会下相同的赌注和兑现门槛。"
+        },
+        "martingale": {
+          "label": "鞅",
+          "info": "这个策略投注给定的赌注和兑现门槛，直到输掉为止，在这种情况下，下一次的赌注是双倍的，这种情况一直持续到赢了为止，在这种情况下，赌注重新设置为原来的金额。"
+        },
+        "revmartingale": {
+          "label": "反向鞅",
+          "info": "这个策略每次都会将给定的赌注和兑现门槛翻倍，直到输掉为止，在这种情况下，赌注会被重置为原始金额。"
+        },
+        "splitmartingale": {
+          "label": "拉布歇尔 (分裂)",
+          "info": "这个策略会生成一个指定大小的列表，包含目标利润的分成。每一轮的赌注是列表中第一个元素和最后一个元素的总和（固定的2倍兑现），如果是赢了，项目就会被删除，如果是输了，输的金额就会追加到列表中。",
+          "finished": "自动下注完成所有分红"
+        }
+      }
+    }
+  },
+  "game": {
+    "connecting": "连接到游戏服务器...",
+    "paused": "暂停游戏...",
+    "nextGame": "下一场比赛将在{{time}}",
+    "busted": "破灭在",
+    "currencyShortname": "KST",
+    "currency": "Krist",
+    "tipped": "{{from}}给了你{{amount}}KST!",
+    "tipper": "你给{{to}}寄了{{amount}}KST!",
+    "withdrew": "成功撤回{{amount}}KST"
+  },
+  "auth": {
+    "login": "登入",
+    "logout": "登出",
+    "register": "注册",
+    "username": "帐号",
+    "password": "密码"
+  },
+  "chat": {
+    "tab": "聊天",
+    "inputPlaceholder": "输入信息...",
+    "loginPlaceholder": "请登录后发送消息...",
+    "noHistoryHint": "在这次会议中，你没有与<1>{{name}}</1>的信息记录。打个招呼吧！",
+    "historyBeginning": "这是你与<1>{{name}}</1>的信息历史的开始。"
+  },
+  "history": {
+    "tab": "历程",
+    "gameNo": "游戏编号",
+    "mult": "乘法器",
+    "bust": "破灭在",
+    "hash": "散列"
+  },
+  "players": {
+    "tab": "球员",
+    "user": "用户",
+    "at": "@",
+    "bet": "赌",
+    "profit": "盈利"
+  },
+  "audio": {
+    "songBy": "由: {{artist}}"
+  },
+  "profile": {
+    "profileHeader": "用户资料: <1>{{user}}</1>",
+    "failedFetch": "无法获取个人资料详情。",
+    "addFriend": {
+      "title": "添加新朋友",
+      "label": "朋友的名字",
+      "action": "加朋友"
+    },
+    "tipModal": {
+      "title": "送给<1>{{user}}</1>",
+      "label": "数量",
+      "action": "送",
+      "yourBalance": "你的余额",
+      "newBalance": "新余额"
+    },
+    "balanceModal": {
+      "title": "余额管理",
+      "label": "数量",
+      "action": "提取",
+      "depositHeader": "订金",
+      "withdrawHeader": "提取",
+      "yourBalance": "你的余额",
+      "newBalance": "新余额",
+      "withdrawTo": "撤回到",
+      "sendTo": "要将Krist存入你的账户，请发送至以下地址:"
+    },
+    "friend": "添加该用户为好友",
+    "unfriend": "删除此用户为好友",
+    "tip": "给该用户",
+    "net": "纯利润:",
+    "joined": "{{joined}}加入",
+    "gamesPlayed": "玩的轮次:",
+    "allTimeLow": "历来最低点净利:",
+    "allTimeHigh": "历来最高净利:",
+    "totalWagered": "总赌注:",
+    "genesis": "创世",
+    "gameBusted": "破灭@{{bust}}X",
+    "specificGame": "轮{{game}} (种子 {{hash}})",
+    "specificWager": "赌注: {{wager}}KST",
+    "specificCashout": "退出@{{cashout}}X",
+    "specificProfit": "利润: {{profit}}KST",
+    "specificLoss": "损失: {{loss}}KST",
+    "specificNet": "净利: {{net}}KST",
+    "playedAgo": "玩过{{ago}}",
+    "previousPage": "前",
+    "nextPage": "下"
+  },
+  "errors": {
+    "unknown": "发生未知错误",
+    "user404": "该用户不存在",
+    "userExists": "用户名已经被占用了",
+    "userBanned": "这个账户已经被禁言",
+    "friendNoop": "你已经是该用户的朋友",
+    "lowBalance": "你没有足够的Krist来做这件事",
+    "atLeastOne": "赌注必须是1KST以上",
+    "atLeastOneTarget": "目标必须是1KST以上",
+    "atLeastOneHundred": "赔率必须是1.01×以上",
+    "atLeastTwoSplits": "必须使用至少2个分割",
+    "splitLessThanOne": "分割将少于1KST",
+    "nameAllowed": "必须是字母数字、下划线或破折号",
+    "formMax": "最多{{max}}个字符",
+    "formMin": "必须至少有{{min}}个字符",
+    "invalidCredentials": "用户名或密码不正确",
+    "autoCashout": "由于达到最大利润，你被自动兑现了。",
+    "invalidAddress": "无效的目的地址",
+    "required": "此字段为必填字段",
+    "autoStopFromBalance": "因余额不足而停止自动改进"
+  },
+  "notify": {
+    "request": "本网站可选择使用直接消息通知"
+  },
+  "hint": {
+    "lowBalance": "点击添加Krist!",
+    "pendingBalance": "你的收入是待定的，并将在本轮结束后增加。"
+  }
+}
