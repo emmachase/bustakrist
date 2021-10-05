@@ -454,7 +454,7 @@ export const BalanceModal: () => ModalElement = () => {
   const ctx = useContext(ModalContext);
 
   const checkAddress = (hard: boolean, addy: string) => {
-    if (/^(k[a-z0-9]{9}|[a-zA-Z0-9]+@[a-z0-9]{1,64}.kst)$/.test(addy)) {
+    if (/^(k[a-z0-9]{9}|(?:([a-z0-9-_]{1,32})@)?([a-z0-9]{1,64})\.kst)$/.test(addy)) {
       setAddyError(undefined);
       return false;
     }
