@@ -4,6 +4,9 @@ import { askNotificationPermission } from "../util/notify";
 
 export const NotifyPopup = () => {
   const [t] = useTranslation();
+  if ("Notification" in window === false) {
+    return null;
+  }
 
   const [asked, setAsked] = useState(false);
   useEffect(() => {
