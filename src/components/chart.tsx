@@ -111,7 +111,7 @@ export const BustChart: FC<{
 
     const ctx = canvas.current.getContext("2d")!;
 
-    ctx.clearRect(0, 0, 1000, 1000);
+    ctx.clearRect(0, 0, width, height);
 
 
     const currentScore = (state.game.bust/100) || scoreFunction(timeDiff);
