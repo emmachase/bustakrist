@@ -90,7 +90,7 @@ const PlayerChart: FC<{
               {t("profile.specificCashout", { cashout: formatFixed2(bet.cashout) })}
             </div><div className="label c-win">
               {t("profile.specificProfit", {
-                profit: formatFixed2(bet.cashout*bet.bet - 100*bet.bet),
+                profit: formatFixed2(Math.round(bet.cashout*bet.bet - 100*bet.bet)),
               })}
             </div></>
 
@@ -494,7 +494,7 @@ export const BalanceModal: () => ModalElement = () => {
     }
   };
 
-  const afterBalance = (authedUser.bal ?? 0) - 100*value;
+  const afterBalance = (authedUser.bal ?? 0) - Math.round(100*value);
 
   return (
     <Modal className="balance-modal">

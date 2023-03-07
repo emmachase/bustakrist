@@ -36,7 +36,7 @@ export function balanceValidator(
   return (x) => {
     if (!balance) return [false, lowBalError];
     if (+x < 1) return [false, atLeastOneError];
-    return [balance >= 100*+x, lowBalError];
+    return [balance >= Math.round(100*+x), lowBalError];
   };
 };
 

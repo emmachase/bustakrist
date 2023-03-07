@@ -143,7 +143,7 @@ export function BetUI() {
         label={t("bet.betPayout")}
         suffix="&times;"
         initialValue={cashout/100}
-        onChange={v => (setCashout(Math.floor(100*+v)), checkCashout(100*+v))}
+        onChange={v => (setCashout(Math.round(100*+v)), checkCashout(Math.round(100*+v)))}
         reformatter={reformatters.dec2}
         onFinish={betAction}
         error={userIsPlaying ? null : cashoutError}

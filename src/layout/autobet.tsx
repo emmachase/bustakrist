@@ -31,7 +31,7 @@ export abstract class AutoBetHook<P> {
         const betPlan = this.onBet();
         if (!betPlan.cancelled) {
           const bet = Math.floor(betPlan.bet);
-          const cashout = Math.floor(100*betPlan.cashout);
+          const cashout = Math.round(100*betPlan.cashout);
           try {
             await getConnection().makeBet(bet, cashout);
           } catch (e) {
@@ -51,7 +51,7 @@ export abstract class AutoBetHook<P> {
         const stake = store.getState().players.players.find(p => p.name === name);
         const won = !!stake?.multiplier;
         if (stake) {
-          this.onRoundEnd(won, (stake.multiplier ?? 0)*stake.wager - 100*stake.wager);
+          this.onRoundEnd(won, Math.round((stake.multiplier ?? 0)*stake.wager - 100*stake.wager));
         }
       }
 
@@ -76,7 +76,7 @@ export abstract class AutoBetHook<P> {
         const betPlan = this.onBet();
         if (!betPlan.cancelled) {
           const bet = Math.floor(betPlan.bet);
-          const cashout = Math.floor(100*betPlan.cashout);
+          const cashout = Math.round(100*betPlan.cashout);
           await getConnection().makeBet(bet, cashout);
         }
       } catch {}
